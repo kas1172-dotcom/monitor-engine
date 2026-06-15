@@ -1,0 +1,201 @@
+{
+  "branding": {
+    "name": "Healthcare Regulatory Monitor",
+    "accent_color": "#0070B8"
+  },
+  "editions": [
+    {
+      "id": "compliance",
+      "label": "Compliance & Regulatory",
+      "audience_description": "Compliance officers and regulatory affairs teams tracking rules, enforcement actions, and filing deadlines",
+      "analysis_instructions": "Prioritise final rules, interim final rules, warning letters, enforcement actions, and consent decrees. Flag compliance deadlines, comment periods, and effective dates. Note which facility types, drug classes, or device categories are affected.",
+      "categories": [
+        "Final Rule",
+        "Proposed Rule",
+        "Guidance Document",
+        "Enforcement Action",
+        "Deadline / Comment Period"
+      ]
+    },
+    {
+      "id": "clinical",
+      "label": "Clinical Operations",
+      "audience_description": "Clinical, quality, and medical-affairs teams tracking drug/device approvals, clinical guidance, and patient-safety signals",
+      "analysis_instructions": "Surface FDA approvals, clearances, and denials; safety communications; clinical trial regulations; and guidance on labeling, manufacturing, or clinical practice. Flag patient-safety recalls and drug shortages.",
+      "categories": [
+        "Drug / Biologic Approval",
+        "Device Clearance",
+        "Safety Communication",
+        "Clinical Trial Regulation",
+        "Recall"
+      ]
+    },
+    {
+      "id": "reimbursement",
+      "label": "Reimbursement & Coverage",
+      "audience_description": "Finance, revenue cycle, and market-access teams tracking CMS payment policy and coverage decisions",
+      "analysis_instructions": "Focus on CMS final and proposed payment rules (IPPS, OPPS, PFS, ESRD, home health), coverage determinations, prior-authorization rules, and Medicaid policy. Quantify dollar impact per-episode or per-beneficiary where the source provides it.",
+      "categories": [
+        "Payment Rule",
+        "Coverage Determination",
+        "Prior Authorization",
+        "Medicaid Policy",
+        "Value-Based Care"
+      ]
+    }
+  ],
+  "scoring_rubric": {
+    "thresholds": {
+      "tier_1_min": 80,
+      "tier_2_min": 50,
+      "tier_3_min": 20
+    },
+    "never_discard": [
+      "warning letter",
+      "consent decree",
+      "import alert",
+      "mandatory recall",
+      "Class I recall",
+      "fraud alert",
+      "False Claims Act",
+      "whistleblower",
+      "debarment",
+      "exclusion",
+      "emergency use authorization",
+      "public health emergency",
+      "immediate jeopardy",
+      "civil monetary penalty"
+    ]
+  },
+  "sources": [
+    {
+      "type": "json_api",
+      "id": "federal-register-fda",
+      "name": "Federal Register – FDA",
+      "url": "https://www.federalregister.gov/api/v1/articles.json?agencies[]=food-and-drug-administration&order=newest&per_page=20",
+      "item_path": "$.results",
+      "field_map": {
+        "title": "title",
+        "url": "html_url",
+        "published_at": "publication_date",
+        "summary": "abstract"
+      }
+    },
+    {
+      "type": "json_api",
+      "id": "federal-register-cms",
+      "name": "Federal Register – CMS",
+      "url": "https://www.federalregister.gov/api/v1/articles.json?agencies[]=centers-for-medicare-medicaid-services&order=newest&per_page=20",
+      "item_path": "$.results",
+      "field_map": {
+        "title": "title",
+        "url": "html_url",
+        "published_at": "publication_date",
+        "summary": "abstract"
+      }
+    },
+    {
+      "type": "json_api",
+      "id": "federal-register-hhs",
+      "name": "Federal Register – HHS",
+      "url": "https://www.federalregister.gov/api/v1/articles.json?agencies[]=health-and-human-services-department&order=newest&per_page=10",
+      "item_path": "$.results",
+      "field_map": {
+        "title": "title",
+        "url": "html_url",
+        "published_at": "publication_date",
+        "summary": "abstract"
+      }
+    }
+  ],
+  "keyword_prefilter": {
+    "include": [
+      "FDA",
+      "CMS",
+      "HHS",
+      "regulation",
+      "rule",
+      "guidance",
+      "approval",
+      "clearance",
+      "drug",
+      "biologic",
+      "device",
+      "clinical",
+      "Medicare",
+      "Medicaid",
+      "reimbursement",
+      "payment",
+      "prior authorization",
+      "compliance",
+      "HIPAA",
+      "healthcare",
+      "recall",
+      "enforcement",
+      "warning letter",
+      "consent decree",
+      "IND",
+      "NDA",
+      "BLA",
+      "510(k)",
+      "PMA",
+      "EUA",
+      "hospital",
+      "physician",
+      "beneficiary",
+      "patient",
+      "formulary",
+      "coverage",
+      "copay",
+      "deductible",
+      "ICD",
+      "CPT",
+      "DRG",
+      "IPPS",
+      "OPPS",
+      "PFS"
+    ],
+    "exclude": [
+      "obituary",
+      "sports",
+      "entertainment"
+    ]
+  },
+  "deep_analysis": {
+    "instruction": "Produce a concise but substantive briefing for a healthcare compliance, clinical, and reimbursement audience. Stay grounded in the item; flag uncertainty rather than speculating.",
+    "sections": [
+      {
+        "id": "background",
+        "label": "Background",
+        "kind": "text",
+        "instruction": "Two to three sentences situating this development: the rule, program, or enforcement thread it belongs to and what preceded it."
+      },
+      {
+        "id": "key_stakeholders",
+        "label": "Key stakeholders",
+        "kind": "list",
+        "instruction": "The agencies, provider types, manufacturers, payers, or patient populations with a material interest. Name them only if supported by the item."
+      },
+      {
+        "id": "scenarios",
+        "label": "Scenarios to watch",
+        "kind": "list",
+        "instruction": "Two or three plausible ways this could develop over the next 6–18 months, each phrased as a short conditional."
+      },
+      {
+        "id": "recommended_actions",
+        "label": "Recommended actions",
+        "kind": "list",
+        "instruction": "Concrete next steps a compliance, clinical-operations, or market-access team should consider this week."
+      }
+    ]
+  },
+  "cadence": {
+    "cron": "0 7 * * 1",
+    "timezone": "America/New_York"
+  },
+  "cost_caps": {
+    "max_items_per_run": 60,
+    "max_output_tokens_per_run": 40000
+  }
+}

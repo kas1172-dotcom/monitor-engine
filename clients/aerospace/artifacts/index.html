@@ -1,0 +1,1494 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0052cc" id="meta-theme-color">
+  <title>Intelligence Brief</title>
+  <style>/* ═══════════════════════════════════════════════════════════════════
+   Custom properties — accent overridden at runtime from data JSON
+   ═══════════════════════════════════════════════════════════════════ */
+:root {
+  --accent: #0052cc;
+  --accent-dark: #003d99;
+  --accent-bg: rgba(0,82,204,.08);
+
+  --text: #111827;
+  --text-sec: #6b7280;
+  --text-muted: #9ca3af;
+
+  --bg: #f3f4f6;
+  --surface: #ffffff;
+  --surface-alt: #f9fafb;
+  --border: #e5e7eb;
+
+  --t1-accent: var(--accent);
+  --t2-accent: #6366f1;
+  --t3-color: var(--text-sec);
+
+  --sig-new: #059669;
+  --sig-deadline: #dc2626;
+  --sig-escalate: #d97706;
+  --sig-unverified: #9333ea;
+
+  --r-s: 4px;
+  --r-m: 8px;
+  --r-l: 12px;
+  --r-xl: 16px;
+
+  --shadow: 0 1px 3px rgba(0,0,0,.1), 0 1px 2px rgba(0,0,0,.06);
+  --shadow-lg: 0 4px 12px rgba(0,0,0,.1);
+
+  --dur: 160ms;
+  --ease: ease;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Reset & base
+   ═══════════════════════════════════════════════════════════════════ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+               "Helvetica Neue", Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.55;
+  color: var(--text);
+  background: var(--bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+h1, h2, h3 { font-weight: 600; line-height: 1.3; }
+p { margin-bottom: .6em; }
+p:last-child { margin-bottom: 0; }
+ul { list-style: none; }
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font: inherit;
+  color: inherit;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Layout helpers
+   ═══════════════════════════════════════════════════════════════════ */
+.container {
+  width: 100%;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Loading screen
+   ═══════════════════════════════════════════════════════════════════ */
+#loading-screen {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg);
+  z-index: 999;
+}
+
+#loading-screen.hidden { display: none; }
+
+.loading-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  color: var(--text-sec);
+  font-size: .9rem;
+}
+
+.loading-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--accent);
+  border-radius: 50%;
+  animation: spin .7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Header — sticky, mobile-first
+   ═══════════════════════════════════════════════════════════════════ */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  box-shadow: var(--shadow);
+}
+
+.header-inner {
+  padding-top: 10px;
+  padding-bottom: 0;
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.site-title {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: -.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Filters toggle button (hidden on desktop) */
+.filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-l);
+  font-size: .8rem;
+  font-weight: 500;
+  color: var(--text-sec);
+  background: var(--surface);
+  flex-shrink: 0;
+  transition: border-color var(--dur), color var(--dur);
+}
+.filter-toggle[aria-expanded="true"] {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* Edition tabs */
+.edition-nav {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  padding-bottom: 0;
+}
+.edition-nav::-webkit-scrollbar { display: none; }
+
+.edition-btn {
+  flex-shrink: 0;
+  padding: 7px 14px;
+  font-size: .82rem;
+  font-weight: 500;
+  color: var(--text-sec);
+  border-bottom: 2px solid transparent;
+  border-radius: var(--r-s) var(--r-s) 0 0;
+  transition: color var(--dur), border-color var(--dur);
+  white-space: nowrap;
+}
+.edition-btn:hover { color: var(--text); }
+.edition-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+  font-weight: 600;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Page layout — single column on mobile, sidebar on desktop
+   ═══════════════════════════════════════════════════════════════════ */
+.layout {
+  display: block;
+  padding-top: 16px;
+  padding-bottom: 48px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Filter panel — collapses to a drawer on mobile
+   ═══════════════════════════════════════════════════════════════════ */
+.filter-panel {
+  display: none;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-xl);
+  padding: 16px;
+  margin-bottom: 16px;
+}
+.filter-panel.open { display: block; }
+
+.filter-section { margin-bottom: 16px; }
+.filter-section:last-child { margin-bottom: 0; }
+
+.filter-label {
+  font-size: .7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+  color: var(--text-sec);
+  margin-bottom: 8px !important;
+}
+
+/* Category pills */
+.category-pills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cat-pill {
+  padding: 3px 10px;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  font-size: .78rem;
+  font-weight: 500;
+  color: var(--text-sec);
+  background: var(--surface-alt);
+  cursor: pointer;
+  transition: border-color var(--dur), color var(--dur), background var(--dur);
+  white-space: nowrap;
+}
+.cat-pill:hover { border-color: var(--accent); color: var(--accent); }
+.cat-pill.active {
+  background: var(--accent-bg);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Date filters */
+.date-filters { display: flex; flex-direction: column; gap: 2px; }
+
+.date-btn {
+  padding: 4px 6px;
+  border-radius: var(--r-s);
+  font-size: .82rem;
+  color: var(--text-sec);
+  text-align: left;
+  cursor: pointer;
+  transition: background var(--dur), color var(--dur);
+}
+.date-btn:hover { background: var(--surface-alt); color: var(--text); }
+.date-btn.active { color: var(--accent); font-weight: 600; }
+
+/* Run metadata */
+.run-meta {
+  font-size: .72rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+  margin-top: 4px;
+}
+.run-meta p { margin-bottom: 3px !important; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   What's-new zone
+   ═══════════════════════════════════════════════════════════════════ */
+#whats-new { margin-bottom: 24px; }
+
+.wn-bar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--accent-bg);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--r-m);
+  margin-bottom: 12px;
+}
+
+.wn-label {
+  font-size: .7rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--accent);
+  margin-right: 4px;
+}
+
+.sig-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: .75rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.sig-chip.t1  { background: var(--accent-bg); color: var(--accent); border: 1px solid var(--accent); }
+.sig-chip.t2  { background: rgba(99,102,241,.08); color: var(--t2-accent); border: 1px solid var(--t2-accent); }
+.sig-chip.esc { background: rgba(217,119,6,.08); color: var(--sig-escalate); border: 1px solid var(--sig-escalate); }
+.sig-chip.dl  { background: rgba(220,38,38,.08); color: var(--sig-deadline); border: 1px solid var(--sig-deadline); }
+
+/* Editorial block */
+.editorial {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--r-xl);
+  padding: 16px 20px;
+}
+.editorial-theme {
+  font-size: .95rem;
+  font-weight: 700;
+  color: var(--accent);
+  margin-bottom: 8px !important;
+}
+.editorial-note {
+  font-size: .88rem;
+  margin-bottom: 8px !important;
+}
+.editorial-digest {
+  font-size: .83rem;
+  color: var(--text-sec);
+  margin-bottom: 0 !important;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Tier section headings
+   ═══════════════════════════════════════════════════════════════════ */
+.tier-section { margin-bottom: 24px; }
+
+.tier-heading {
+  font-size: .72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .07em;
+  color: var(--text-sec);
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid var(--border);
+}
+.tier1-heading { color: var(--t1-accent); }
+.tier2-heading { color: var(--t2-accent); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Tier 1 — full cards in a responsive grid
+   ═══════════════════════════════════════════════════════════════════ */
+.card-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 1fr;
+}
+
+.full-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--accent);
+  border-radius: var(--r-xl);
+  padding: 18px 20px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: relative;
+}
+
+.new-badge {
+  position: absolute;
+  top: 10px;
+  right: 12px;
+  font-size: .62rem;
+  font-weight: 800;
+  letter-spacing: .07em;
+  color: var(--sig-new);
+  background: rgba(5,150,105,.1);
+  border: 1px solid var(--sig-new);
+  padding: 1px 6px;
+  border-radius: var(--r-s);
+}
+
+.card-title {
+  font-size: .97rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--text);
+  padding-right: 52px; /* room for NEW badge */
+}
+.card-title a { color: inherit; }
+.card-title a:hover { color: var(--accent); text-decoration: none; }
+
+.card-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  font-size: .76rem;
+  color: var(--text-muted);
+}
+.source-tag {
+  font-weight: 600;
+  color: var(--text-sec);
+}
+.score-dot {
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.analysis-block { font-size: .86rem; }
+
+.analysis-label {
+  font-size: .68rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: .05em;
+  color: var(--text-sec);
+  display: block;
+  margin-bottom: 3px;
+}
+
+.so-what, .now-what { margin-bottom: 10px; }
+.now-what { margin-bottom: 0; }
+
+/* Stat chips strip */
+.stat-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.stat-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border: 1px solid var(--border);
+  border-radius: var(--r-s);
+  font-size: .75rem;
+  font-weight: 500;
+  color: var(--text-sec);
+  background: var(--surface-alt);
+}
+.stat-chip.money      { border-color:#10b981; color:#059669; background:rgba(16,185,129,.06); }
+.stat-chip.population { border-color:#6366f1; color:#4f46e5; background:rgba(99,102,241,.06); }
+.stat-chip.deadline   { border-color:var(--sig-deadline); color:var(--sig-deadline); background:rgba(220,38,38,.06); }
+.stat-chip.deadline.imminent { font-weight:700; }
+
+/* Category tags */
+.cat-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.cat-tag {
+  padding: 1px 8px;
+  background: var(--accent-bg);
+  color: var(--accent);
+  border-radius: var(--r-s);
+  font-size: .7rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+.cat-tag:hover { opacity: .75; }
+
+/* Confidence / unverified warning */
+.conf-note {
+  font-size: .76rem;
+  color: var(--sig-unverified);
+  background: rgba(147,51,234,.06);
+  border: 1px solid rgba(147,51,234,.2);
+  border-radius: var(--r-s);
+  padding: 6px 10px;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Tier 2 — compact expandable rows using <details>
+   ═══════════════════════════════════════════════════════════════════ */
+.card-list { display: flex; flex-direction: column; gap: 6px; }
+
+.compact-row {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r-m);
+  overflow: hidden;
+}
+
+.compact-summary {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: start;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+  list-style: none;
+  transition: background var(--dur);
+}
+.compact-summary::-webkit-details-marker { display: none; }
+.compact-summary::marker { display: none; }
+.compact-summary:hover { background: var(--surface-alt); }
+.compact-row[open] .compact-summary { background: var(--surface-alt); }
+
+.compact-left { min-width: 0; }
+
+.compact-title {
+  font-size: .88rem;
+  font-weight: 600;
+  color: var(--text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.compact-meta {
+  font-size: .73rem;
+  color: var(--text-muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.chevron {
+  width: 18px;
+  height: 18px;
+  border: 1.5px solid var(--border);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: .65rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  margin-top: 2px;
+  transition: transform var(--dur);
+}
+.compact-row[open] .chevron { transform: rotate(180deg); }
+
+.compact-detail {
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--border);
+  background: var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.compact-detail .analysis-block { font-size: .84rem; }
+
+.source-link {
+  font-size: .78rem;
+  color: var(--accent);
+  align-self: flex-start;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Tier 3 — collapsed drawer
+   ═══════════════════════════════════════════════════════════════════ */
+.tier3-drawer {
+  border: 1px solid var(--border);
+  border-radius: var(--r-m);
+  overflow: hidden;
+  margin-bottom: 24px;
+}
+
+.tier3-summary {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+  font-size: .83rem;
+  font-weight: 500;
+  color: var(--text-sec);
+  background: var(--surface);
+  list-style: none;
+  transition: background var(--dur);
+}
+.tier3-summary::-webkit-details-marker { display: none; }
+.tier3-summary::marker { display: none; }
+.tier3-summary:hover { background: var(--surface-alt); }
+
+.tier3-count {
+  min-width: 20px;
+  height: 20px;
+  padding: 0 5px;
+  background: var(--border);
+  border-radius: 10px;
+  font-size: .72rem;
+  font-weight: 700;
+  color: var(--text-sec);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.tier3-list {
+  padding: 8px 14px 12px;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.tier3-item {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+}
+.tier3-dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--border);
+  flex-shrink: 0;
+  margin-top: 8px;
+}
+.tier3-item a {
+  font-size: .83rem;
+  color: var(--text-sec);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  min-width: 0;
+}
+.tier3-item a:hover { color: var(--accent); }
+.tier3-item { flex-wrap: wrap; }       /* let the deep-analysis block drop to its own line */
+
+/* ═══════════════════════════════════════════════════════════════════
+   In-depth analysis (per item, all tiers)
+   ═══════════════════════════════════════════════════════════════════ */
+.deep-wrap { width: 100%; margin-top: 8px; }
+
+.deep-btn {
+  font-size: .78rem;
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  padding: 4px 10px;
+  cursor: pointer;
+}
+.deep-btn:hover { border-color: var(--accent); }
+.deep-btn[aria-expanded="true"] { background: var(--accent); color: #fff; }
+
+.deep-panel {
+  margin-top: 8px;
+  padding: 10px 12px;
+  background: var(--surface-alt, var(--surface));
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+}
+.deep-section + .deep-section { margin-top: 10px; }
+.deep-section-label {
+  font-size: .72rem;
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--text-muted);
+  margin: 0 0 3px;
+}
+.deep-text { font-size: .85rem; color: var(--text-sec); margin: 0; }
+.deep-list { font-size: .85rem; color: var(--text-sec); margin: 0; padding-left: 18px; }
+.deep-list li { margin: 2px 0; }
+.deep-empty { font-size: .82rem; color: var(--text-muted); margin: 0; }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Empty state
+   ═══════════════════════════════════════════════════════════════════ */
+.empty-state {
+  text-align: center;
+  padding: 32px 16px;
+  color: var(--text-muted);
+  font-size: .88rem;
+  background: var(--surface);
+  border: 1px dashed var(--border);
+  border-radius: var(--r-m);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Desktop layout — sidebar appears at 900 px
+   ═══════════════════════════════════════════════════════════════════ */
+@media (min-width: 900px) {
+  .filter-toggle { display: none; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: 220px 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+
+  .filter-panel {
+    display: block !important;
+    position: sticky;
+    top: 90px;
+    max-height: calc(100vh - 110px);
+    overflow-y: auto;
+    scrollbar-width: thin;
+    margin-bottom: 0;
+  }
+
+  .card-grid { grid-template-columns: repeat(2, 1fr); }
+
+  .site-title { font-size: 1.05rem; }
+}
+
+@media (min-width: 1120px) {
+  .layout { grid-template-columns: 240px 1fr; }
+}
+</style>
+</head>
+<body>
+  <div id="loading-screen" aria-live="polite" aria-label="Loading">
+    <div class="loading-inner">
+      <div class="loading-spinner"></div>
+      <p>Loading briefing…</p>
+    </div>
+  </div>
+
+  <header class="site-header" id="site-header" hidden>
+    <div class="header-inner container">
+      <div class="header-top">
+        <h1 class="site-title" id="site-title"></h1>
+        <button class="filter-toggle" id="filter-toggle"
+                aria-expanded="false" aria-controls="filter-panel">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M1 3h14v1.5L9 10v5l-2-1V10L1 4.5V3z"/>
+          </svg>
+          Filters
+        </button>
+      </div>
+      <nav class="edition-nav" id="edition-nav" aria-label="Editions"></nav>
+    </div>
+  </header>
+
+  <div class="layout container" id="main-layout" hidden>
+    <aside class="filter-panel" id="filter-panel" aria-label="Filters">
+      <div class="filter-section" id="category-section">
+        <p class="filter-label">Topics</p>
+        <div class="category-pills" id="category-pills"></div>
+      </div>
+      <div class="filter-section">
+        <p class="filter-label">Date</p>
+        <div class="date-filters" id="date-filters"></div>
+      </div>
+      <div class="run-meta" id="run-meta"></div>
+    </aside>
+
+    <main class="content" id="content" role="main">
+      <section aria-label="What's new" id="whats-new"></section>
+
+      <section class="tier-section" id="tier1-section">
+        <h2 class="tier-heading tier1-heading">Essential Reading</h2>
+        <div class="card-grid" id="tier1-cards"></div>
+        <p class="empty-state" id="tier1-empty" hidden>
+          No essential items match the current filters.
+        </p>
+      </section>
+
+      <section class="tier-section" id="tier2-section">
+        <h2 class="tier-heading tier2-heading">Important</h2>
+        <div class="card-list" id="tier2-cards"></div>
+        <p class="empty-state" id="tier2-empty" hidden>
+          No important items match the current filters.
+        </p>
+      </section>
+
+      <details class="tier3-drawer" id="tier3-drawer">
+        <summary class="tier3-summary">
+          Also tracked
+          <span class="tier3-count" id="tier3-count">0</span>
+        </summary>
+        <ul class="tier3-list" id="tier3-list" aria-label="Routine items"></ul>
+      </details>
+    </main>
+  </div>
+
+  <script>window.__DATA_URL = 'run_output.json';</script>
+  <script>'use strict';
+
+/* ═══════════════════════════════════════════════════════════════════
+   State
+   ═══════════════════════════════════════════════════════════════════ */
+const state = {
+  data: null,
+  activeEdition: null,   // edition id string
+  activeCategory: null,  // category string, null = all
+  dateFilter: 'all',     // 'all' | 'week' | 'month'
+  newIds: new Set(),     // item_ids that are new this run
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   Boot
+   ═══════════════════════════════════════════════════════════════════ */
+document.addEventListener('DOMContentLoaded', () => {
+  const url = window.__DATA_URL || 'run_output.json';
+  fetch(url)
+    .then(r => {
+      if (!r.ok) throw new Error('HTTP ' + r.status + ' loading ' + url);
+      return r.json();
+    })
+    .then(data => {
+      state.data = data;
+      boot();
+    })
+    .catch(err => {
+      const scr = document.getElementById('loading-screen');
+      scr.innerHTML =
+        '<div class="loading-inner" style="color:var(--sig-deadline)">' +
+        '<p>Could not load briefing data.</p>' +
+        '<p style="font-size:.8rem;color:var(--text-muted)">' + esc(err.message) + '</p>' +
+        '</div>';
+    });
+});
+
+function boot() {
+  const { data } = state;
+  const wn = data.whats_new || {};
+  state.newIds = new Set([...(wn.new_tier_1 || []), ...(wn.new_tier_2 || [])]);
+
+  const cfg = data.site_config;
+  if (cfg && cfg.editions && cfg.editions.length > 0) {
+    state.activeEdition = cfg.editions[0].id;
+  }
+
+  applyBranding(cfg);
+  buildEditionNav(cfg);
+  buildFilterPanel(cfg);
+  wireFilterToggle();
+  renderRunMeta();
+  render();
+
+  document.getElementById('loading-screen').classList.add('hidden');
+  document.getElementById('site-header').hidden = false;
+  document.getElementById('main-layout').hidden = false;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Branding — accent color and title from data
+   ═══════════════════════════════════════════════════════════════════ */
+function applyBranding(cfg) {
+  if (!cfg) return;
+  document.title = cfg.name + ' — Briefing';
+  document.getElementById('site-title').textContent = cfg.name;
+  if (cfg.accent_color) {
+    const root = document.documentElement;
+    root.style.setProperty('--accent', cfg.accent_color);
+    root.style.setProperty('--accent-dark', shiftLightness(cfg.accent_color, -0.12));
+    root.style.setProperty('--accent-bg', hexAlpha(cfg.accent_color, 0.08));
+    const meta = document.getElementById('meta-theme-color');
+    if (meta) meta.setAttribute('content', cfg.accent_color);
+  }
+}
+
+function shiftLightness(hex, delta) {
+  const r = clamp(parseInt(hex.slice(1, 3), 16) + Math.round(delta * 255));
+  const g = clamp(parseInt(hex.slice(3, 5), 16) + Math.round(delta * 255));
+  const b = clamp(parseInt(hex.slice(5, 7), 16) + Math.round(delta * 255));
+  return '#' + [r, g, b].map(v => v.toString(16).padStart(2, '0')).join('');
+}
+function hexAlpha(hex, a) {
+  const r = parseInt(hex.slice(1, 3), 16);
+  const g = parseInt(hex.slice(3, 5), 16);
+  const b = parseInt(hex.slice(5, 7), 16);
+  return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
+}
+function clamp(v) { return Math.max(0, Math.min(255, v)); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Edition nav
+   ═══════════════════════════════════════════════════════════════════ */
+function buildEditionNav(cfg) {
+  const nav = document.getElementById('edition-nav');
+  if (!cfg || cfg.editions.length < 2) { nav.hidden = true; return; }
+  nav.innerHTML = '';
+  cfg.editions.forEach(ed => {
+    const btn = el('button', 'edition-btn' + (ed.id === state.activeEdition ? ' active' : ''));
+    btn.textContent = ed.label;
+    btn.dataset.id = ed.id;
+    btn.addEventListener('click', () => {
+      state.activeEdition = ed.id;
+      state.activeCategory = null;
+      nav.querySelectorAll('.edition-btn').forEach(b =>
+        b.classList.toggle('active', b.dataset.id === ed.id));
+      refreshCategoryPills(cfg);
+      render();
+    });
+    nav.appendChild(btn);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Filter panel
+   ═══════════════════════════════════════════════════════════════════ */
+function buildFilterPanel(cfg) {
+  refreshCategoryPills(cfg);
+  buildDateButtons();
+}
+
+function refreshCategoryPills(cfg) {
+  const wrap = document.getElementById('category-pills');
+  const sec = document.getElementById('category-section');
+  wrap.innerHTML = '';
+  if (!cfg) return;
+
+  const edition = cfg.editions.find(e => e.id === state.activeEdition);
+  if (!edition || !edition.categories.length) {
+    sec.hidden = true;
+    return;
+  }
+  sec.hidden = false;
+
+  // "All" pill
+  wrap.appendChild(makePill('All topics', null));
+  edition.categories.forEach(cat => wrap.appendChild(makePill(cat, cat)));
+}
+
+function makePill(label, value) {
+  const btn = el('button', 'cat-pill' + (state.activeCategory === value ? ' active' : ''));
+  btn.textContent = label;
+  btn.addEventListener('click', () => {
+    state.activeCategory = (state.activeCategory === value) ? null : value;
+    syncPillStates(value);
+    render();
+  });
+  return btn;
+}
+
+function syncPillStates(clicked) {
+  document.querySelectorAll('.cat-pill').forEach(p => {
+    const isAll = p.textContent === 'All topics';
+    p.classList.toggle('active', isAll ? state.activeCategory === null : p.textContent === state.activeCategory);
+  });
+}
+
+function buildDateButtons() {
+  const wrap = document.getElementById('date-filters');
+  [['All dates', 'all'], ['Past 7 days', 'week'], ['This month', 'month']].forEach(([label, val]) => {
+    const btn = el('button', 'date-btn' + (state.dateFilter === val ? ' active' : ''));
+    btn.textContent = label;
+    btn.addEventListener('click', () => {
+      state.dateFilter = val;
+      document.querySelectorAll('.date-btn').forEach(b =>
+        b.classList.toggle('active', b.textContent === label));
+      render();
+    });
+    wrap.appendChild(btn);
+  });
+}
+
+function wireFilterToggle() {
+  const btn = document.getElementById('filter-toggle');
+  const panel = document.getElementById('filter-panel');
+  btn.addEventListener('click', () => {
+    const open = panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Filtering
+   ═══════════════════════════════════════════════════════════════════ */
+function filteredItems() {
+  const now = Date.now();
+  const weekMs = 7 * 86400e3;
+  return (state.data.items || []).filter(item => {
+    // Edition: must have non-zero relevance in the active edition
+    if (state.activeEdition) {
+      const ea = item.per_edition && item.per_edition[state.activeEdition];
+      if (!ea || ea.relevance_score === 0) return false;
+    }
+    // Category
+    if (state.activeCategory) {
+      const ea = item.per_edition && item.per_edition[state.activeEdition];
+      if (!ea || !ea.categories.includes(state.activeCategory)) return false;
+    }
+    // Date
+    if (state.dateFilter !== 'all') {
+      const ts = new Date(item.published_at || item.collected_at).getTime();
+      if (state.dateFilter === 'week' && now - ts > weekMs) return false;
+      if (state.dateFilter === 'month') {
+        const d = new Date(ts);
+        const today = new Date();
+        if (d.getFullYear() !== today.getFullYear() || d.getMonth() !== today.getMonth()) return false;
+      }
+    }
+    return true;
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Main render
+   ═══════════════════════════════════════════════════════════════════ */
+function render() {
+  const items = filteredItems();
+  const t1 = items.filter(i => i.tier === 1);
+  const t2 = items.filter(i => i.tier === 2);
+  const t3 = items.filter(i => i.tier === 3);
+
+  renderWhatsNew(items);
+  renderTier1(t1);
+  renderTier2(t2);
+  renderTier3(t3);
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   What's-new zone
+   ═══════════════════════════════════════════════════════════════════ */
+function renderWhatsNew(visible) {
+  const sec = document.getElementById('whats-new');
+  sec.innerHTML = '';
+  const wn = state.data.whats_new || {};
+  const editorial = state.data.editorial;
+  const visSet = new Set(visible.map(i => i.item_id));
+
+  const n1    = (wn.new_tier_1  || []).filter(id => visSet.has(id)).length;
+  const n2    = (wn.new_tier_2  || []).filter(id => visSet.has(id)).length;
+  const nEsc  = (wn.escalated   || []).filter(e  => visSet.has(e.item_id)).length;
+  const dl    = (wn.deadline_imminent || []).filter(id => visSet.has(id)).length;
+
+  const chips = [];
+  if (n1)   chips.push('<span class="sig-chip t1">▲ ' + n1 + ' new essential</span>');
+  if (n2)   chips.push('<span class="sig-chip t2">+ ' + n2 + ' new important</span>');
+  if (nEsc) chips.push('<span class="sig-chip esc">↑ ' + nEsc + ' escalated</span>');
+  if (dl)   chips.push('<span class="sig-chip dl">⏰ ' + dl + ' deadline soon</span>');
+
+  if (chips.length) {
+    const bar = el('div', 'wn-bar');
+    bar.innerHTML = '<span class="wn-label">What\'s new</span>' + chips.join('');
+    sec.appendChild(bar);
+  }
+
+  if (editorial) {
+    const card = el('div', 'editorial');
+    card.innerHTML =
+      '<p class="editorial-theme">' + esc(editorial.theme_of_week) + '</p>' +
+      '<p class="editorial-note">' + esc(editorial.editors_note) + '</p>' +
+      '<p class="editorial-digest">' + esc(editorial.whats_new_digest) + '</p>';
+    sec.appendChild(card);
+  }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Tier 1 — full cards
+   ═══════════════════════════════════════════════════════════════════ */
+function renderTier1(items) {
+  const grid = document.getElementById('tier1-cards');
+  const empty = document.getElementById('tier1-empty');
+  grid.innerHTML = '';
+  empty.hidden = items.length > 0;
+  items.forEach(item => grid.appendChild(fullCard(item)));
+}
+
+function fullCard(item) {
+  const ea = editionAnalysis(item);
+  const isNew = state.newIds.has(item.item_id);
+  const div = el('div', 'full-card');
+
+  // NEW badge
+  if (isNew) {
+    const badge = el('span', 'new-badge');
+    badge.textContent = 'NEW';
+    div.appendChild(badge);
+  }
+
+  // Title
+  const titleEl = el('div', 'card-title');
+  const link = el('a');
+  link.href = item.url;
+  link.target = '_blank';
+  link.rel = 'noopener';
+  link.textContent = item.title;
+  titleEl.appendChild(link);
+  div.appendChild(titleEl);
+
+  // Meta row
+  const meta = el('div', 'card-meta');
+  const src = el('span', 'source-tag');
+  src.textContent = item.source_id;
+  meta.appendChild(src);
+  if (item.published_at) {
+    const dt = el('span');
+    dt.textContent = fmtDate(item.published_at);
+    meta.appendChild(dt);
+  }
+  if (ea) {
+    const sc = el('span', 'score-dot');
+    sc.textContent = ea.relevance_score;
+    sc.style.color = ea.relevance_score >= 80 ? 'var(--t1-accent)' : 'var(--t2-accent)';
+    meta.appendChild(sc);
+  }
+  div.appendChild(meta);
+
+  // Analysis
+  if (ea) {
+    const ab = el('div', 'analysis-block');
+    ab.innerHTML =
+      '<div class="so-what">' +
+        '<span class="analysis-label">Why it matters</span>' +
+        esc(ea.so_what) +
+      '</div>' +
+      '<div class="now-what">' +
+        '<span class="analysis-label">What to do</span>' +
+        esc(ea.now_what) +
+      '</div>';
+    div.appendChild(ab);
+  }
+
+  // Stat chips
+  const chips = statChips(item);
+  if (chips) div.appendChild(chips);
+
+  // Category tags
+  if (ea && ea.categories.length) {
+    const tags = el('div', 'cat-tags');
+    ea.categories.forEach(cat => {
+      const t = el('span', 'cat-tag');
+      t.textContent = cat;
+      t.addEventListener('click', () => { state.activeCategory = cat; syncPillStates(cat); render(); });
+      tags.appendChild(t);
+    });
+    div.appendChild(tags);
+  }
+
+  // Confidence note
+  if (item.confidence_note) {
+    const note = el('div', 'conf-note');
+    note.textContent = '⚠ ' + item.confidence_note;
+    div.appendChild(note);
+  }
+
+  div.appendChild(deepAnalysisBlock(item));
+  return div;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Tier 2 — compact expandable rows
+   ═══════════════════════════════════════════════════════════════════ */
+function renderTier2(items) {
+  const list = document.getElementById('tier2-cards');
+  const empty = document.getElementById('tier2-empty');
+  list.innerHTML = '';
+  empty.hidden = items.length > 0;
+  items.forEach(item => list.appendChild(compactRow(item)));
+}
+
+function compactRow(item) {
+  const ea = editionAnalysis(item);
+  const isNew = state.newIds.has(item.item_id);
+  const details = el('details', 'compact-row');
+
+  // Summary (always visible)
+  const summary = el('summary', 'compact-summary');
+  const left = el('div', 'compact-left');
+
+  const title = el('div', 'compact-title');
+  title.textContent = item.title;
+  left.appendChild(title);
+
+  const meta = el('div', 'compact-meta');
+  const src = el('span', 'source-tag');
+  src.textContent = item.source_id;
+  meta.appendChild(src);
+  if (item.published_at) {
+    const dt = el('span');
+    dt.textContent = fmtDate(item.published_at);
+    meta.appendChild(dt);
+  }
+  if (isNew) {
+    const nb = el('span');
+    nb.textContent = 'New';
+    nb.style.cssText = 'color:var(--sig-new);font-weight:700';
+    meta.appendChild(nb);
+  }
+  if (ea) {
+    const sc = el('span', 'score-dot');
+    sc.textContent = ea.relevance_score;
+    sc.style.color = 'var(--t2-accent)';
+    meta.appendChild(sc);
+  }
+  left.appendChild(meta);
+  summary.appendChild(left);
+
+  const chev = el('span', 'chevron');
+  chev.textContent = '▾';
+  chev.setAttribute('aria-hidden', 'true');
+  summary.appendChild(chev);
+  details.appendChild(summary);
+
+  // Detail (shown when open)
+  if (ea) {
+    const detail = el('div', 'compact-detail');
+
+    const ab = el('div', 'analysis-block');
+    ab.innerHTML =
+      '<div class="so-what">' +
+        '<span class="analysis-label">Why it matters</span>' +
+        esc(ea.so_what) +
+      '</div>' +
+      '<div class="now-what">' +
+        '<span class="analysis-label">What to do</span>' +
+        esc(ea.now_what) +
+      '</div>';
+    detail.appendChild(ab);
+
+    const chips = statChips(item);
+    if (chips) detail.appendChild(chips);
+
+    if (ea.categories.length) {
+      const tags = el('div', 'cat-tags');
+      ea.categories.forEach(cat => {
+        const t = el('span', 'cat-tag');
+        t.textContent = cat;
+        t.addEventListener('click', () => { state.activeCategory = cat; syncPillStates(cat); render(); });
+        tags.appendChild(t);
+      });
+      detail.appendChild(tags);
+    }
+
+    if (item.confidence_note) {
+      const note = el('div', 'conf-note');
+      note.textContent = '⚠ ' + item.confidence_note;
+      detail.appendChild(note);
+    }
+
+    const srcLink = el('a', 'source-link');
+    srcLink.href = item.url;
+    srcLink.target = '_blank';
+    srcLink.rel = 'noopener';
+    srcLink.textContent = 'Read source ↗';
+    detail.appendChild(srcLink);
+
+    details.appendChild(detail);
+  }
+
+  details.appendChild(deepAnalysisBlock(item));
+  return details;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Tier 3 — collapsed drawer
+   ═══════════════════════════════════════════════════════════════════ */
+function renderTier3(items) {
+  const list   = document.getElementById('tier3-list');
+  const count  = document.getElementById('tier3-count');
+  const drawer = document.getElementById('tier3-drawer');
+  list.innerHTML = '';
+  count.textContent = items.length;
+  drawer.style.display = items.length === 0 ? 'none' : '';
+  items.forEach(item => {
+    const li = el('li', 'tier3-item');
+    const dot = el('span', 'tier3-dot');
+    const a = el('a');
+    a.href = item.url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    a.title = item.title;
+    a.textContent = item.title;
+    li.appendChild(dot);
+    li.appendChild(a);
+    li.appendChild(deepAnalysisBlock(item));
+    list.appendChild(li);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   In-depth analysis
+   ═══════════════════════════════════════════════════════════════════ */
+
+// ── Live-call seam ───────────────────────────────────────────────────
+// Returns a Promise of the deep-analysis payload for one item. Today it
+// resolves with data precomputed at pipeline time and embedded in the loaded
+// artifact. To move deep analysis to an on-demand backend later, change ONLY
+// this function body — e.g.
+//     return fetch('/api/deep/' + encodeURIComponent(itemId)).then(r => r.json());
+// Every caller already awaits the returned promise and renders from its result,
+// so no other frontend code needs to change.
+function getDeepAnalysis(itemId) {
+  const item = (state.data.items || []).find(i => i.item_id === itemId);
+  return Promise.resolve((item && item.deep_analysis) || null);
+}
+
+// Button + lazily-populated panel, shared by every tier's card renderer.
+function deepAnalysisBlock(item) {
+  const wrap = el('div', 'deep-wrap');
+
+  const btn = el('button', 'deep-btn');
+  btn.textContent = 'In-depth analysis';
+  btn.setAttribute('aria-expanded', 'false');
+
+  const panel = el('div', 'deep-panel');
+  panel.hidden = true;
+
+  btn.addEventListener('click', () => {
+    const willOpen = panel.hidden;
+    panel.hidden = !willOpen;
+    btn.setAttribute('aria-expanded', String(willOpen));
+    // Populate once, on first open. getDeepAnalysis is the swap point for a
+    // future remote call; we always treat its result as a promise.
+    if (willOpen && !panel.dataset.loaded) {
+      panel.dataset.loaded = '1';
+      getDeepAnalysis(item.item_id).then(da => renderDeepSections(panel, da));
+    }
+  });
+
+  wrap.appendChild(btn);
+  wrap.appendChild(panel);
+  return wrap;
+}
+
+function renderDeepSections(panel, da) {
+  panel.innerHTML = '';
+  if (!da || !da.sections) {
+    const empty = el('p', 'deep-empty');
+    empty.textContent = 'No in-depth analysis available for this item.';
+    panel.appendChild(empty);
+    return;
+  }
+
+  // Section order and labels come from site_config (presentation layer);
+  // fall back to the data's own keys if config metadata is absent.
+  const cfg = state.data.site_config;
+  const meta = (cfg && cfg.deep_analysis_sections) ||
+    Object.keys(da.sections).map(id => ({ id, label: id }));
+
+  meta.forEach(m => {
+    const value = da.sections[m.id];
+    if (value == null) return;
+    const sec = el('div', 'deep-section');
+    const h = el('h4', 'deep-section-label');
+    h.textContent = m.label;
+    sec.appendChild(h);
+    if (Array.isArray(value)) {
+      const ul = el('ul', 'deep-list');
+      value.forEach(v => { const li = el('li'); li.textContent = v; ul.appendChild(li); });
+      sec.appendChild(ul);
+    } else {
+      const p = el('p', 'deep-text');
+      p.textContent = value;
+      sec.appendChild(p);
+    }
+    panel.appendChild(sec);
+  });
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Run meta
+   ═══════════════════════════════════════════════════════════════════ */
+function renderRunMeta() {
+  const wrap = document.getElementById('run-meta');
+  const m = state.data.meta;
+  if (!m) return;
+  const lines = [];
+  if (m.run_at) lines.push('Run: ' + fmtDate(m.run_at));
+  if (m.items_analyzed != null) lines.push(m.items_analyzed + ' items analyzed');
+  if (m.estimated_cost_usd != null) lines.push('Cost: $' + m.estimated_cost_usd.toFixed(4));
+  if (m.engine_version) lines.push('Engine v' + m.engine_version);
+  wrap.innerHTML = lines.map(l => '<p>' + esc(l) + '</p>').join('');
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Stat chips
+   ═══════════════════════════════════════════════════════════════════ */
+function statChips(item) {
+  const chips = [];
+
+  if (item.dollar_amount) {
+    const txt = item.dollar_amount.value != null
+      ? fmtMoney(item.dollar_amount.value, item.dollar_amount.currency)
+      : item.dollar_amount.raw_text;
+    const c = el('span', 'stat-chip money');
+    c.textContent = '💰 ' + txt;
+    chips.push(c);
+  }
+
+  if (item.affected_population) {
+    const txt = item.affected_population.value != null
+      ? fmtPop(item.affected_population.value, item.affected_population.unit)
+      : item.affected_population.raw_text;
+    const c = el('span', 'stat-chip population');
+    c.textContent = '👥 ' + txt;
+    chips.push(c);
+  }
+
+  if (item.action_deadline) {
+    const imminent = deadlineImminent(item.action_deadline);
+    const c = el('span', 'stat-chip deadline' + (imminent ? ' imminent' : ''));
+    c.textContent = '📅 ' + fmtDeadline(item.action_deadline);
+    chips.push(c);
+  }
+
+  if (!chips.length) return null;
+  const wrap = el('div', 'stat-chips');
+  chips.forEach(c => wrap.appendChild(c));
+  return wrap;
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Helpers
+   ═══════════════════════════════════════════════════════════════════ */
+function editionAnalysis(item) {
+  if (!state.activeEdition || !item.per_edition) return null;
+  return item.per_edition[state.activeEdition] || null;
+}
+
+function deadlineImminent(dateStr) {
+  const ms = new Date(dateStr + 'T00:00:00').getTime() - Date.now();
+  return ms >= 0 && ms <= 7 * 86400e3;
+}
+
+function fmtDate(iso) {
+  if (!iso) return '';
+  const d = new Date(iso);
+  const diffDays = Math.floor((Date.now() - d.getTime()) / 86400e3);
+  if (diffDays === 0) return 'Today';
+  if (diffDays === 1) return 'Yesterday';
+  if (diffDays < 7)  return diffDays + 'd ago';
+  return d.toLocaleDateString('en-US', {
+    month: 'short', day: 'numeric',
+    year: diffDays > 365 ? 'numeric' : undefined,
+  });
+}
+
+function fmtDeadline(dateStr) {
+  const d = new Date(dateStr + 'T00:00:00');
+  const diff = Math.ceil((d.getTime() - Date.now()) / 86400e3);
+  if (diff < 0)  return 'Due ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) + ' (passed)';
+  if (diff === 0) return 'Due today';
+  if (diff === 1) return 'Due tomorrow';
+  if (diff <= 7)  return 'Due in ' + diff + ' days';
+  return 'Due ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function fmtMoney(v, currency) {
+  const sym = currency === 'EUR' ? '€' : currency === 'GBP' ? '£' : '$';
+  if (v >= 1e12) return sym + (v / 1e12).toFixed(1) + 'T';
+  if (v >= 1e9)  return sym + (v / 1e9).toFixed(1) + 'B';
+  if (v >= 1e6)  return sym + (v / 1e6).toFixed(1) + 'M';
+  if (v >= 1e3)  return sym + (v / 1e3).toFixed(0) + 'K';
+  return sym + v.toFixed(0);
+}
+
+function fmtPop(v, unit) {
+  const s = v >= 1e6 ? (v / 1e6).toFixed(1) + 'M'
+          : v >= 1e3 ? (v / 1e3).toFixed(0) + 'K'
+          : String(v);
+  return unit ? s + ' ' + unit : s;
+}
+
+// DOM element factory
+function el(tag, className) {
+  const e = document.createElement(tag);
+  if (className) e.className = className;
+  return e;
+}
+
+// Minimal HTML escaping — use for all untrusted strings inserted as innerHTML
+function esc(s) {
+  if (s == null) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+</script>
+</body>
+</html>

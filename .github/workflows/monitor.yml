@@ -1,0 +1,132 @@
+name: Monitor Pipeline
+
+on:
+  schedule:
+    # Runs Monday at 07:00 UTC.
+    # To give each client its own schedule, replace the matrix with separate jobs
+    # and set a different cron per job.
+    - cron: "0 7 * * 1"
+  workflow_dispatch:    # manual trigger from the Actions tab
+  push:                 # run the test gate on every code change
+  pull_request:
+
+permissions:
+  contents: write       # required to commit artifacts back to the repo
+
+jobs:
+  # ── Test gate ──────────────────────────────────────────────────────────
+  # Runs on every event. The pipeline job depends on this, so a broken
+  # frontend (e.g. items silently dropping out of tier buckets) blocks the
+  # scrape-and-commit instead of publishing a broken dashboard with a green
+  # build. Node is required: the frontend smoke tests execute the real
+  # app.js, and CI_REQUIRE_FRONTEND=1 turns a missing node into a failure
+  # rather than a silent skip.
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Set up Node 20
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install engine
+        run: pip install -e ".[dev]"
+
+      - name: Run test suite (frontend smoke tests enforced)
+        run: pytest -q
+        env:
+          CI_REQUIRE_FRONTEND: "1"
+
+  run:
+    # Only scrape and commit on the schedule or a manual dispatch — never on
+    # ordinary push/PR events, which exist here to exercise the test gate.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+    needs: test
+    strategy:
+      fail-fast: false  # one client's failure does not cancel the others
+      matrix:
+        client:
+          - aerospace
+          - healthcare-regulatory
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install engine
+        run: pip install -e ".[dev]"
+
+      # ── Run pipeline ─────────────────────────────────────────────────
+      # The pipeline exits with code 1 on any failure (missing env vars,
+      # network errors that lose all sources, schema validation failure).
+      # GitHub Actions treats non-zero exit codes as step failures, so this
+      # step will fail loudly without any extra shell error-trapping needed.
+      - name: Run pipeline – ${{ matrix.client }}
+        run: |
+          python -m monitor_engine \
+            --config "clients/${{ matrix.client }}/config.json" \
+            --output "clients/${{ matrix.client }}/artifacts" \
+            --archive "clients/${{ matrix.client }}/artifacts/archive.json"
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Add client-specific API keys here, matching the auth_env_var
+          # values declared in each source in config.json.
+          # Example:
+          #   SAM_GOV_API_KEY: ${{ secrets.SAM_GOV_API_KEY }}
+          #   FDA_API_KEY: ${{ secrets.FDA_API_KEY }}
+
+      # ── Belt-and-suspenders validation ──────────────────────────────
+      # The pipeline already validates its own output, but this step
+      # re-reads the written artifact independently, catching any file-
+      # system write error that might slip through.
+      - name: Validate artifact – ${{ matrix.client }}
+        run: |
+          python -c "
+          import sys
+          from pathlib import Path
+          from monitor_engine.models import RunOutput
+          p = Path('clients/${{ matrix.client }}/artifacts/run_output.json')
+          if not p.exists():
+              print('[FAIL] artifact not found: ' + str(p), file=sys.stderr)
+              sys.exit(1)
+          try:
+              RunOutput.model_validate_json(p.read_text())
+              print('[OK] ' + str(p))
+          except Exception as exc:
+              print('[FAIL] ' + str(p) + ': ' + str(exc), file=sys.stderr)
+              sys.exit(1)
+          "
+
+      # ── Commit artifacts back to the repo ───────────────────────────
+      # The static site (index.html + run_output.json) is the output
+      # contract.  archive.json is the rolling history that powers
+      # what's-new diffs on future runs.  All three are committed.
+      - name: Commit artifacts – ${{ matrix.client }}
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add "clients/${{ matrix.client }}/artifacts/"
+          # Only commit if something actually changed.
+          git diff --staged --quiet \
+            && echo "No changes to commit for ${{ matrix.client }}" \
+            || git commit -m "chore: ${{ matrix.client }} artifacts $(date -u +%Y-%m-%dT%H:%M:%SZ) [skip ci]"
+          git push

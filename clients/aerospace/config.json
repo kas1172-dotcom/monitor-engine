@@ -1,0 +1,187 @@
+{
+  "branding": {
+    "name": "Aerospace & Defense Monitor",
+    "accent_color": "#1B4F8A"
+  },
+  "editions": [
+    {
+      "id": "bd",
+      "label": "Business Development",
+      "audience_description": "BD managers and capture teams tracking contract opportunities, awards, and procurement activity",
+      "analysis_instructions": "Prioritise contract awards, solicitations, RFPs, and source selection decisions. Flag dollar values and performance periods. Note any sole-source justifications, set-aside status, or protest activity that could create an opening or risk.",
+      "categories": [
+        "Contract Award",
+        "Solicitation / RFP",
+        "Budget & Appropriations",
+        "Industry News",
+        "Policy Change"
+      ]
+    },
+    {
+      "id": "policy",
+      "label": "Policy & Regulatory",
+      "audience_description": "Government relations, compliance, and export-control teams tracking regulatory and legislative developments",
+      "analysis_instructions": "Prioritise NDAA provisions, DFARS/FAR rule changes, export-control actions (EAR, ITAR), Congressional budget markups, and DoD strategy documents. Note effective dates and comment deadlines.",
+      "categories": [
+        "Regulation / Rule",
+        "Legislation",
+        "Export Controls",
+        "Policy Guidance",
+        "International / FMS"
+      ]
+    },
+    {
+      "id": "exec",
+      "label": "Executive Brief",
+      "audience_description": "Senior leadership seeking a strategic view of the week's most significant developments",
+      "analysis_instructions": "Surface only the highest-signal items: major program decisions, significant funding changes, geopolitical developments with direct industrial impact, and emerging competitive threats or opportunities. Skip routine administrative notices.",
+      "categories": [
+        "Program Decision",
+        "Budget & Appropriations",
+        "International / FMS",
+        "Industry News"
+      ]
+    }
+  ],
+  "scoring_rubric": {
+    "thresholds": {
+      "tier_1_min": 80,
+      "tier_2_min": 50,
+      "tier_3_min": 20
+    },
+    "never_discard": [
+      "stop-work order",
+      "stop work",
+      "termination for default",
+      "debarment",
+      "suspension",
+      "fraud",
+      "bribery",
+      "FCPA",
+      "whistleblower",
+      "False Claims Act",
+      "program cancellation",
+      "continuing resolution"
+    ]
+  },
+  "sources": [
+    {
+      "type": "json_api",
+      "id": "federal-register-dod",
+      "name": "Federal Register – Dept. of Defense",
+      "url": "https://www.federalregister.gov/api/v1/articles.json?agencies[]=defense-department&order=newest&per_page=20",
+      "item_path": "$.results",
+      "field_map": {
+        "title": "title",
+        "url": "html_url",
+        "published_at": "publication_date",
+        "summary": "abstract"
+      }
+    },
+    {
+      "type": "json_api",
+      "id": "federal-register-usaf",
+      "name": "Federal Register – Dept. of the Air Force",
+      "url": "https://www.federalregister.gov/api/v1/articles.json?agencies[]=air-force-department&order=newest&per_page=10",
+      "item_path": "$.results",
+      "field_map": {
+        "title": "title",
+        "url": "html_url",
+        "published_at": "publication_date",
+        "summary": "abstract"
+      }
+    },
+    {
+      "type": "rss",
+      "id": "spacenews-rss",
+      "name": "SpaceNews",
+      "url": "https://spacenews.com/feed/"
+    }
+  ],
+  "keyword_prefilter": {
+    "include": [
+      "contract",
+      "award",
+      "solicitation",
+      "procurement",
+      "defense",
+      "military",
+      "space",
+      "satellite",
+      "aerospace",
+      "DoD",
+      "Pentagon",
+      "NDAA",
+      "budget",
+      "acquisition",
+      "Air Force",
+      "Navy",
+      "Army",
+      "missile",
+      "munition",
+      "radar",
+      "sensor",
+      "propulsion",
+      "launch",
+      "orbit",
+      "F-35",
+      "export control",
+      "ITAR",
+      "EAR",
+      "debarment",
+      "suspension",
+      "protest",
+      "DARPA",
+      "SOCOM",
+      "NORTHCOM",
+      "INDOPACOM",
+      "continuing resolution",
+      "program of record",
+      "joint venture",
+      "SBIR",
+      "STTR"
+    ],
+    "exclude": [
+      "obituary",
+      "sports",
+      "entertainment"
+    ]
+  },
+  "deep_analysis": {
+    "instruction": "Produce a concise but substantive briefing for a defense/aerospace business and policy audience. Stay grounded in the item; flag uncertainty rather than speculating.",
+    "sections": [
+      {
+        "id": "background",
+        "label": "Background",
+        "kind": "text",
+        "instruction": "Two to three sentences situating this development: the program, contract, or policy thread it belongs to and what preceded it."
+      },
+      {
+        "id": "key_stakeholders",
+        "label": "Key stakeholders",
+        "kind": "list",
+        "instruction": "The agencies, primes, subcontractors, congressional actors, or allied governments with a material interest. Name them only if supported by the item."
+      },
+      {
+        "id": "scenarios",
+        "label": "Scenarios to watch",
+        "kind": "list",
+        "instruction": "Two or three plausible ways this could develop over the next 6–18 months, each phrased as a short conditional."
+      },
+      {
+        "id": "recommended_actions",
+        "label": "Recommended actions",
+        "kind": "list",
+        "instruction": "Concrete next steps a BD, capture, or policy team should consider this week."
+      }
+    ]
+  },
+  "cadence": {
+    "cron": "0 7 * * 1",
+    "timezone": "America/New_York"
+  },
+  "cost_caps": {
+    "max_items_per_run": 60,
+    "max_output_tokens_per_run": 40000
+  }
+}

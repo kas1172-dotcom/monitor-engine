@@ -1,0 +1,1715 @@
+{
+  "runs": [
+    {
+      "run_id": "20260612T180804-a7a1",
+      "run_at": "2026-06-12T18:08:04.690040Z",
+      "items": []
+    },
+    {
+      "run_id": "20260612T181159-c84b",
+      "run_at": "2026-06-12T18:11:59.089380Z",
+      "items": []
+    },
+    {
+      "run_id": "20260612T214301-bafd",
+      "run_at": "2026-06-12T21:43:01.427298Z",
+      "items": [
+        {
+          "item_id": "4dd6cd7d81be800e",
+          "title": "Large Vertical Shaft Engines From China; Scheduling of Expedited Five-Year Reviews",
+          "url": "https://www.federalregister.gov/documents/2026/06/12/2026-11913/large-vertical-shaft-engines-from-china-scheduling-of-expedited-five-year-reviews",
+          "source_id": "Federal Register – Dept. of the Air Force",
+          "published_at": "2026-06-12T00:00:00Z",
+          "collected_at": "2026-06-12T21:41:35.991338Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 35,
+              "so_what": "Antidumping and countervailing duty review on Chinese large vertical shaft engines may affect competitive pricing and sourcing strategies for companies in this sector.",
+              "now_what": "Companies sourcing or competing in the large vertical shaft engine market should monitor the expedited five-year review outcome and prepare for potential tariff changes.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 65,
+              "so_what": "This trade enforcement action under the Tariff Act of 1930 represents significant regulatory activity affecting U.S. import duties on Chinese engines; the expedited review schedule accelerates the policy timeline.",
+              "now_what": "Track the review schedule and any interim determinations; assess compliance implications if duties are revoked or maintained, and prepare comments if a public comment period is announced.",
+              "categories": [
+                "Regulation / Rule",
+                "Export Controls"
+              ]
+            },
+            "exec": {
+              "relevance_score": 48,
+              "so_what": "A scheduled trade review addressing antidumping duties on Chinese engines signals ongoing U.S. trade enforcement posture and potential cost/supply impacts for industrial equipment.",
+              "now_what": "Monitor outcome for competitive and sourcing implications; escalate if result materially affects company procurement or export strategy.",
+              "categories": [
+                "Industry News",
+                "International / FMS"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 65
+        },
+        {
+          "item_id": "ced4f9c43beed23e",
+          "title": "SpaceX shares rise nearly 20% in historic IPO",
+          "url": "https://spacenews.com/spacex-shares-rise-nearly-20-in-historic-ipo/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T21:06:39Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 45,
+              "so_what": "SpaceX IPO represents a major funding event for a key aerospace/defense prime contractor and signals market confidence in commercial space sector; relevant to competitive landscape and potential teaming or subcontracting opportunities.",
+              "now_what": "BD teams should assess implications for capture strategy on space-related opportunities and consider SpaceX as a potential partner, prime, or competitor on government programs.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 25,
+              "so_what": "SpaceX IPO reflects strong commercial space market fundamentals but has limited direct regulatory or export-control implications.",
+              "now_what": "Monitor if company pursues new export-controlled business lines or government contracts following IPO.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "exec": {
+              "relevance_score": 72,
+              "so_what": "SpaceX IPO is a landmark event signaling strong investor confidence in the commercial space sector and reinforcing SpaceX's position as a dominant force in launches, satellite, and space infrastructure—directly impacting industrial competitive dynamics and government contracting strategy.",
+              "now_what": "Senior leadership should assess strategic implications for company's space-related business lines, consider SpaceX partnerships or competitive positioning, and evaluate impact on DoD/USG space program capture and pricing.",
+              "categories": [
+                "Industry News",
+                "Program Decision"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 72
+        },
+        {
+          "item_id": "d6aab4e447e947b6",
+          "title": "Avanti trims GEO exposure with Hylas-3 sale",
+          "url": "https://spacenews.com/avanti-trims-geo-exposure-with-hylas-3-sale/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T20:43:16Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 35,
+              "so_what": "Avanti's asset sale reflects consolidation in the commercial satellite sector and potential changes in competitive dynamics for GEO services. This signals financial restructuring that could affect future contract positioning or capabilities.",
+              "now_what": "Monitor Avanti's post-sale strategy and assess whether divestiture impacts their ability to compete on government or commercial contracts requiring GEO capacity.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 15,
+              "so_what": "Corporate restructuring in the satellite sector has minimal direct regulatory impact.",
+              "now_what": "No immediate policy action required; note for general market awareness.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 25,
+              "so_what": "Asset sales in commercial space reflect broader market consolidation but lack strategic significance unless tied to major program changes or geopolitical factors.",
+              "now_what": "Monitor for any impact on U.S. government satellite service providers or allied nations' space infrastructure.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 35
+        },
+        {
+          "item_id": "84d37012420165e2",
+          "title": "Astronomers fear orbital data centers will interfere with observations",
+          "url": "https://spacenews.com/astronomers-fear-orbital-data-centers-will-interfere-with-observations/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T19:49:45Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 55,
+              "so_what": "Orbital data center launches may create new government procurement opportunities for satellite operators, ground terminals, and integration services. Astronomer concerns could influence regulatory requirements affecting contract specifications.",
+              "now_what": "Track emerging RFPs for orbital data center infrastructure and monitor any government guidance on spectrum/orbital coordination requirements that could shape future solicitations.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 70,
+              "so_what": "Astronomer interference concerns may drive FCC rulemakings, NOAA coordination requirements, or new DoD/National Reconnaissance Office policies on orbital object spacing and spectrum management. This could affect future satellite contract compliance obligations.",
+              "now_what": "Monitor FCC docket activity and DoD space operations policy for emerging orbital coordination standards; assess potential DFARS or other regulatory changes affecting satellite constellation operators.",
+              "categories": [
+                "Regulation / Rule",
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 45,
+              "so_what": "Orbital data center interference issues represent an emerging regulatory challenge that could constrain commercial space growth and government decision-making on next-generation satellite architectures.",
+              "now_what": "Track regulatory developments and assess implications for future government space architecture and commercial partnership strategies.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 70
+        },
+        {
+          "item_id": "8efae8c8607aae89",
+          "title": "All in on AI at Astra",
+          "url": "https://spacenews.com/all-in-on-ai-at-astra/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T13:00:00Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 30,
+              "so_what": "Astra's AI strategy and workforce restructuring reflect broader industry trends but lack immediate contract-relevant information unless tied to government programs or specific capabilities.",
+              "now_what": "Monitor Astra's government contract pipeline and any changes in their technical offerings or performance on existing awards.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 10,
+              "so_what": "Corporate strategy and workforce decisions have no direct policy or regulatory implications.",
+              "now_what": "No action required.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 20,
+              "so_what": "Astra's AI focus may signal industry-wide strategic shifts but lacks immediate geopolitical or competitive threat significance.",
+              "now_what": "Monitor for potential competitive threats if Astra develops novel government-relevant space capabilities.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 30
+        },
+        {
+          "item_id": "43e07beaf275608b",
+          "title": "H3 successfully returns to flight",
+          "url": "https://spacenews.com/h3-successfully-returns-to-flight/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T12:15:09Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 40,
+              "so_what": "Japan's H3 return to flight demonstrates international launch capacity recovery, which could affect demand and pricing for U.S. commercial and government launch services. Smallsat deployment shows continued market activity.",
+              "now_what": "Assess market impact on U.S. launch procurement and monitor if Japanese launch services become relevant to future government or allied-nation solicitations.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 35,
+              "so_what": "International space launch success by a U.S. ally strengthens space industrial base diversity but has limited regulatory impact on domestic policy.",
+              "now_what": "Note for strategic assessment of allied space capabilities; monitor for any technology sharing or partnership opportunities with Japan.",
+              "categories": [
+                "International / FMS"
+              ]
+            },
+            "exec": {
+              "relevance_score": 50,
+              "so_what": "Japan's return to H3 operations enhances allied launch capacity and competitive landscape, signaling important industrial base diversity relevant to U.S. government space strategy.",
+              "now_what": "Assess implications for U.S. launch procurement strategy and allied-nation space partnership plans.",
+              "categories": [
+                "International / FMS"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 50
+        },
+        {
+          "item_id": "9efdf4f821c28177",
+          "title": "In aerospace, AI isn’t replacing workers. It’s filling a shortage",
+          "url": "https://spacenews.com/in-aerospace-ai-isnt-replacing-workers-its-filling-a-shortage/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T10:00:00Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 50,
+              "so_what": "AI adoption in aerospace to address workforce shortages may affect contract pricing, labor costs, and capability delivery timelines. This could influence future bid strategies and contract performance discussions.",
+              "now_what": "Assess whether contractor proposals should highlight AI-enabled productivity improvements; monitor for any compliance issues with FAR labor rules or apprenticeship requirements related to AI substitution.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 40,
+              "so_what": "AI adoption and workforce trends may trigger policy discussions around NDAA provisions on industrial base resilience, apprenticeships, and automation standards. Export controls on AI systems may also become relevant.",
+              "now_what": "Monitor for potential legislative or regulatory guidance on AI use in defense contracting and export-control implications for aerospace AI tools.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 55,
+              "so_what": "Aerospace industry's AI-driven response to workforce shortages signals a critical adaptation to industrial base constraints, with direct implications for government program execution and supply-chain resilience.",
+              "now_what": "Assess industrial base health and workforce trends; consider policy implications for maintaining U.S. aerospace competitiveness and addressing structural labor shortages.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 55
+        },
+        {
+          "item_id": "d8ffb84d4b9190df",
+          "title": "AAC Clyde Space wins ESA contract to complete maritime-monitoring constellation",
+          "url": "https://spacenews.com/aac-clyde-space-wins-esa-contract-to-complete-maritime-monitoring-constellation/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T00:06:06Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 1,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 85,
+              "so_what": "AAC Clyde Space won a significant ESA contract ($12.6 million) for maritime-monitoring satellite development, directly demonstrating contract award activity in the international smallsat sector. Dollar value and performance scope are clearly defined.",
+              "now_what": "Monitor AAC Clyde Space's performance on this award; assess whether similar European government procurement opportunities could apply to U.S. contractors or indicate market trends for maritime satellite services.",
+              "categories": [
+                "Contract Award"
+              ]
+            },
+            "policy": {
+              "relevance_score": 50,
+              "so_what": "European Space Agency procurement of maritime-monitoring satellites reflects allied-nation space priorities and may inform U.S. government maritime domain awareness strategy or international cooperation frameworks.",
+              "now_what": "Assess alignment with U.S. maritime and space policy objectives; monitor for potential U.S.-European cooperation on satellite-based maritime monitoring or any export-control implications.",
+              "categories": [
+                "International / FMS"
+              ]
+            },
+            "exec": {
+              "relevance_score": 70,
+              "so_what": "ESA's investment in maritime-monitoring satellite constellation represents significant allied-nation space infrastructure development with potential strategic implications for U.S. maritime domain awareness and international partnerships.",
+              "now_what": "Evaluate implications for U.S. government maritime space strategy and assess opportunities for allied-nation coordination or U.S. industry participation.",
+              "categories": [
+                "International / FMS",
+                "Program Decision"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 85
+        },
+        {
+          "item_id": "b8f7b0c10170c361",
+          "title": "Vandenberg offers new launch site for small and medium rockets",
+          "url": "https://spacenews.com/vandenberg-offers-new-launch-site-for-small-and-medium-rockets/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-11T19:56:01Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 75,
+              "so_what": "Vandenberg Space Force Base is actively seeking users for a new small/medium launch site, representing a direct procurement opportunity for launch services and supporting infrastructure contracts. This is actionable for launch providers and ground-support contractors.",
+              "now_what": "Monitor for follow-up RFIs, RFPs, or notices regarding Vandenberg small-launch operations; assess launch provider positioning and potential contract opportunities for facility operations, range support, or integration services.",
+              "categories": [
+                "Solicitation / RFP"
+              ]
+            },
+            "policy": {
+              "relevance_score": 65,
+              "so_what": "Space Force's expansion of small-launch infrastructure aligns with DoD space strategy and policy objectives for resilient launch access; may drive updates to procurement regulations or space-range operations standards.",
+              "now_what": "Monitor DoD and Space Force policy documents for small-launch operational requirements; assess potential FAR/DFARS updates related to range operations or environmental compliance.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 75,
+              "so_what": "U.S. Space Force's expansion of small-launch capability directly supports DoD resilience strategy and represents a significant government investment in responsive launch infrastructure with immediate competitive and industrial-base implications.",
+              "now_what": "Track solicitation details and assess strategic implications for U.S. launch industry positioning and allied-nation small-launch capabilities.",
+              "categories": [
+                "Program Decision",
+                "Budget & Appropriations"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 75
+        },
+        {
+          "item_id": "338fad207317a2a9",
+          "title": "Understanding what’s next for orbital data centers",
+          "url": "https://spacenews.com/understanding-whats-next-for-orbital-data-centers/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-11T19:38:03Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 25,
+              "so_what": "Industry discussion on orbital data centers may surface emerging market opportunities and competitive trends but lacks specific contract or procurement information.",
+              "now_what": "Monitor for any government RFPs or programs related to orbital data center capabilities; assess whether this emerging sector creates contract opportunities.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 35,
+              "so_what": "Orbital data center discussions may inform emerging policy and regulatory frameworks around spectrum, orbital coordination, and data security in government space operations.",
+              "now_what": "Track policy developments and emerging standards for orbital data infrastructure; assess compliance and regulatory implications for future government contracts.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 40,
+              "so_what": "Orbital data center technology represents an emerging sector with potential strategic significance for government computing and space architecture, but current discussion is primarily exploratory.",
+              "now_what": "Monitor for government program decisions or investments in orbital data infrastructure; assess competitive and technical implications.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 40
+        },
+        {
+          "item_id": "d5f650e70b998ee4",
+          "title": "Senate NDAA backs plan to fold SDA, Space RCO into Space Force",
+          "url": "https://spacenews.com/senate-ndaa-backs-plan-to-fold-sda-space-rco-into-space-force/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-11T18:40:55Z",
+          "collected_at": "2026-06-12T21:41:36.024966Z",
+          "tier": 1,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 75,
+              "so_what": "The elimination of SDA and Space RCO as separate statutory entities and their integration into Space Force acquisition represents a significant restructuring of space procurement authority and oversight. This change will affect contract opportunities, reporting requirements, and organizational dynamics for companies working on space programs.",
+              "now_what": "BD teams should monitor the NDAA markup schedule for final language, clarify how existing SDA and Space RCO contracts will transition, and assess whether the consolidation creates new capture opportunities or streamlines existing pathways.",
+              "categories": [
+                "Legislation",
+                "Policy Change"
+              ]
+            },
+            "policy": {
+              "relevance_score": 85,
+              "so_what": "This Senate NDAA provision eliminates separate statutory mandates for SDA and Space RCO, triggering significant changes to FAR/DFARS procurement frameworks and inter-agency acquisition authority. The move advances broader Pentagon procurement reform initiatives outlined in recent DoD strategy documents.",
+              "now_what": "Policy and compliance teams should begin tracking NDAA final passage and detailed implementing guidance from OUSD(A&S), prepare for potential FAR/DFARS rule revisions to consolidate acquisition procedures, and engage with Space Force leadership on transition timelines.",
+              "categories": [
+                "Legislation",
+                "Policy Change"
+              ]
+            },
+            "exec": {
+              "relevance_score": 72,
+              "so_what": "The consolidation of space acquisition entities under Space Force control represents a major reorganization with industrial implications, streamlining Pentagon space procurement but creating uncertainty for incumbent contractors and new competitive dynamics.",
+              "now_what": "Senior leadership should assess competitive positioning under a unified Space Force acquisition model, evaluate contract continuity risks, and anticipate potential market consolidation or new entrant opportunities.",
+              "categories": [
+                "Program Decision",
+                "Policy Change"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": "Item references 2027 NDAA markup but does not specify committee passage date or Senate floor vote schedule.",
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 85
+        }
+      ]
+    },
+    {
+      "run_id": "20260614T163319-413d",
+      "run_at": "2026-06-14T16:33:19.359184Z",
+      "items": [
+        {
+          "item_id": "3c1ad8fd0ec68c39",
+          "title": "Missile production push runs into solid rocket motor bottleneck",
+          "url": "https://spacenews.com/missile-production-push-runs-into-solid-rocket-motor-bottleneck/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-14T04:00:00Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 75,
+              "so_what": "Solid rocket motor supply chain constraints directly impact planned 2027 interceptor procurements, creating potential schedule and cost risks for upcoming contract awards. BD teams need to understand supplier capacity limitations before engaging in source selection and proposal activities.",
+              "now_what": "Engage with prime contractors and SRM suppliers to map realistic production schedules and identify any sole-source dependencies or performance period extensions needed in upcoming RFPs.",
+              "categories": [
+                "Contract Award",
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 35,
+              "so_what": "Supply chain consolidation and bottlenecks may trigger policy discussions around industrial base resilience and potential DFARS requirements for supplier diversification.",
+              "now_what": "Monitor for incoming FAR/DFARS guidance on critical material sourcing and prepare compliance strategies for supplier redundancy mandates.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 60,
+              "so_what": "Solid rocket motor bottleneck poses a strategic threat to critical interceptor production timelines and DoD weapons system readiness, with direct impact on 2027 procurement plans.",
+              "now_what": "Escalate supply chain risk assessment to senior leadership and consider strategic investments or policy interventions to expand SRM manufacturing capacity.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 75
+        },
+        {
+          "item_id": "b3bf13efed089861",
+          "title": "Revised Artemis lunar lander plans take shape",
+          "url": "https://spacenews.com/revised-artemis-lunar-lander-plans-take-shape/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-13T17:19:56Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 70,
+              "so_what": "Revised Artemis lunar lander contract structures with Blue Origin and SpaceX represent significant government spending on space exploration and may signal emerging contract modifications or task order changes.",
+              "now_what": "Monitor for contract amendments, FAR 30.201 notifications, and potential cost/schedule adjustments as revised lander development plans take shape.",
+              "categories": [
+                "Contract Award",
+                "Budget & Appropriations"
+              ]
+            },
+            "policy": {
+              "relevance_score": 40,
+              "so_what": "NASA's revised Artemis approach may indicate changes to space policy or international cooperation frameworks with industrial base implications.",
+              "now_what": "Track NASA policy announcements and any updates to Commercial Lunar Payload Services (CLPS) or other supporting procurement vehicles.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 72,
+              "so_what": "Revised Artemis lander plans represent a major program restructuring affecting billions in government space spending and competitive positioning between major contractors.",
+              "now_what": "Assess competitive implications for your organization and track NASA's formal contract modification announcements for scope, schedule, and funding changes.",
+              "categories": [
+                "Program Decision",
+                "Budget & Appropriations"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 72
+        },
+        {
+          "item_id": "ced4f9c43beed23e",
+          "title": "SpaceX shares rise nearly 20% in historic IPO",
+          "url": "https://spacenews.com/spacex-shares-rise-nearly-20-in-historic-ipo/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T21:06:39Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 65,
+              "so_what": "SpaceX's IPO and stock appreciation signal strong financial health and market confidence in a major government contractor, affecting competitive dynamics and bonding/insurance requirements in ongoing bids.",
+              "now_what": "Update competitive intelligence on SpaceX's financial position and consider how improved access to capital may affect their pricing and technical proposals in upcoming solicitations.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 25,
+              "so_what": "Public listing may bring increased regulatory scrutiny on SpaceX's export control compliance and foreign investment policies.",
+              "now_what": "Monitor SEC filings and regulatory agency guidance for any new disclosure or compliance requirements affecting government contractors with spaceflight operations.",
+              "categories": [
+                "Regulation / Rule"
+              ]
+            },
+            "exec": {
+              "relevance_score": 68,
+              "so_what": "SpaceX's historic IPO marks a pivotal moment for the commercial space industry and strengthens a key government contractor's financial position and competitive capability.",
+              "now_what": "Evaluate strategic implications of SpaceX's improved financial capacity for competitive positioning in critical space launch and national security contracts.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 68
+        },
+        {
+          "item_id": "d6aab4e447e947b6",
+          "title": "Avanti trims GEO exposure with Hylas-3 sale",
+          "url": "https://spacenews.com/avanti-trims-geo-exposure-with-hylas-3-sale/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T20:43:16Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 40,
+              "so_what": "Avanti's asset divestiture reflects broader consolidation and financial restructuring within the commercial satellite sector, potentially creating M&A opportunities or supply chain realignments.",
+              "now_what": "Monitor satellite operator financial health and assess any impacts on your organization's reliance on commercial satellite services or partnerships.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 30,
+              "so_what": "Corporate restructuring at British satellite operators may have minor implications for international partnerships and FMS arrangements.",
+              "now_what": "Track foreign ownership changes and any potential impacts on ITAR or EAR compliance for international satellite services.",
+              "categories": [
+                "International / FMS"
+              ]
+            },
+            "exec": {
+              "relevance_score": 35,
+              "so_what": "Commercial satellite sector financial stress and consolidation indicate market challenges in GEO operations, affecting broader commercial space industry stability.",
+              "now_what": "Consider implications for government reliance on commercial satellite services and evaluate any supply chain risks from operator financial distress.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 40
+        },
+        {
+          "item_id": "84d37012420165e2",
+          "title": "Astronomers fear orbital data centers will interfere with observations",
+          "url": "https://spacenews.com/astronomers-fear-orbital-data-centers-will-interfere-with-observations/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T19:49:45Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 50,
+              "so_what": "SpaceX's planned orbital data center launches may create new contract opportunities, but astronomers' concerns could trigger regulatory or environmental review requirements affecting launch schedules.",
+              "now_what": "Monitor FCC proceedings and any FAA/NSF coordination requirements that could delay or modify SpaceX orbital data center missions and related procurement timelines.",
+              "categories": [
+                "Policy Guidance",
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 65,
+              "so_what": "Orbital data center interference concerns will likely trigger FCC spectrum coordination, NSF/astronomy community involvement, and potential new NOAA or FAA guidance on satellite constellations.",
+              "now_what": "Prepare for upcoming FAA licensing modifications, FCC coordination orders, or new policy guidance on orbital object density and astronomical impact mitigation.",
+              "categories": [
+                "Regulation / Rule",
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 55,
+              "so_what": "Orbital data center regulatory and environmental challenges represent a significant emerging competitive and policy issue affecting space operations, with potential government intervention.",
+              "now_what": "Assess regulatory risk to SpaceX orbital operations and evaluate any opportunities for policy engagement or technology differentiation around space debris mitigation.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 65
+        },
+        {
+          "item_id": "8efae8c8607aae89",
+          "title": "All in on AI at Astra",
+          "url": "https://spacenews.com/all-in-on-ai-at-astra/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T13:00:00Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 45,
+              "so_what": "Astra's shift toward AI-focused business model reflects broader industry consolidation and changing technology focus, potentially affecting competitive positioning in launch and space services contracting.",
+              "now_what": "Monitor Astra's technical roadmap and contract wins to assess competitive threats and opportunities in commercial launch services.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 20,
+              "so_what": "AI integration at space launch companies may have minor implications for export controls and technology security policies.",
+              "now_what": "Track any emerging AI-related DFARS or export control guidance affecting aerospace contractors using advanced AI tools.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 40,
+              "so_what": "Astra's strategic pivot to AI highlights broader industry transformation toward automation and intelligent systems, reflecting talent scarcity in aerospace.",
+              "now_what": "Consider Astra's AI-driven competitive approach and evaluate organizational readiness to adopt similar technologies in your space operations and manufacturing.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 45
+        },
+        {
+          "item_id": "43e07beaf275608b",
+          "title": "H3 successfully returns to flight",
+          "url": "https://spacenews.com/h3-successfully-returns-to-flight/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T12:15:09Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 40,
+              "so_what": "Japan's H3 rocket return to flight demonstrates recovery from prior failures and may affect competitive dynamics in international launch services and FMS opportunities.",
+              "now_what": "Track H3 mission cadence and assess competitive positioning relative to Japanese launch providers in any international procurement activities.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 35,
+              "so_what": "H3's successful return signals Japan's space industrial capability and may inform U.S. international space policy and allied technology partnership discussions.",
+              "now_what": "Monitor U.S.-Japan space cooperation agreements and any FMS or technology sharing initiatives related to launch vehicle development.",
+              "categories": [
+                "International / FMS"
+              ]
+            },
+            "exec": {
+              "relevance_score": 38,
+              "so_what": "H3's return to flight demonstrates global competition in launch services and reinforces Japan's space industrial role in international markets.",
+              "now_what": "Evaluate competitive implications of Japan's operational H3 capability for U.S. launch service dominance and allied partnership strategies.",
+              "categories": [
+                "International / FMS"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 40
+        },
+        {
+          "item_id": "9efdf4f821c28177",
+          "title": "In aerospace, AI isn’t replacing workers. It’s filling a shortage",
+          "url": "https://spacenews.com/in-aerospace-ai-isnt-replacing-workers-its-filling-a-shortage/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T10:00:00Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 55,
+              "so_what": "AI adoption to address aerospace workforce shortages has direct implications for contractor capabilities, proposal responsiveness, and performance risk assessments in upcoming contract evaluations.",
+              "now_what": "Assess competitor and supplier AI adoption rates and factor labor efficiency improvements into competitive proposal strategies and cost estimates.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 45,
+              "so_what": "Widespread AI adoption in aerospace may trigger workforce development policy discussions, apprenticeship program modifications, and potential DFARS changes regarding manufacturing capability standards.",
+              "now_what": "Monitor for emerging FAR/DFARS guidance on AI use in manufacturing and prepare workforce development strategy responsive to potential regulatory changes.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 58,
+              "so_what": "AI-driven workforce augmentation addresses critical aerospace industrial base constraints and signals a strategic shift in how the industry will tackle production capacity challenges.",
+              "now_what": "Evaluate organizational AI adoption roadmap and investment requirements to remain competitive in addressing DoD production demands and meeting schedule commitments.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 58
+        },
+        {
+          "item_id": "d8ffb84d4b9190df",
+          "title": "AAC Clyde Space wins ESA contract to complete maritime-monitoring constellation",
+          "url": "https://spacenews.com/aac-clyde-space-wins-esa-contract-to-complete-maritime-monitoring-constellation/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T00:06:06Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 45,
+              "so_what": "ESA contract award to AAC Clyde Space for VDES satellite constellation development demonstrates international commercial space activity and potential competitive landscape for U.S. firms in maritime monitoring systems.",
+              "now_what": "BD teams should monitor AAC Clyde Space's technical progress and market positioning; assess whether similar U.S. government maritime-monitoring programs exist or are planned that could create contract opportunities.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 25,
+              "so_what": "ESA contract involves VDES satellite technology which may have export-control or international FMS implications if U.S. technology or components are involved.",
+              "now_what": "Compliance teams should review whether ITAR or EAR controls apply to any U.S. participation in or technology transfer related to VDES development.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 30,
+              "so_what": "International space capability development by European actors in maritime domain represents emerging competitive landscape.",
+              "now_what": "Monitor for U.S. government responses or counter-initiatives in maritime-monitoring space systems.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 45
+        },
+        {
+          "item_id": "b8f7b0c10170c361",
+          "title": "Vandenberg offers new launch site for small and medium rockets",
+          "url": "https://spacenews.com/vandenberg-offers-new-launch-site-for-small-and-medium-rockets/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-11T19:56:01Z",
+          "collected_at": "2026-06-14T16:29:27.559758Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 75,
+              "so_what": "U.S. Space Force is actively marketing new launch infrastructure at Vandenberg for small and medium rockets, creating potential capture opportunities for launch service providers and related support contracts.",
+              "now_what": "BD teams should engage with Space Force to understand site specifications, pricing, booking procedures, and identify opportunities for ground support, logistics, or technical support contracts.",
+              "categories": [
+                "Solicitation / RFP",
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 35,
+              "so_what": "Launch site expansion at Vandenberg may trigger environmental compliance, licensing, or range-use policy clarifications.",
+              "now_what": "Track any regulatory filings, FAA licensing updates, or DoD policy changes related to expanded launch operations.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 55,
+              "so_what": "Space Force expansion of launch infrastructure signals commitment to small/medium launcher capability and increased domestic launch cadence.",
+              "now_what": "Monitor for broader Space Force procurement strategy and competitive landscape for launch service providers.",
+              "categories": [
+                "Program Decision"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 75
+        },
+        {
+          "item_id": "f3e1ceb00d3fd39d",
+          "title": "International Traffic in Arms Regulations (ITAR): Part 130 Changes To Reduce Reporting Burden",
+          "url": "https://www.federalregister.gov/documents/2026/06/15/2026-12019/international-traffic-in-arms-regulations-itar-part-130-changes-to-reduce-reporting-burden",
+          "source_id": "Federal Register – Dept. of the Air Force",
+          "published_at": "2026-06-15T00:00:00Z",
+          "collected_at": "2026-06-14T16:29:27.565508Z",
+          "tier": 1,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 40,
+              "so_what": "ITAR Part 130 streamlining may reduce administrative burden on foreign military sales (FMS) and defense export transactions, potentially accelerating deal closure timelines.",
+              "now_what": "Compliance and business development teams should monitor the Federal Register for final rule and assess operational impact on FMS case processing and reporting workflows.",
+              "categories": [
+                "Policy Change"
+              ]
+            },
+            "policy": {
+              "relevance_score": 85,
+              "so_what": "Executive Order 14268-directed ITAR amendments modernize foreign defense sales reporting requirements, directly affecting export-control compliance and FMS administrative procedures.",
+              "now_what": "Government relations and export-control teams must review proposed changes when published, submit comments, and prepare for compliance adjustments; track comment deadline and final rule publication.",
+              "categories": [
+                "Export Controls",
+                "Regulation / Rule",
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 65,
+              "so_what": "Administration-directed ITAR reform signals policy shift to streamline defense trade and reduce compliance friction on foreign military sales.",
+              "now_what": "Executive stakeholders should anticipate impacts on deal velocity and competitive positioning in international defense markets once rule is final.",
+              "categories": [
+                "Policy Guidance",
+                "International / FMS"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 85
+        },
+        {
+          "item_id": "6c307674f488b75b",
+          "title": "Whistleblower Award Determination",
+          "url": "https://www.federalregister.gov/documents/2026/06/15/2026-12006/whistleblower-award-determination",
+          "source_id": "Federal Register – Dept. of the Air Force",
+          "published_at": "2026-06-15T00:00:00Z",
+          "collected_at": "2026-06-14T16:29:27.565508Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 20,
+              "so_what": "CFTC whistleblower award rules are tangentially relevant only if company operates in commodities/derivatives space; limited direct impact on defense/space contracting.",
+              "now_what": "No action required unless company is active in commodities trading or financial services that could intersect with CFTC jurisdiction.",
+              "categories": []
+            },
+            "policy": {
+              "relevance_score": 25,
+              "so_what": "Whistleblower award provisions fall outside defense/space policy domain; primarily commodity-market focused.",
+              "now_what": "Track only if company has compliance obligations under CEA; otherwise no regulatory action needed.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 15,
+              "so_what": "CFTC whistleblower rules have minimal strategic significance for defense/space industrial base.",
+              "now_what": "No executive action required.",
+              "categories": []
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": null,
+          "importance_score": 25
+        }
+      ]
+    },
+    {
+      "run_id": "20260615T133035-8a8b",
+      "run_at": "2026-06-15T13:30:35.644834Z",
+      "items": [
+        {
+          "item_id": "f3e1ceb00d3fd39d",
+          "title": "International Traffic in Arms Regulations (ITAR): Part 130 Changes To Reduce Reporting Burden",
+          "url": "https://www.federalregister.gov/documents/2026/06/15/2026-12019/international-traffic-in-arms-regulations-itar-part-130-changes-to-reduce-reporting-burden",
+          "source_id": "Federal Register – Dept. of the Air Force",
+          "published_at": "2026-06-15T00:00:00Z",
+          "collected_at": "2026-06-15T13:09:01.551761Z",
+          "tier": 2,
+          "per_edition": {
+            "policy": {
+              "relevance_score": 72,
+              "so_what": "ITAR Part 130 amendments streamline foreign defense sales reporting in direct response to Executive Order 14268, reducing compliance burden on defense contractors managing foreign military sales and arms transfers.",
+              "now_what": "Track the Federal Register for the final rule and comment deadline; ensure compliance teams understand revised reporting requirements for political contributions and commissions in FMS cases.",
+              "categories": [
+                "Regulation / Rule",
+                "Export Controls",
+                "Policy Guidance"
+              ]
+            },
+            "bd": {
+              "relevance_score": 45,
+              "so_what": "Streamlined ITAR reporting may reduce administrative overhead for contractors pursuing FMS opportunities, though the core regulatory framework remains unchanged.",
+              "now_what": "Monitor final rule details to understand any operational changes to FMS proposal and execution processes.",
+              "categories": [
+                "Policy Change"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": "Comment deadline not specified in summary; recommend checking Federal Register notice for exact date.",
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "The Department of State is proposing amendments to ITAR Part 130 in response to Executive Order 14268, which directs the reduction of regulatory burden on foreign defense sales and arms transfer cases. This action modernizes reporting requirements for political contributions and fees or commissions associated with international arms transfers, streamlining compliance for industry stakeholders.",
+              "key_stakeholders": [
+                "Department of State",
+                "Defense contractors",
+                "Foreign military sales brokers and agents",
+                "Congressional oversight committees"
+              ],
+              "scenarios": [
+                "If the final rule is published with reduced thresholds for political contribution reporting, compliance costs for FMS intermediaries could decline, potentially accelerating transaction processing times.",
+                "If industry feedback during the public comment period reveals unintended gaps in transparency, State Department may narrow the scope of modernization or add offsetting safeguards before finalization.",
+                "If the rulemaking is challenged by transparency advocates or Congress, implementation could face delays beyond the typical 60–90 day effective period."
+              ],
+              "recommended_actions": [
+                "Submit detailed comments during the public comment period identifying specific reporting provisions that create operational friction or duplication with existing DDTC systems.",
+                "Audit current FMS transaction workflows to map where ITAR Part 130 compliance creates bottlenecks, and use findings to support targeted relief requests.",
+                "Monitor Federal Register for the final rule and any conforming amendments to related ITAR sections (e.g., Part 120 definitions or Part 126 licensing criteria)."
+              ]
+            }
+          },
+          "importance_score": 72
+        },
+        {
+          "item_id": "6c307674f488b75b",
+          "title": "Whistleblower Award Determination",
+          "url": "https://www.federalregister.gov/documents/2026/06/15/2026-12006/whistleblower-award-determination",
+          "source_id": "Federal Register – Dept. of the Air Force",
+          "published_at": "2026-06-15T00:00:00Z",
+          "collected_at": "2026-06-15T13:09:01.551761Z",
+          "tier": 3,
+          "per_edition": {
+            "policy": {
+              "relevance_score": 38,
+              "so_what": "CFTC whistleblower award amendments address CEA violations; while defense-adjacent, primary relevance is to commodities and financial compliance rather than defense/aerospace policy.",
+              "now_what": "Monitor for comment deadlines if organization has CFTC-regulated activities; note that this is a financial regulatory matter outside primary defense-industrial scope.",
+              "categories": [
+                "Regulation / Rule"
+              ]
+            },
+            "bd": {
+              "relevance_score": 15,
+              "so_what": "Limited relevance to defense contractors unless organization has significant commodities trading or related financial activities subject to CFTC oversight.",
+              "now_what": "No action required for most defense BD teams.",
+              "categories": []
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": "The summary is truncated and does not provide sufficient detail on comment deadlines or effective dates.",
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "The Commodity Futures Trading Commission is proposing amendments to its whistleblower award rules under the Commodity Exchange Act. The rulemaking addresses the mechanism and limitations for paying awards to eligible whistleblowers who provide original information leading to successful enforcement actions, a framework established by prior CEA amendments.",
+              "key_stakeholders": [
+                "Commodity Futures Trading Commission",
+                "Commodity exchanges and their members",
+                "Compliance professionals in derivatives firms",
+                "Potential whistleblowers in financial services"
+              ],
+              "scenarios": [
+                "If CFTC expands the definition of 'original information' or lowers evidentiary barriers to qualification, the volume and cost of whistleblower awards could increase materially, affecting derivatives firms' compliance budgets.",
+                "If the proposed rule tightens coordination requirements with other agencies (SEC, DOJ) to avoid double awards, settlement processes for covered cases may lengthen, delaying payout timelines.",
+                "If the amendment increases award percentages or eligibility pools, it may incentivize more disclosures within defense contractor supply chains active in derivatives hedging or commodity procurement."
+              ],
+              "recommended_actions": [
+                "Review the full proposed rule text in the Federal Register to assess impact on enterprise compliance and disclosure protocols, particularly for contractors with commodity or futures exposure.",
+                "Consult legal counsel to understand how the revised whistleblower framework intersects with existing internal reporting channels and SEC Dodd-Frank whistleblower provisions.",
+                "Monitor final rule publication and prepare updated anti-retaliation and ethics training materials if award eligibility expands."
+              ]
+            }
+          },
+          "importance_score": 38
+        },
+        {
+          "item_id": "d02fc2afd2bf0db1",
+          "title": "What’s the Best Way to Monetize Space Energy?",
+          "url": "https://spacenews.com/whats-the-best-way-to-monetize-space-energy/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-15T13:06:16Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 2,
+          "per_edition": {
+            "exec": {
+              "relevance_score": 55,
+              "so_what": "Space energy infrastructure discussion highlights emerging commercial opportunities in orbital power generation, a sector with potential DoD/NRO interest for satellite power and space logistics.",
+              "now_what": "Monitor emerging space energy commercialization trends; assess potential government contracting and partnership opportunities as orbital infrastructure matures.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "bd": {
+              "relevance_score": 48,
+              "so_what": "Space energy monetization represents an emerging commercial market segment that may create government contracting opportunities in space power systems and orbital infrastructure.",
+              "now_what": "Track space energy vendors and technologies; assess potential solicitations from DoD, NRO, or commercial partners seeking orbital power solutions.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": "Summary is incomplete; article content truncated. Assessment based on title and available text.",
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "This is a forward-looking opinion piece by the CEO of Overview Energy, an AI-focused company, discussing the economic viability of orbital energy infrastructure. The article reflects emerging commercial interest in space-based power generation and in-situ resource utilization as energy source monetization strategies.",
+              "key_stakeholders": [
+                "Overview Energy AI",
+                "SpaceNews readership (space industry strategists, investors)",
+                "Potential orbital power generation developers",
+                "Government space agencies evaluating long-term infrastructure models"
+              ],
+              "scenarios": [
+                "If SpaceX's IPO success (noted in item ced4f9c43beed23e) catalyzes venture capital inflows into space infrastructure startups, orbital energy monetization concepts may receive material funding and technical validation by 2027.",
+                "If current DoD interest in on-orbit servicing and sustained operations (noted in item f7c432cbbd14c7fe) creates demand signals for persistent orbital power, commercial ventures and government projects could co-develop enabling technologies.",
+                "If regulatory frameworks for orbital power export or in-situ resource utilization remain undefined, commercial concepts may stall despite technical feasibility, pending FCC or State Department guidance."
+              ],
+              "recommended_actions": [
+                "Track research partnerships between academic institutions, NASA, and commercial space companies on orbital energy conversion and transmission technologies.",
+                "Assess whether DoD space architecture reviews include assumptions about persistent on-orbit power availability, and identify early opportunities to propose integrated solutions.",
+                "Monitor FCC, FAA, and State Department regulatory developments on space-based energy systems to anticipate compliance and licensing requirements."
+              ]
+            }
+          },
+          "importance_score": 55
+        },
+        {
+          "item_id": "f7c432cbbd14c7fe",
+          "title": "Sustained maneuver has a propulsion problem",
+          "url": "https://spacenews.com/sustained-maneuver-has-a-propulsion-problem/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-15T13:00:00Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 2,
+          "per_edition": {
+            "exec": {
+              "relevance_score": 62,
+              "so_what": "Sustained spacecraft maneuver dependency on propulsion capability is a critical technical and acquisition issue affecting space architecture decisions across military and intelligence space programs.",
+              "now_what": "Monitor space propulsion technology developments and program implications; assess impact on government RFPs for space transportation and on-orbit servicing capabilities.",
+              "categories": [
+                "Industry News",
+                "Program Decision"
+              ]
+            },
+            "bd": {
+              "relevance_score": 58,
+              "so_what": "Propulsion-limited space architecture creates demand for advanced propulsion technologies and on-orbit servicing solutions, representing a significant market opportunity in government space procurement.",
+              "now_what": "Identify potential RFPs and programs addressing sustained maneuver; track propulsion technology vendors and prime contractors positioning for space mobility contracts.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": "Summary is truncated; full article context unavailable. Assessment based on available title and fragment.",
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "This opinion piece in SpaceNews identifies propulsion as a critical bottleneck in space architecture as the military and commercial sectors shift from static placement strategies to sustained maneuver and rapid repositioning of spacecraft. The article signals growing recognition that existing propulsion capabilities and capacity may constrain operational concepts.",
+              "key_stakeholders": [
+                "DoD and Space Force",
+                "Space propulsion OEMs (Orbital ATK, Rocket Lab, Axiom, others)",
+                "Smallsat and constellation operators",
+                "Advanced propulsion research programs (DARPA, AFRL)"
+              ],
+              "scenarios": [
+                "If Space Force operational concepts require widespread adoption of advanced on-orbit propulsion (electric, hypergolic, nuclear), procurement timelines could compress, creating urgent demand for propulsion subsystem suppliers and test facilities.",
+                "If the solid rocket motor supply chain (noted as constrained in item 3c1ad8fd0ec68c39) is inadequate to support both traditional missile production and new space maneuver missions, DoD may prioritize between competing programs, delaying some initiatives.",
+                "If commercial smallsat operators license or co-develop advanced propulsion solutions in parallel with military efforts, technology maturation may accelerate, but licensing and export control issues (ITAR) could fragment supplier bases."
+              ],
+              "recommended_actions": [
+                "Conduct gap analysis comparing current on-orbit propulsion catalog against published DoD space architecture concepts (e.g., Orbital Logistics, Rapid Aggregation and Deorbiting, etc.).",
+                "Identify propulsion subsystem OEMs and subcontractors with available production capacity and certification readiness, and assess investment or partnership opportunities.",
+                "Engage DARPA and AFRL on advanced propulsion technology roadmaps to anticipate procurement timelines and specification requirements 18–36 months ahead."
+              ]
+            }
+          },
+          "importance_score": 62
+        },
+        {
+          "item_id": "3c1ad8fd0ec68c39",
+          "title": "Missile production push runs into solid rocket motor bottleneck",
+          "url": "https://spacenews.com/missile-production-push-runs-into-solid-rocket-motor-bottleneck/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-14T04:00:00Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 72,
+              "so_what": "Solid rocket motor (SRM) supply chain constraints directly impact planned 2027 interceptor procurement schedules and could affect contract award timelines. Industry consolidation has reduced supplier capacity, creating potential schedule and cost risks for upcoming solicitations.",
+              "now_what": "BD teams should factor SRM availability into capture planning and risk assessments for 2027 interceptor programs. Engage with suppliers early to understand production constraints and consider alternative sourcing or contractual protections.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 35,
+              "so_what": "SRM supply chain recovery relates to industrial base health and potential policy interventions to address consolidation impacts. May inform NDAA provisions or DoD acquisition strategy documents.",
+              "now_what": "Monitor for potential policy responses or industrial base initiatives addressing SRM supplier capacity. Track Congressional markup discussions on missile production funding.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 45,
+              "so_what": "Supply chain bottleneck poses a competitive risk to U.S. interceptor production capability and timeline alignment with strategic plans. Industrial base fragility in critical propulsion systems warrants executive attention.",
+              "now_what": "Consider whether industrial base remediation (surge capacity, supplier investment) should be prioritized in strategic planning or Congressional engagement.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "A CSIS report released on or around 2026-06-14 highlights a structural supply chain vulnerability: solid rocket motor (SRM) production capacity remains below the level required to support planned 2027 interceptor acquisitions by the Department of Defense. This constraint reflects persistent industry consolidation and slow recovery of manufacturing infrastructure.",
+              "key_stakeholders": [
+                "CSIS",
+                "Department of Defense",
+                "Solid rocket motor OEMs (Northrop Grumman, Orbital ATK, other contractors)",
+                "Congressional defense appropriations committees",
+                "2027 interceptor program managers (e.g., air defense, missile defense)"
+              ],
+              "scenarios": [
+                "If DoD accelerates 2027 interceptor buys as planned and SRM capacity remains static, lead times will extend to 24+ months, forcing program delays or rationalization of procurement quantities.",
+                "If industry announces new SRM production lines or facility reactivation in response to DoD signals, capacity could grow, but startup costs and certification timelines could add 12–18 months to availability.",
+                "If congressional defense spending is constrained or reallocated, competition between interceptor programs and space launch missions (noted in item f7c432cbbd14c7fe on propulsion demand) will intensify, reducing SRM availability for one or both segments."
+              ],
+              "recommended_actions": [
+                "Request detailed CSIS report to quantify the specific SRM capacity gap, production timelines by manufacturer, and lead time assumptions underlying 2027 acquisition plans.",
+                "Conduct interviews with Northrop Grumman and Orbital ATK to assess production expansion plans, investment requirements, and potential bottlenecks in raw materials or skilled labor.",
+                "Coordinate with DoD program offices to model alternative acquisition schedules that reflect realistic SRM supply constraints, and propose risk mitigation strategies (e.g., advance orders, facility investment)."
+              ]
+            }
+          },
+          "importance_score": 72
+        },
+        {
+          "item_id": "b3bf13efed089861",
+          "title": "Revised Artemis lunar lander plans take shape",
+          "url": "https://spacenews.com/revised-artemis-lunar-lander-plans-take-shape/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-13T17:19:56Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 68,
+              "so_what": "Revised Artemis lander approaches by Blue Origin and SpaceX signal contract modifications, schedule updates, and potential scope changes. Track implications for procurement strategy and competitive positioning.",
+              "now_what": "Obtain detailed contract modifications and revised performance milestones. Update competitive assessments and identify any subcontracting opportunities with Blue Origin or SpaceX.",
+              "categories": [
+                "Contract Award",
+                "Program Decision"
+              ]
+            },
+            "policy": {
+              "relevance_score": 52,
+              "so_what": "Artemis program restructuring may affect Congressional appropriations strategy and FAR/DFARS compliance in human spaceflight procurements. Track policy implications of revised approaches.",
+              "now_what": "Monitor Congressional markup discussions on Artemis funding and any policy guidance updates from NASA or OMB on commercial crew/cargo procurement.",
+              "categories": [
+                "Budget & Appropriations"
+              ]
+            },
+            "exec": {
+              "relevance_score": 75,
+              "so_what": "Significant restructuring of Artemis lunar lander development by major contractors signals major program adjustments with cost and schedule implications. Direct impact on U.S. lunar exploration timeline and industrial capabilities.",
+              "now_what": "Executive leadership should request detailed briefing on revised cost, schedule, and risk profile. Assess implications for overall space exploration strategy and budget planning.",
+              "categories": [
+                "Program Decision",
+                "Budget & Appropriations"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "NASA has released updated guidance on revised approaches being pursued by Blue Origin and SpaceX for Artemis lunar lander development. The article indicates that program schedules or technical approaches have shifted, and both contractors have modified their plans to accelerate progress.",
+              "key_stakeholders": [
+                "NASA Exploration Systems Development Mission Directorate",
+                "Blue Origin (Blue Moon lander program)",
+                "SpaceX (Starship HLS variant)",
+                "Congressional appropriations committees",
+                "International lunar exploration partners (ESA, JAXA, CSA)"
+              ],
+              "scenarios": [
+                "If Blue Origin and SpaceX achieve cost or schedule reductions through revised designs, the Artemis lunar lander program could advance human lunar surface missions earlier than previously planned, creating cascading benefits for payload development and partner readiness.",
+                "If revised plans require significant redesigns or additional testing phases, schedule delays may persist despite contractor optimism, pushing crewed lunar missions beyond current NASA roadmap targets.",
+                "If NASA favors one contractor's revised approach over the other, the losing contractor may face reduced landing opportunities or exit the program, consolidating HLS capability in a single provider."
+              ],
+              "recommended_actions": [
+                "Request NASA's formal updates to Artemis lander schedules and milestones, including any changes to crewed mission target dates.",
+                "Assess implications for supporting infrastructure providers, including ECLSS, avionics, and power system subcontractors, to identify acceleration or acceleration-related risks.",
+                "Monitor congressional and international partner reactions to any schedule shifts, particularly if revised plans affect broader Artemis campaign scope or architecture."
+              ]
+            }
+          },
+          "importance_score": 75
+        },
+        {
+          "item_id": "ced4f9c43beed23e",
+          "title": "SpaceX shares rise nearly 20% in historic IPO",
+          "url": "https://spacenews.com/spacex-shares-rise-nearly-20-in-historic-ipo/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T21:06:39Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 55,
+              "so_what": "SpaceX IPO signals major corporate restructuring and potential changes in contracting relationships, capital allocation, and corporate strategy. Public company status may affect proprietary data handling and export controls.",
+              "now_what": "Review SpaceX's public filings (10-K, 10-Q) for contract disclosure, backlog information, and strategy changes. Update competitive intelligence and assess any changes to pricing, availability, or terms.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 38,
+              "so_what": "Public company status triggers SEC disclosure obligations and may affect export-control compliance frameworks. Assess implications for ITAR and EAR-controlled satellite/launch technology.",
+              "now_what": "Review SpaceX's disclosure filings for export-control and regulatory compliance notes. Coordinate with export-control teams on any policy implications of public ownership.",
+              "categories": [
+                "Export Controls"
+              ]
+            },
+            "exec": {
+              "relevance_score": 65,
+              "so_what": "SpaceX IPO is a major milestone for the commercial space industry and signals significant capital access for a leading U.S. launch provider. Strengthens SpaceX's competitive position and capacity for future investments.",
+              "now_what": "Executive leadership should assess implications for competitive landscape, customer relationships, and strategic partnerships. Consider SpaceX's enhanced financial position in long-term planning.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "SpaceX completed its initial public offering (IPO) on or around 2026-06-12, with shares rising approximately 20% on the first trading day. This marks a milestone for the company and signals market confidence in commercial space economics and SpaceX's operational and financial performance.",
+              "key_stakeholders": [
+                "SpaceX",
+                "Public equity investors and asset managers",
+                "Competitive launch providers (Rocket Lab, Blue Origin, etc.)",
+                "DoD space acquisition programs relying on SpaceX launch capacity",
+                "National security space industrial base analysts"
+              ],
+              "scenarios": [
+                "If SpaceX uses IPO proceeds to invest in next-generation launch infrastructure (e.g., Super Heavy/Starship production, Starlink manufacturing), launch capacity and competition may intensify, lowering prices and accelerating DoD adoption of commercial ride-share programs.",
+                "If SpaceX stock performs well over 12–24 months, competitive pressure on other space launch providers may increase investor interest in consolidation or new entrants, reshaping the industrial base landscape.",
+                "If SpaceX faces operational disruptions, regulatory delays, or technical setbacks post-IPO, stock volatility could affect investor confidence in commercial space ventures and slow capital deployment in adjacent sectors (e.g., orbital propulsion, on-orbit services)."
+              ],
+              "recommended_actions": [
+                "Monitor SpaceX investor relations and earnings guidance to track capital allocation priorities, particularly investments in launch capacity or next-generation platforms.",
+                "Assess DoD and NRO reliance on SpaceX launch capacity in light of its public status, and identify diversification or contingency strategies to mitigate single-provider risk.",
+                "Track competitive responses from Rocket Lab, Blue Origin, and emerging launch providers; assess whether the IPO accelerates market consolidation or new entrant formation."
+              ]
+            }
+          },
+          "importance_score": 65
+        },
+        {
+          "item_id": "d6aab4e447e947b6",
+          "title": "Avanti trims GEO exposure with Hylas-3 sale",
+          "url": "https://spacenews.com/avanti-trims-geo-exposure-with-hylas-3-sale/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T20:43:16Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 35,
+              "so_what": "Avanti's asset sale indicates satellite operator portfolio restructuring and potential consolidation activity in the GEO market. May signal broader commercial satellite market shifts.",
+              "now_what": "Monitor satellite operator consolidation trends for potential supplier/partner impacts. Assess if Hylas-3 sale creates any contract transition risks or subcontracting opportunities.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 28,
+              "so_what": "GEO satellite market consolidation may affect international FMS opportunities and satellite export-control considerations. Monitor for policy implications of operator consolidation.",
+              "now_what": "Track satellite operator consolidation as potential input to industrial base assessments and export-control policy discussions.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 32,
+              "so_what": "Commercial satellite operator consolidation reflects market pressures and financial restructuring in GEO segment. Limited direct strategic impact unless related to national security or DoD missions.",
+              "now_what": "Monitor consolidation trends in commercial space but prioritize other developments with more direct government/defense implications.",
+              "categories": []
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "Avanti Communications, a British satellite operator, is planning to divest its Hylas-3 geostationary satellite payload to reduce exposure to GEO satellite infrastructure following years of debt-fueled expansion. The sale reflects a strategic repositioning away from traditional GEO architectures.",
+              "key_stakeholders": [
+                "Avanti Communications (and new Hylas-3 owner, TBD)",
+                "Financial investors and creditors in Avanti",
+                "Commercial GEO satellite operators",
+                "Customers relying on Avanti GEO bandwidth (e.g., maritime, broadcast, backhaul)",
+                "U.S. and UK government space policy bodies"
+              ],
+              "scenarios": [
+                "If Avanti successfully divests Hylas-3 at favorable terms, the company may stabilize its balance sheet and shift investment toward LEO or non-GEO architectures, potentially signaling broader industry reallocation of capital away from mature GEO assets.",
+                "If a strategic buyer (e.g., another operator or infrastructure fund) acquires Hylas-3, GEO capacity ownership may consolidate, affecting service availability and pricing for dependent commercial or government customers.",
+                "If Avanti faces continued financial pressure or customer churn after the sale, the company may exit the satellite operator market entirely, creating workforce and supply chain disruption in the UK space sector."
+              ],
+              "recommended_actions": [
+                "Monitor Avanti's corporate actions and identify whether the Hylas-3 sale accelerates broader GEO operator consolidation or capacity stranding in key frequency bands.",
+                "Assess whether UK government policy or defense procurement has dependencies on Avanti's capabilities that could be affected by divestment or operational changes.",
+                "Track GEO satellite market pricing and utilization trends to gauge whether the shift away from GEO by operators like Avanti reflects fundamental economics or temporary financing constraints."
+              ]
+            }
+          },
+          "importance_score": 35
+        },
+        {
+          "item_id": "84d37012420165e2",
+          "title": "Astronomers fear orbital data centers will interfere with observations",
+          "url": "https://spacenews.com/astronomers-fear-orbital-data-centers-will-interfere-with-observations/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T19:49:45Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 42,
+              "so_what": "SpaceX orbital data center plans may impact existing satellite contracts and spectrum allocation. Potential for new service offerings or contract modifications.",
+              "now_what": "Monitor SpaceX orbital data center development for potential subcontracting, partnership, or competitive impacts. Track any FCC or spectrum-related regulatory filings.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 58,
+              "so_what": "Orbital data centers raise policy and regulatory questions: spectrum allocation, orbital debris management, and interference with civil/scientific assets. May trigger FCC, NOAA, or NSF policy responses.",
+              "now_what": "Track FCC and regulatory agency guidance on orbital data center operations, spectrum, and interference mitigation. Monitor for any policy restrictions on orbital infrastructure deployment.",
+              "categories": [
+                "Regulation / Rule",
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 48,
+              "so_what": "Orbital data center initiative represents strategic expansion into emerging space-based data services. May signal competitive positioning and regulatory challenges in nascent orbital infrastructure market.",
+              "now_what": "Monitor regulatory and policy developments affecting orbital data center viability. Assess competitive implications if successful.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "SpaceX is preparing to launch orbital data center spacecraft beginning in 2026, marking a new category of commercial space infrastructure. This development sits at the intersection of space commerce expansion and long-standing concerns about satellite constellation interference with ground-based astronomy.",
+              "key_stakeholders": [
+                "SpaceX",
+                "Astronomical survey organizations and observatories",
+                "Federal Communications Commission (likely)",
+                "National Science Foundation (likely)"
+              ],
+              "scenarios": [
+                "If SpaceX proceeds with launches in 2026 without substantive mitigations, astronomer complaints escalate to regulatory bodies and congressional attention follows within 12 months.",
+                "If pre-launch technical discussions between SpaceX and observatory operators yield collaborative mitigation standards, a model emerges that influences industry practice and potentially FCC policy by Q1 2027.",
+                "If orbital data center operations prove less disruptive than feared once operational, tensions ease but documentation of actual interference impacts informs future constellation approval processes."
+              ],
+              "recommended_actions": [
+                "Track FCC filings and any new orbital debris or radio frequency coordination rulings related to data center satellites.",
+                "Engage observatory leadership to understand specific interference vectors and potential contractual accommodation opportunities.",
+                "Monitor any congressional inquiries or National Science Foundation guidance on space sustainability and astronomy protection.",
+                "Assess whether customer demand for orbital data centers creates differentiated market opportunity if interference risks are properly managed."
+              ]
+            }
+          },
+          "importance_score": 58
+        },
+        {
+          "item_id": "8efae8c8607aae89",
+          "title": "All in on AI at Astra",
+          "url": "https://spacenews.com/all-in-on-ai-at-astra/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T13:00:00Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 38,
+              "so_what": "Astra's AI-focused pivot signals potential corporate strategy shift and may affect contracting capabilities or service offerings. SPAC-era restructuring relevant to competitive positioning.",
+              "now_what": "Monitor Astra's strategic direction and any changes to launch services or contract portfolio. Assess if AI integration affects pricing, availability, or mission capabilities.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 28,
+              "so_what": "Astra's corporate restructuring may have limited direct policy implications unless related to export controls or compliance issues. Monitor for any regulatory filings.",
+              "now_what": "Track Astra's strategic developments but prioritize regulatory or export-control issues if they arise.",
+              "categories": []
+            },
+            "exec": {
+              "relevance_score": 32,
+              "so_what": "Small launch provider restructuring reflects market pressures and AI adoption trends in aerospace. Limited direct executive impact unless related to customer relationships or market consolidation.",
+              "now_what": "Monitor industry consolidation and AI adoption trends as contextual developments, but prioritize larger players or direct contractual impacts.",
+              "categories": []
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "Astra Space, which went public via SPAC merger during the 2021 space boom, is reportedly pivoting toward AI-focused operations under CEO Chris Kemp. The item suggests a dramatic strategic reorientation, though specifics on which business lines are being retained or divested are not provided in the summary.",
+              "key_stakeholders": [
+                "Astra Space (SPAC-backed commercial launch provider)",
+                "Chris Kemp (CEO)",
+                "SPAC investors and equity holders",
+                "Launch customers and suppliers"
+              ],
+              "scenarios": [
+                "If Astra executes a managed transition from launch operations to AI infrastructure or services, existing launch contracts are fulfilled or restructured; market reaction and debt/equity holder concerns emerge over next two quarters.",
+                "If Astra exits launch entirely and rebrands as an AI company, it signals desperation about commercial launch economics and sets precedent for other SPAC-backed aerospace startups to pivot, creating broader market signal.",
+                "If Astra bifurcates into separate launch and AI divisions or seeks strategic partnerships, it positions the company for a narrower AI-focused exit or merger, with launch assets either divested or maintained as legacy operations."
+              ],
+              "recommended_actions": [
+                "Obtain Astra's latest SEC filings and earnings calls to understand official strategic messaging and any customer communication regarding launch commitment timelines.",
+                "Assess whether Astra holds any defense/government contracts that could be affected by operational or ownership changes.",
+                "Monitor competitor announcements for similar AI pivots among struggling commercial space startups.",
+                "Evaluate whether this signals broader SPAC cohort distress in launch markets and potential consolidation opportunities."
+              ]
+            }
+          },
+          "importance_score": 38
+        },
+        {
+          "item_id": "43e07beaf275608b",
+          "title": "H3 successfully returns to flight",
+          "url": "https://spacenews.com/h3-successfully-returns-to-flight/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T12:15:09Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 3,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 48,
+              "so_what": "Japan's H3 rocket return to flight demonstrates international launch capability recovery and may affect competitive dynamics for small satellite launch services. Potential customer diversion or partnership opportunities.",
+              "now_what": "Monitor H3 pricing, cadence, and customer acquisition to assess competitive threat. Evaluate if H3 success affects U.S. small launch provider market positioning.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 35,
+              "so_what": "H3 successful return signals allied spacefaring capability and may inform international space cooperation or FMS strategy discussions. Limited direct regulatory impact.",
+              "now_what": "Monitor allied space capabilities as part of broader strategic assessment. No immediate policy action required unless related to U.S. export controls or partnerships.",
+              "categories": [
+                "International / FMS"
+              ]
+            },
+            "exec": {
+              "relevance_score": 42,
+              "so_what": "International launch provider recovery expands competitive landscape for small satellite missions. May affect U.S. small launch provider market share and pricing dynamics.",
+              "now_what": "Assess competitive implications of H3 re-entry to market. Consider impact on U.S. small launch provider strategy and industrial base planning.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "Japan's H3 rocket successfully completed its return-to-flight mission on 11 June 2026, deploying six smallsats to orbit following a December 2025 launch failure. H3 is Japan's next-generation flagship launcher, developed by the Japan Aerospace Exploration Agency (JAXA) and Mitsubishi Heavy Industries, intended to replace the H-IIA vehicle.",
+              "key_stakeholders": [
+                "Japan Aerospace Exploration Agency (JAXA)",
+                "Mitsubishi Heavy Industries (prime contractor)",
+                "Japanese government (spacefaring capability policy)",
+                "Smallsat operators (customers on this manifest)"
+              ],
+              "scenarios": [
+                "If H3 demonstrates reliable performance over the next 2–3 flights, it gains market credibility for commercial small-to-medium lift and potentially attracts non-Japanese customers, positioning Japan as a secondary launch provider to U.S. and European options.",
+                "If teething issues persist (anomalies, schedule delays, cost overruns), H3 remains a domestic-focused vehicle with limited international take rate, constraining JAXA/MHI revenue growth and forcing recapitalization discussions with Japanese government.",
+                "If H3 successfully captures commercial small-satellite and institutional Japanese/Asian government manifests, it validates the vehicle's design and creates anchor customers, setting up for more frequent launch cadence by 2027."
+              ],
+              "recommended_actions": [
+                "Track manifest evolution and launch cadence over next 3–6 months; H3 health directly affects regional launch competition.",
+                "Monitor whether non-Japanese operators book flights or express interest; indicator of commercial viability outside home market.",
+                "Assess technical data from the return-to-flight; any novel engineering solutions could have technology transfer or partnership implications for U.S./allied launch providers.",
+                "Note any statements from JAXA or MHI about pricing strategy or manifest targets; shapes regional competitive landscape."
+              ]
+            }
+          },
+          "importance_score": 48
+        },
+        {
+          "item_id": "9efdf4f821c28177",
+          "title": "In aerospace, AI isn’t replacing workers. It’s filling a shortage",
+          "url": "https://spacenews.com/in-aerospace-ai-isnt-replacing-workers-its-filling-a-shortage/",
+          "source_id": "SpaceNews",
+          "published_at": "2026-06-12T10:00:00Z",
+          "collected_at": "2026-06-15T13:09:01.565884Z",
+          "tier": 2,
+          "per_edition": {
+            "bd": {
+              "relevance_score": 58,
+              "so_what": "AI adoption in aerospace addresses critical labor shortages and workforce capacity constraints across the industrial base. Affects production capacity, timeline feasibility, and contractor capability assessments.",
+              "now_what": "Incorporate AI-enabled capacity improvements into capture planning and risk assessments. Engage contractors on AI adoption rates and expected productivity gains for program schedules.",
+              "categories": [
+                "Industry News"
+              ]
+            },
+            "policy": {
+              "relevance_score": 45,
+              "so_what": "AI integration in aerospace production raises workforce development, export-control (AI tools), and industrial base resilience questions. May inform policy discussions on manufacturing competitiveness.",
+              "now_what": "Monitor policy discussions on AI in manufacturing and export controls on AI tools. Track any industrial base initiatives addressing workforce/productivity gaps.",
+              "categories": [
+                "Policy Guidance"
+              ]
+            },
+            "exec": {
+              "relevance_score": 62,
+              "so_what": "AI-enabled workforce productivity is critical to overcoming aerospace industrial base constraints and meeting ambitious production schedules. Directly impacts strategic program feasibility and timeline achievement.",
+              "now_what": "Executive leadership should engage with contractors and suppliers on AI adoption strategies. Assess whether industrial base can support planned production ramps with AI-enabled productivity.",
+              "categories": [
+                "Industry News"
+              ]
+            }
+          },
+          "dollar_amount": null,
+          "affected_population": null,
+          "action_deadline": null,
+          "confidence_note": null,
+          "unverified_claims": [],
+          "deep_analysis": {
+            "sections": {
+              "background": "Aerospace industry leaders are characterizing AI adoption not as workforce displacement but as a tool to address persistent labor shortages and capacity constraints affecting the industrial base. This framing reflects mounting pressure on production schedules—notably in military aircraft, missiles, and space systems—stemming from supply chain disruption and skilled worker availability.",
+              "key_stakeholders": [
+                "Large aerospace primes (Lockheed Martin, Boeing, Northrop Grumman, Raytheon RTX, likely)",
+                "Department of Defense and U.S. Air Force (urgent production needs)",
+                "Labor unions and workforce advocates",
+                "Educational institutions and vocational training providers"
+              ],
+              "scenarios": [
+                "If AI tools successfully augment engineering design, manufacturing simulation, and quality assurance, production rates increase and cost per unit declines; labor shortage narrative softens but skilled technician/engineer hiring remains competitive through 2027.",
+                "If AI deployment faces integration barriers or proves slower to implement than expected, workforce shortage becomes acute constraint on defense industrial base expansion, triggering congressional hearings and potential workforce investment legislation.",
+                "If aerospace firms use AI efficiency gains to justify workforce attrition (retirements not backfilled) while increasing output, net job growth stalls despite production increases, fueling political backlash and union resistance to automation in subsequent labor negotiations."
+              ],
+              "recommended_actions": [
+                "Engage prime contractors on specific AI pilot programs and expected productivity gains; quantify impact on schedule and cost.",
+                "Track Department of Defense production targets and capacity assessments; if shortfall projections persist despite AI investment, supply chain risk escalates.",
+                "Monitor labor union statements on AI in aerospace; anticipate resistance or demands for retraining funding in upcoming contract negotiations.",
+                "Assess educational partnerships between primes and universities on AI-enabled engineering talent pipeline; indicator of long-term workforce strategy."
+              ]
+            }
+          },
+          "importance_score": 62
+        }
+      ]
+    }
+  ],
+  "pinned": []
+}

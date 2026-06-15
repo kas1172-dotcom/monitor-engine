@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Defense News</title>
+    <link>https://defensenews.example.com</link>
+    <description>Defense industry news</description>
+
+    <item>
+      <title>Pentagon awards $2.3B contract for next-gen fighter</title>
+      <link>https://defensenews.example.com/article/1</link>
+      <description>&lt;p&gt;The Pentagon announced a major contract award Wednesday.&lt;/p&gt;</description>
+      <pubDate>Wed, 11 Jun 2026 06:00:00 +0000</pubDate>
+    </item>
+
+    <item>
+      <title>Army seeks proposals for logistics software platform</title>
+      <link>https://defensenews.example.com/article/2</link>
+      <description>RFP expected within 60 days for a new logistics platform supporting CONUS depots.</description>
+      <pubDate>Tue, 10 Jun 2026 09:30:00 +0000</pubDate>
+    </item>
+
+    <item>
+      <title>Item with no publication date</title>
+      <link>https://defensenews.example.com/article/3</link>
+      <description>This item has no pubDate element.</description>
+    </item>
+
+    <item>
+      <title>Very old story that should be filtered out</title>
+      <link>https://defensenews.example.com/article/old</link>
+      <description>This is from 2020 and should not appear in recent results.</description>
+      <pubDate>Mon, 01 Jun 2020 09:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>

@@ -1,0 +1,22 @@
+{
+  "opportunitiesData": [
+    {
+      "title": "IDIQ for Cybersecurity Services",
+      "uiLink": "https://sam.example.gov/opp/abc123",
+      "postedDate": "2026-06-10",
+      "description": "DoD seeks contractors for cybersecurity support services across the enterprise."
+    },
+    {
+      "title": "RFI: Autonomous Ground Vehicle Capabilities",
+      "uiLink": "https://sam.example.gov/opp/def456",
+      "postedDate": "2026-06-09",
+      "description": "Army requests information on autonomous ground vehicle capabilities for logistics applications."
+    },
+    {
+      "title": "Sole Source Justification: Radar Maintenance",
+      "uiLink": "https://sam.example.gov/opp/ghi789",
+      "postedDate": "2026-06-08",
+      "description": "Justification for other than full and open competition for AN/TPY-2 radar maintenance."
+    }
+  ]
+}

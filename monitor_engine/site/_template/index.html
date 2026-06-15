@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0052cc" id="meta-theme-color">
+  <title>Intelligence Brief</title>
+  <style>/* STYLE_PLACEHOLDER */</style>
+</head>
+<body>
+  <div id="loading-screen" aria-live="polite" aria-label="Loading">
+    <div class="loading-inner">
+      <div class="loading-spinner"></div>
+      <p>Loading briefing…</p>
+    </div>
+  </div>
+
+  <header class="site-header" id="site-header" hidden>
+    <div class="header-inner container">
+      <div class="header-top">
+        <h1 class="site-title" id="site-title"></h1>
+        <button class="filter-toggle" id="filter-toggle"
+                aria-expanded="false" aria-controls="filter-panel">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M1 3h14v1.5L9 10v5l-2-1V10L1 4.5V3z"/>
+          </svg>
+          Filters
+        </button>
+      </div>
+      <nav class="edition-nav" id="edition-nav" aria-label="Editions"></nav>
+    </div>
+  </header>
+
+  <div class="layout container" id="main-layout" hidden>
+    <aside class="filter-panel" id="filter-panel" aria-label="Filters">
+      <div class="filter-section" id="category-section">
+        <p class="filter-label">Topics</p>
+        <div class="category-pills" id="category-pills"></div>
+      </div>
+      <div class="filter-section">
+        <p class="filter-label">Date</p>
+        <div class="date-filters" id="date-filters"></div>
+      </div>
+      <div class="run-meta" id="run-meta"></div>
+    </aside>
+
+    <main class="content" id="content" role="main">
+      <section aria-label="What's new" id="whats-new"></section>
+
+      <section class="tier-section" id="tier1-section">
+        <h2 class="tier-heading tier1-heading">Essential Reading</h2>
+        <div class="card-grid" id="tier1-cards"></div>
+        <p class="empty-state" id="tier1-empty" hidden>
+          No essential items match the current filters.
+        </p>
+      </section>
+
+      <section class="tier-section" id="tier2-section">
+        <h2 class="tier-heading tier2-heading">Important</h2>
+        <div class="card-list" id="tier2-cards"></div>
+        <p class="empty-state" id="tier2-empty" hidden>
+          No important items match the current filters.
+        </p>
+      </section>
+
+      <details class="tier3-drawer" id="tier3-drawer">
+        <summary class="tier3-summary">
+          Also tracked
+          <span class="tier3-count" id="tier3-count">0</span>
+        </summary>
+        <ul class="tier3-list" id="tier3-list" aria-label="Routine items"></ul>
+      </details>
+    </main>
+  </div>
+
+  <script>window.__DATA_URL = 'DATA_FILENAME_PLACEHOLDER';</script>
+  <script>/* SCRIPT_PLACEHOLDER */</script>
+</body>
+</html>

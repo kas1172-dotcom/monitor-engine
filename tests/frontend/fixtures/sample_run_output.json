@@ -1,0 +1,693 @@
+{
+  "meta": {
+    "run_id": "20260615T090000-smk",
+    "run_at": "2026-06-15T09:00:00Z",
+    "items_collected": 20,
+    "items_after_prefilter": 15,
+    "items_analyzed": 12,
+    "estimated_cost_usd": 0.0123,
+    "engine_version": "test"
+  },
+  "items": [
+    {
+      "item_id": "item-01",
+      "title": "Sample item 1 (tier 1)",
+      "url": "https://example.com/item-01",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 1,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 90,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": {
+        "raw_text": "$1.2B",
+        "value": 1200000000.0,
+        "currency": "USD"
+      },
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 1, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A1",
+            "Stakeholder B1"
+          ],
+          "scenarios": [
+            "Scenario X for item 1",
+            "Scenario Y for item 1"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 1",
+            "Action 2 for item 1"
+          ]
+        }
+      },
+      "importance_score": 90
+    },
+    {
+      "item_id": "item-02",
+      "title": "Sample item 2 (tier 1)",
+      "url": "https://example.com/item-02",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 1,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 90,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": {
+        "raw_text": "$1.2B",
+        "value": 1200000000.0,
+        "currency": "USD"
+      },
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 2, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A2",
+            "Stakeholder B2"
+          ],
+          "scenarios": [
+            "Scenario X for item 2",
+            "Scenario Y for item 2"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 2",
+            "Action 2 for item 2"
+          ]
+        }
+      },
+      "importance_score": 90
+    },
+    {
+      "item_id": "item-03",
+      "title": "Sample item 3 (tier 1)",
+      "url": "https://example.com/item-03",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 1,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 90,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": {
+        "raw_text": "$1.2B",
+        "value": 1200000000.0,
+        "currency": "USD"
+      },
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 3, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A3",
+            "Stakeholder B3"
+          ],
+          "scenarios": [
+            "Scenario X for item 3",
+            "Scenario Y for item 3"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 3",
+            "Action 2 for item 3"
+          ]
+        }
+      },
+      "importance_score": 90
+    },
+    {
+      "item_id": "item-04",
+      "title": "Sample item 4 (tier 2)",
+      "url": "https://example.com/item-04",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 2,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 60,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": "2026-06-20",
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 4, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A4",
+            "Stakeholder B4"
+          ],
+          "scenarios": [
+            "Scenario X for item 4",
+            "Scenario Y for item 4"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 4",
+            "Action 2 for item 4"
+          ]
+        }
+      },
+      "importance_score": 60
+    },
+    {
+      "item_id": "item-05",
+      "title": "Sample item 5 (tier 2)",
+      "url": "https://example.com/item-05",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 2,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 60,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 5, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A5",
+            "Stakeholder B5"
+          ],
+          "scenarios": [
+            "Scenario X for item 5",
+            "Scenario Y for item 5"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 5",
+            "Action 2 for item 5"
+          ]
+        }
+      },
+      "importance_score": 60
+    },
+    {
+      "item_id": "item-06",
+      "title": "Sample item 6 (tier 2)",
+      "url": "https://example.com/item-06",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 2,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 60,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 6, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A6",
+            "Stakeholder B6"
+          ],
+          "scenarios": [
+            "Scenario X for item 6",
+            "Scenario Y for item 6"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 6",
+            "Action 2 for item 6"
+          ]
+        }
+      },
+      "importance_score": 60
+    },
+    {
+      "item_id": "item-07",
+      "title": "Sample item 7 (tier 2)",
+      "url": "https://example.com/item-07",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 2,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 60,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 7, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A7",
+            "Stakeholder B7"
+          ],
+          "scenarios": [
+            "Scenario X for item 7",
+            "Scenario Y for item 7"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 7",
+            "Action 2 for item 7"
+          ]
+        }
+      },
+      "importance_score": 60
+    },
+    {
+      "item_id": "item-08",
+      "title": "Sample item 8 (tier 3)",
+      "url": "https://example.com/item-08",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 3,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 30,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 8, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A8",
+            "Stakeholder B8"
+          ],
+          "scenarios": [
+            "Scenario X for item 8",
+            "Scenario Y for item 8"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 8",
+            "Action 2 for item 8"
+          ]
+        }
+      },
+      "importance_score": 55
+    },
+    {
+      "item_id": "item-09",
+      "title": "Sample item 9 (tier 3)",
+      "url": "https://example.com/item-09",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 3,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 30,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 9, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A9",
+            "Stakeholder B9"
+          ],
+          "scenarios": [
+            "Scenario X for item 9",
+            "Scenario Y for item 9"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 9",
+            "Action 2 for item 9"
+          ]
+        }
+      },
+      "importance_score": 55
+    },
+    {
+      "item_id": "item-10",
+      "title": "Sample item 10 (tier 3)",
+      "url": "https://example.com/item-10",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 3,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 30,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 10, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A10",
+            "Stakeholder B10"
+          ],
+          "scenarios": [
+            "Scenario X for item 10",
+            "Scenario Y for item 10"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 10",
+            "Action 2 for item 10"
+          ]
+        }
+      },
+      "importance_score": 55
+    },
+    {
+      "item_id": "item-11",
+      "title": "Sample item 11 (tier 3)",
+      "url": "https://example.com/item-11",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 3,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 30,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 11, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A11",
+            "Stakeholder B11"
+          ],
+          "scenarios": [
+            "Scenario X for item 11",
+            "Scenario Y for item 11"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 11",
+            "Action 2 for item 11"
+          ]
+        }
+      },
+      "importance_score": 55
+    },
+    {
+      "item_id": "item-12",
+      "title": "Sample item 12 (tier 3)",
+      "url": "https://example.com/item-12",
+      "source_id": "Sample Feed",
+      "published_at": "2026-06-15T09:00:00Z",
+      "collected_at": "2026-06-15T09:00:00Z",
+      "tier": 3,
+      "per_edition": {
+        "exec": {
+          "relevance_score": 30,
+          "so_what": "Why it matters.",
+          "now_what": "What to do.",
+          "categories": [
+            "Finance"
+          ]
+        },
+        "ops": {
+          "relevance_score": 55,
+          "so_what": "Ops angle.",
+          "now_what": "Ops action.",
+          "categories": [
+            "Safety"
+          ]
+        }
+      },
+      "dollar_amount": null,
+      "affected_population": null,
+      "action_deadline": null,
+      "confidence_note": null,
+      "unverified_claims": [],
+      "deep_analysis": {
+        "sections": {
+          "background": "Background context for item 12, two sentences of grounding detail.",
+          "key_stakeholders": [
+            "Stakeholder A12",
+            "Stakeholder B12"
+          ],
+          "scenarios": [
+            "Scenario X for item 12",
+            "Scenario Y for item 12"
+          ],
+          "recommended_actions": [
+            "Action 1 for item 12",
+            "Action 2 for item 12"
+          ]
+        }
+      },
+      "importance_score": 55
+    }
+  ],
+  "whats_new": {
+    "new_tier_1": [
+      "item-01"
+    ],
+    "new_tier_2": [
+      "item-04",
+      "item-05"
+    ],
+    "escalated": [
+      {
+        "item_id": "item-02",
+        "previous_tier": 2,
+        "current_tier": 1
+      }
+    ],
+    "dropped": [],
+    "deadline_imminent": [
+      "item-04"
+    ]
+  },
+  "editorial": {
+    "theme_of_week": "A representative theme for the week.",
+    "editors_note": "An editor's note that exercises the esc() escaping path.",
+    "whats_new_digest": "Digest text < with > special & characters."
+  },
+  "site_config": {
+    "name": "Sample Monitor",
+    "accent_color": "#1B4F8A",
+    "editions": [
+      {
+        "id": "exec",
+        "label": "Executive",
+        "categories": [
+          "Finance"
+        ]
+      },
+      {
+        "id": "ops",
+        "label": "Operations",
+        "categories": [
+          "Safety"
+        ]
+      }
+    ],
+    "deep_analysis_sections": [
+      {
+        "id": "background",
+        "label": "Background",
+        "kind": "text"
+      },
+      {
+        "id": "key_stakeholders",
+        "label": "Key stakeholders",
+        "kind": "list"
+      },
+      {
+        "id": "scenarios",
+        "label": "Scenarios",
+        "kind": "list"
+      },
+      {
+        "id": "recommended_actions",
+        "label": "Recommended actions",
+        "kind": "list"
+      }
+    ]
+  },
+  "source_health": null
+}
