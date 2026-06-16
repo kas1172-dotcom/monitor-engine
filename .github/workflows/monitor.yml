@@ -1,13 +1,12 @@
 name: Monitor Pipeline
 
 on:
-  schedule:
-    # Runs Monday at 07:00 UTC.
-    # To give each client its own schedule, replace the matrix with separate jobs
-    # and set a different cron per job.
-    - cron: "0 7 * * 1"
-  workflow_dispatch:    # manual trigger from the Actions tab
-  push:                 # run the test gate on every code change
+  # Scheduled runs are disabled for now — the pipeline runs only when manually
+  # triggered (workflow_dispatch). Re-enable weekly runs later by uncommenting:
+  # schedule:
+  #   - cron: "0 7 * * 1"   # Monday 07:00 UTC
+  workflow_dispatch:    # manual trigger from the Actions tab ("Run workflow")
+  push:                 # runs the test gate only (the pipeline job is dispatch-gated)
   pull_request:
 
 permissions:
