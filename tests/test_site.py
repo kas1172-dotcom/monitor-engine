@@ -279,6 +279,12 @@ class TestHtmlStructure:
         html = self._html(config, run_output, tmp_path)
         assert 'id="whats-new"' in html
 
+    def test_html_has_search_input(self, config, run_output, tmp_path):
+        # Regression: the keyword search input must be present in the rendered page.
+        html = self._html(config, run_output, tmp_path)
+        assert 'id="search-input"' in html
+        assert 'type="search"' in html
+
     def test_no_hardcoded_brand_name_in_template(self, config, run_output, tmp_path):
         # The template itself must not bake in the client name — it comes from data JS
         html = self._html(config, run_output, tmp_path)

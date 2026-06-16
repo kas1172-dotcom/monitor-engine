@@ -27,6 +27,7 @@ from monitor_engine.analysis.validation import (
     validate_factual_claims,
 )
 from monitor_engine.models import (
+    AffectedPopulation,
     AnalyzedItem,
     Branding,
     Cadence,
@@ -226,6 +227,9 @@ def _analyzed(
             )
         },
         dollar_amount=DollarAmount(raw_text=dollar_raw, value=dollar_val) if dollar_raw else None,
+        affected_population=(
+            AffectedPopulation(raw_text=pop_raw, value=pop_val) if pop_raw else None
+        ),
         action_deadline=date.fromisoformat(deadline) if deadline else None,
     )
 
@@ -264,6 +268,44 @@ class TestValidateFactualClaims:
         result = validate_factual_claims(item, raw)
         assert result.unverified_claims == []
         assert result.confidence_note is None
+
+    # ── Currency-format equivalence (regression: "$40M" vs source) ──────────
+    # The extracted value is canonical (40,000,000); the source token may be
+    # glued ("$40M"), spaced ("$40 million"), or comma-grouped ("$40,000,000").
+    # All must verify against an extracted value of 40,000,000.
+    @pytest.mark.parametrize("source_phrase", [
+        "Acme to Pay $40M for violations",
+        "Acme to Pay $40 million for violations",
+        "Acme to Pay $40,000,000 for violations",
+        "Acme to Pay $40.0 million for violations",
+    ])
+    def test_dollar_glued_and_spaced_forms_all_verify(self, source_phrase):
+        item = _analyzed(dollar_raw="$40M", dollar_val=40_000_000)
+        result = validate_factual_claims(item, _raw(title=source_phrase, summary=None))
+        assert result.unverified_claims == []
+        assert result.confidence_note is None
+
+    def test_dollar_genuinely_absent_still_flags(self):
+        item = _analyzed(dollar_raw="$40M", dollar_val=40_000_000)
+        result = validate_factual_claims(
+            item, _raw(title="Acme settles case", summary="No dollar figure disclosed.")
+        )
+        assert any("dollar_amount" in c for c in result.unverified_claims)
+
+    def test_population_glued_multiplier_verifies(self):
+        # 2,000,000 extracted vs glued "2M" in source — same matcher as dollars
+        item = _analyzed(pop_raw="2M beneficiaries", pop_val=2_000_000)
+        result = validate_factual_claims(
+            item, _raw(title="Rule affects 2M beneficiaries", summary=None)
+        )
+        assert result.unverified_claims == []
+
+    def test_population_genuinely_absent_flags(self):
+        item = _analyzed(pop_raw="2M beneficiaries", pop_val=2_000_000)
+        result = validate_factual_claims(
+            item, _raw(title="Rule issued", summary="No population figure given.")
+        )
+        assert any("affected_population" in c for c in result.unverified_claims)
 
 
 # ─── Scorer integration tests (mocked LLM) ────────────────────────────────

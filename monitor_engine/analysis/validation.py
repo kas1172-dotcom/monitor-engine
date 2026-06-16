@@ -105,15 +105,28 @@ def parse_affected_population(raw_text: str) -> tuple[int | None, str | None]:
 
 # ─── Factual grounding ─────────────────────────────────────────────────────
 
+# A number with an optional multiplier suffix that may be glued ("40m") or
+# spaced ("40 million"). Used to canonicalise source-text numbers the same way
+# parse_dollar_amount / parse_affected_population canonicalise the extracted value.
+_NUM_SUFFIX_RE = re.compile(
+    r"^(\d[\d,]*(?:\.\d+)?)\s*(trillion|billion|million|thousand|[tbmk])?$",
+    re.IGNORECASE,
+)
+
+
 def _parse_source_number(token: str) -> float | None:
-    """Parse a number token (possibly with multiplier suffix) from source text."""
-    parts = token.split()
-    try:
-        base = float(parts[0].replace(",", ""))
-    except (ValueError, IndexError):
+    """Parse a number token to canonical base units, handling both glued
+    ('40m', '$40,000,000') and spaced ('40 million') multiplier forms."""
+    m = _NUM_SUFFIX_RE.match(token.strip())
+    if not m:
         return None
-    if len(parts) > 1:
-        base *= _MULTIPLIERS.get(parts[1].lower(), 1)
+    num_str, suffix = m.groups()
+    try:
+        base = float(num_str.replace(",", ""))
+    except ValueError:
+        return None
+    if suffix:
+        base *= _MULTIPLIERS.get(suffix.lower(), 1)
     return base
 
 

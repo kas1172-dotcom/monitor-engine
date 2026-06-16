@@ -15,6 +15,14 @@ from monitor_engine.models import ClientConfig, JsonApiSource, RawItem, SourceHe
 
 _DEFAULT_TIMEOUT = 15  # seconds
 
+# Many publishers (Cloudflare/Akamai-fronted) reject non-browser User-Agents with
+# a 403. Default to a current browser UA so feeds work out of the box; a source
+# can still override it via its `user_agent` field.
+_DEFAULT_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36"
+)
+
 
 def make_session() -> requests.Session:
     session = requests.Session()
@@ -27,8 +35,15 @@ def make_session() -> requests.Session:
     adapter = HTTPAdapter(max_retries=retry)
     session.mount("https://", adapter)
     session.mount("http://", adapter)
-    session.headers["User-Agent"] = "monitor-engine/1.0"
+    session.headers["User-Agent"] = _DEFAULT_USER_AGENT
     return session
+
+
+def per_source_headers(source: object) -> dict[str, str]:
+    """Per-request header overrides for a source. Currently just the optional
+    User-Agent override; returns {} when the source uses the session default."""
+    ua = getattr(source, "user_agent", None)
+    return {"User-Agent": ua} if ua else {}
 
 
 def stable_id(source_id: str, url: str) -> str:

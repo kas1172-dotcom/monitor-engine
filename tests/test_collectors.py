@@ -12,7 +12,14 @@ from unittest.mock import MagicMock
 
 import pytest
 
-from monitor_engine.collectors.base import CollectResult, check_env_vars, stable_id
+from monitor_engine.collectors.base import (
+    CollectResult,
+    check_env_vars,
+    make_session,
+    per_source_headers,
+    stable_id,
+    _DEFAULT_USER_AGENT,
+)
 from monitor_engine.collectors.html_list import HtmlListHandler
 from monitor_engine.collectors.json_api import JsonApiHandler
 from monitor_engine.collectors.rss import RssHandler
@@ -456,3 +463,142 @@ class TestSourceHealthModel:
         h = SourceHealth(source_id="s1", items_collected=0, zero_results=True, error="timeout")
         assert h.error == "timeout"
         assert h.zero_results is True
+
+
+# ── User-Agent (default browser UA + per-source override) ─────────────────────
+
+
+class TestUserAgent:
+    def test_session_default_is_browser_like(self):
+        session = make_session()
+        ua = session.headers["User-Agent"]
+        assert "Mozilla/5.0" in ua and "Chrome/" in ua
+        assert "monitor-engine" not in ua   # the old bot UA that triggered 403s
+
+    def test_per_source_headers_empty_without_override(self):
+        assert per_source_headers(_rss_source()) == {}
+
+    def test_per_source_headers_uses_override(self):
+        src = _rss_source(user_agent="CustomAgent/9.9")
+        assert per_source_headers(src) == {"User-Agent": "CustomAgent/9.9"}
+
+    def test_rss_passes_override_header_to_get(self):
+        content = (FIXTURES / "sample_rss.xml").read_bytes()
+        session = _mock_session(content=content)
+        RssHandler(session).collect(
+            _rss_source(user_agent="UA-RSS/1.0"), days_back=30, max_items=5
+        )
+        assert session.get.call_args.kwargs["headers"] == {"User-Agent": "UA-RSS/1.0"}
+
+    def test_html_passes_override_header_to_get(self):
+        session = _mock_session(text="<html></html>")
+        HtmlListHandler(session).collect(
+            _html_source(user_agent="UA-HTML/1.0"), days_back=30, max_items=5
+        )
+        assert session.get.call_args.kwargs["headers"] == {"User-Agent": "UA-HTML/1.0"}
+
+    def test_json_api_override_merges_with_no_auth(self):
+        session = _mock_session(text=json.dumps({"opportunitiesData": []}))
+        JsonApiHandler(session).collect(
+            _api_source(user_agent="UA-API/1.0"), days_back=30, max_items=5
+        )
+        assert session.get.call_args.kwargs["headers"]["User-Agent"] == "UA-API/1.0"
+
+
+# ── json_api url_template and base_url ────────────────────────────────────────
+
+
+class TestJsonApiUrlBuilding:
+    def _payload(self, results):
+        return json.dumps({"results": results})
+
+    def test_url_template_substitutes_record_field(self):
+        src = _api_source(
+            item_path="$.results",
+            url_template="https://host/page?ID={k_number}",
+            field_map={"title": "device_name", "published_at": "decision_date"},
+        )
+        session = _mock_session(text=self._payload([
+            {"k_number": "K261154", "device_name": "Widget", "decision_date": "2026-06-01"},
+        ]))
+        result = JsonApiHandler(session).collect(src, days_back=3650, max_items=5)
+        assert len(result.items) == 1
+        assert result.items[0].url == "https://host/page?ID=K261154"
+
+    def test_url_template_skips_item_missing_field(self):
+        src = _api_source(
+            item_path="$.results",
+            url_template="https://host/page?ID={k_number}",
+            field_map={"title": "device_name"},
+        )
+        session = _mock_session(text=self._payload([
+            {"device_name": "No K number here", "decision_date": "2026-06-01"},  # k_number absent
+        ]))
+        result = JsonApiHandler(session).collect(src, days_back=3650, max_items=5)
+        assert result.items == []
+
+    def test_base_url_resolves_relative_url(self):
+        src = _api_source(
+            item_path="$.results",
+            base_url="https://www.courtlistener.com",
+            field_map={"title": "caseName", "url": "absolute_url", "published_at": "dateFiled"},
+        )
+        session = _mock_session(text=self._payload([
+            {"caseName": "A v B", "absolute_url": "/opinion/123/a-v-b/", "dateFiled": "2026-06-01"},
+        ]))
+        result = JsonApiHandler(session).collect(src, days_back=3650, max_items=5)
+        assert result.items[0].url == "https://www.courtlistener.com/opinion/123/a-v-b/"
+
+    def test_absolute_url_left_unchanged_with_base_url(self):
+        src = _api_source(
+            item_path="$.results",
+            base_url="https://www.courtlistener.com",
+            field_map={"title": "caseName", "url": "absolute_url", "published_at": "dateFiled"},
+        )
+        session = _mock_session(text=self._payload([
+            {"caseName": "A v B", "absolute_url": "https://other.example/x", "dateFiled": "2026-06-01"},
+        ]))
+        result = JsonApiHandler(session).collect(src, days_back=3650, max_items=5)
+        assert result.items[0].url == "https://other.example/x"
+
+    def test_url_template_map_translates_field_value(self):
+        # Congress case: API "type" ("HR"/"S") → human slug ("house-bill"/"senate-bill").
+        src = _api_source(
+            item_path="$.results",
+            url_template="https://www.congress.gov/bill/119th-congress/{type}/{number}",
+            url_template_map={"type": {"HR": "house-bill", "S": "senate-bill"}},
+            field_map={"title": "title", "published_at": "updateDate"},
+        )
+        session = _mock_session(text=self._payload([
+            {"type": "HR", "number": "7086", "title": "A bill", "updateDate": "2026-06-15"},
+            {"type": "S", "number": "4114", "title": "Another", "updateDate": "2026-06-14"},
+        ]))
+        result = JsonApiHandler(session).collect(src, days_back=3650, max_items=5)
+        assert result.items[0].url == "https://www.congress.gov/bill/119th-congress/house-bill/7086"
+        assert result.items[1].url == "https://www.congress.gov/bill/119th-congress/senate-bill/4114"
+
+    def test_url_template_map_skips_unmapped_value(self):
+        # A bill type with no mapping must be skipped, not linked to a wrong URL.
+        src = _api_source(
+            item_path="$.results",
+            url_template="https://www.congress.gov/bill/119th-congress/{type}/{number}",
+            url_template_map={"type": {"HR": "house-bill"}},
+            field_map={"title": "title"},
+        )
+        session = _mock_session(text=self._payload([
+            {"type": "HJRES", "number": "9", "title": "Unmapped type"},
+        ]))
+        result = JsonApiHandler(session).collect(src, days_back=3650, max_items=5)
+        assert result.items == []
+
+    def test_url_template_takes_precedence_over_field_map(self):
+        src = _api_source(
+            item_path="$.results",
+            url_template="https://host/{k_number}",
+            field_map={"title": "device_name", "url": "ignored_field"},
+        )
+        session = _mock_session(text=self._payload([
+            {"k_number": "K1", "device_name": "W", "ignored_field": "https://wrong/"},
+        ]))
+        result = JsonApiHandler(session).collect(src, days_back=3650, max_items=5)
+        assert result.items[0].url == "https://host/K1"

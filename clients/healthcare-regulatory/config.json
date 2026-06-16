@@ -1,46 +1,34 @@
 {
   "branding": {
-    "name": "Healthcare Regulatory Monitor",
-    "accent_color": "#0070B8"
+    "name": "Healthcare Regulatory & Market Monitor",
+    "accent_color": "#0F766E"
   },
   "editions": [
     {
-      "id": "compliance",
-      "label": "Compliance & Regulatory",
-      "audience_description": "Compliance officers and regulatory affairs teams tracking rules, enforcement actions, and filing deadlines",
-      "analysis_instructions": "Prioritise final rules, interim final rules, warning letters, enforcement actions, and consent decrees. Flag compliance deadlines, comment periods, and effective dates. Note which facility types, drug classes, or device categories are affected.",
+      "id": "policy",
+      "label": "Policy",
+      "audience_description": "Government-affairs, regulatory, and health-policy professionals tracking legislation, rulemaking, enforcement, coverage and payment policy, litigation, and oversight.",
+      "analysis_instructions": "Prioritise federal legislation and its movement, proposed and final rules, regulatory enforcement actions, coverage and payment policy (Medicare/Medicaid/ACA), litigation that sets precedent, and oversight reports (GAO/CBO/OIG/MedPAC). Flag effective dates, comment deadlines, and statutory triggers. Score pure market/M&A items and routine device-clearance business intelligence low unless they carry a clear policy or regulatory implication.",
       "categories": [
-        "Final Rule",
-        "Proposed Rule",
-        "Guidance Document",
-        "Enforcement Action",
-        "Deadline / Comment Period"
+        "Legislation",
+        "Rulemaking",
+        "Enforcement",
+        "Coverage & Payment",
+        "Litigation",
+        "Oversight & Reports"
       ]
     },
     {
-      "id": "clinical",
-      "label": "Clinical Operations",
-      "audience_description": "Clinical, quality, and medical-affairs teams tracking drug/device approvals, clinical guidance, and patient-safety signals",
-      "analysis_instructions": "Surface FDA approvals, clearances, and denials; safety communications; clinical trial regulations; and guidance on labeling, manufacturing, or clinical practice. Flag patient-safety recalls and drug shortages.",
+      "id": "consulting",
+      "label": "Consulting",
+      "audience_description": "Healthcare consultants and corporate strategy/compliance teams tracking enforcement risk to clients, market moves, device and drug clearances, deadlines, and reimbursement impact.",
+      "analysis_instructions": "Prioritise developments with direct business implications: enforcement risk to providers/manufacturers/payers, market moves (M&A, partnerships, market entry/exit), device and drug clearances and approvals, compliance and filing deadlines, and changes that shift reimbursement. Quantify dollar and population impact where the source provides it. Score abstract policy commentary lower unless it has concrete operational or commercial consequence.",
       "categories": [
-        "Drug / Biologic Approval",
-        "Device Clearance",
-        "Safety Communication",
-        "Clinical Trial Regulation",
-        "Recall"
-      ]
-    },
-    {
-      "id": "reimbursement",
-      "label": "Reimbursement & Coverage",
-      "audience_description": "Finance, revenue cycle, and market-access teams tracking CMS payment policy and coverage decisions",
-      "analysis_instructions": "Focus on CMS final and proposed payment rules (IPPS, OPPS, PFS, ESRD, home health), coverage determinations, prior-authorization rules, and Medicaid policy. Quantify dollar impact per-episode or per-beneficiary where the source provides it.",
-      "categories": [
-        "Payment Rule",
-        "Coverage Determination",
-        "Prior Authorization",
-        "Medicaid Policy",
-        "Value-Based Care"
+        "Enforcement Risk",
+        "Market Moves",
+        "Device & Drug Clearances",
+        "Deadlines",
+        "Reimbursement Impact"
       ]
     }
   ],
@@ -53,18 +41,22 @@
     "never_discard": [
       "warning letter",
       "consent decree",
+      "corporate integrity agreement",
       "import alert",
       "mandatory recall",
       "Class I recall",
       "fraud alert",
       "False Claims Act",
+      "qui tam",
       "whistleblower",
+      "civil investigative demand",
       "debarment",
       "exclusion",
       "emergency use authorization",
       "public health emergency",
       "immediate jeopardy",
-      "civil monetary penalty"
+      "civil monetary penalty",
+      "DOJ settlement"
     ]
   },
   "sources": [
@@ -106,69 +98,243 @@
         "published_at": "publication_date",
         "summary": "abstract"
       }
+    },
+    {
+      "type": "json_api",
+      "id": "congress-bills-119",
+      "name": "Congress.gov – 119th Congress Bills",
+      "url": "https://api.congress.gov/v3/bill/119?format=json&sort=updateDate+desc&limit=20",
+      "item_path": "$.bills",
+      "url_template": "https://www.congress.gov/bill/119th-congress/{type}/{number}",
+      "url_template_map": {
+        "type": {
+          "HR": "house-bill",
+          "S": "senate-bill",
+          "HJRES": "house-joint-resolution",
+          "SJRES": "senate-joint-resolution",
+          "HCONRES": "house-concurrent-resolution",
+          "SCONRES": "senate-concurrent-resolution",
+          "HRES": "house-resolution",
+          "SRES": "senate-resolution"
+        }
+      },
+      "field_map": {
+        "title": "title",
+        "published_at": "updateDate"
+      },
+      "auth_header": "X-Api-Key",
+      "auth_env_var": "CONGRESS_API_KEY"
+    },
+    {
+      "type": "json_api",
+      "id": "openfda-510k",
+      "name": "openFDA – Device 510(k) Clearances",
+      "url": "https://api.fda.gov/device/510k.json?search=decision_date:%5B20260101+TO+20261231%5D&sort=decision_date:desc&limit=25",
+      "item_path": "$.results",
+      "url_template": "https://www.accessdata.fda.gov/scripts/cdrh/cfdocs/cfpmn/pmn.cfm?ID={k_number}",
+      "field_map": {
+        "title": "device_name",
+        "published_at": "decision_date",
+        "summary": "statement_or_summary"
+      }
+    },
+    {
+      "type": "json_api",
+      "id": "openfda-drug-enforcement",
+      "name": "openFDA – Drug Enforcement / Recalls",
+      "url": "https://api.fda.gov/drug/enforcement.json?search=report_date:%5B20260101+TO+20261231%5D&sort=report_date:desc&limit=25",
+      "item_path": "$.results",
+      "field_map": {
+        "title": "product_description",
+        "url": "recall_number",
+        "published_at": "report_date",
+        "summary": "reason_for_recall"
+      }
+    },
+    {
+      "type": "json_api",
+      "id": "courtlistener-health",
+      "name": "CourtListener – Health Opinions",
+      "url": "https://www.courtlistener.com/api/rest/v4/search/?q=Medicare%20OR%20Medicaid%20OR%20FDA%20OR%20HHS&type=o&order_by=dateFiled%20desc&format=json",
+      "item_path": "$.results",
+      "field_map": {
+        "title": "caseName",
+        "url": "absolute_url",
+        "published_at": "dateFiled"
+      },
+      "base_url": "https://www.courtlistener.com"
+    },
+    {
+      "type": "html_list",
+      "id": "hhs-oig-enforcement",
+      "name": "HHS OIG – Enforcement Actions",
+      "url": "https://oig.hhs.gov/fraud/enforcement/",
+      "item_selector": "li.usa-card",
+      "title_selector": "h2.usa-card__heading a",
+      "link_selector": "h2.usa-card__heading a",
+      "date_selector": "span.text-base-dark"
+    },
+    {
+      "type": "html_list",
+      "id": "hhs-oig-whats-new",
+      "name": "HHS OIG – What's New",
+      "url": "https://oig.hhs.gov/newsroom/whats-new/",
+      "item_selector": "li[data-block-key]",
+      "title_selector": "a",
+      "link_selector": "a"
+    },
+    {
+      "type": "html_list",
+      "id": "cms-newsroom",
+      "name": "CMS Newsroom",
+      "url": "https://www.cms.gov/newsroom",
+      "item_selector": "div.views-row",
+      "title_selector": "h3",
+      "link_selector": "a.newsroom-main-view-link",
+      "date_selector": "time"
+    },
+    {
+      "type": "rss",
+      "id": "fda-press",
+      "name": "FDA Press Releases",
+      "url": "https://www.fda.gov/about-fda/contact-fda/stay-informed/rss-feeds/press-releases/rss.xml"
+    },
+    {
+      "type": "rss",
+      "id": "doj-press",
+      "name": "DOJ Press Releases",
+      "url": "https://www.justice.gov/news/rss"
+    },
+    {
+      "type": "rss",
+      "id": "nih-news",
+      "name": "NIH News Releases",
+      "url": "https://www.nih.gov/news-releases/feed.xml"
+    },
+    {
+      "type": "rss",
+      "id": "gao-health",
+      "name": "GAO Health Reports",
+      "url": "https://www.gao.gov/rss/topic/health-care"
+    },
+    {
+      "type": "rss",
+      "id": "cbo-publications",
+      "name": "CBO Publications",
+      "url": "https://www.cbo.gov/publications/all/rss.xml"
+    },
+    {
+      "type": "rss",
+      "id": "politico-pulse",
+      "name": "POLITICO Pulse",
+      "url": "https://rss.politico.com/healthcare.xml"
+    },
+    {
+      "type": "rss",
+      "id": "medpac",
+      "name": "MedPAC",
+      "url": "https://www.medpac.gov/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "nashp",
+      "name": "NASHP",
+      "url": "https://nashp.org/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "kff-health-news",
+      "name": "KFF Health News",
+      "url": "https://kffhealthnews.org/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "kff-medicare",
+      "name": "KFF Medicare",
+      "url": "https://www.kff.org/medicare/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "kff-medicaid",
+      "name": "KFF Medicaid",
+      "url": "https://www.kff.org/medicaid/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "kff-health-costs",
+      "name": "KFF Health Costs",
+      "url": "https://www.kff.org/health-costs/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "kff-aca",
+      "name": "KFF Affordable Care Act",
+      "url": "https://www.kff.org/affordable-care-act/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "stat-news",
+      "name": "STAT News",
+      "url": "https://www.statnews.com/feed/"
+    },
+    {
+      "type": "rss",
+      "id": "healthcare-dive",
+      "name": "Healthcare Dive",
+      "url": "https://www.healthcaredive.com/feeds/news/"
+    },
+    {
+      "type": "rss",
+      "id": "fierce-healthcare",
+      "name": "Fierce Healthcare",
+      "url": "https://www.fiercehealthcare.com/rss/xml"
+    },
+    {
+      "type": "rss",
+      "id": "fierce-pharma",
+      "name": "Fierce Pharma",
+      "url": "https://www.fiercepharma.com/rss/xml"
+    },
+    {
+      "type": "rss",
+      "id": "fierce-biotech",
+      "name": "Fierce Biotech",
+      "url": "https://www.fiercebiotech.com/rss/xml"
+    },
+    {
+      "type": "rss",
+      "id": "medcity-news",
+      "name": "MedCity News",
+      "url": "https://medcitynews.com/feed/"
     }
   ],
   "keyword_prefilter": {
     "include": [
-      "FDA",
-      "CMS",
-      "HHS",
-      "regulation",
-      "rule",
-      "guidance",
-      "approval",
-      "clearance",
-      "drug",
-      "biologic",
-      "device",
-      "clinical",
-      "Medicare",
-      "Medicaid",
-      "reimbursement",
-      "payment",
-      "prior authorization",
-      "compliance",
-      "HIPAA",
-      "healthcare",
-      "recall",
-      "enforcement",
-      "warning letter",
-      "consent decree",
-      "IND",
-      "NDA",
-      "BLA",
-      "510(k)",
-      "PMA",
-      "EUA",
-      "hospital",
-      "physician",
-      "beneficiary",
-      "patient",
-      "formulary",
-      "coverage",
-      "copay",
-      "deductible",
-      "ICD",
-      "CPT",
-      "DRG",
-      "IPPS",
-      "OPPS",
-      "PFS"
+      "health", "healthcare", "hospital", "physician", "clinic", "patient", "medical",
+      "medicare", "medicaid", "CMS", "FDA", "HHS", "CDC", "NIH", "drug", "biologic",
+      "device", "clinical", "pharmaceutical", "pharma", "insurer", "payer", "provider",
+      "reimbursement", "coverage", "Medicare Advantage", "Part D", "telehealth",
+      "nursing", "long-term care", "behavioral health", "mental health", "public health",
+      "prescription", "formulary", "prior authorization", "value-based", "ACO",
+      "compliance", "fraud", "abuse", "recall", "clearance", "510(k)", "approval",
+      "enforcement", "settlement", "rulemaking", "regulation", "legislation",
+      "appropriations", "oversight", "litigation", "ACA", "Affordable Care Act",
+      "price transparency", "drug pricing", "PBM", "biosimilar", "vaccine", "opioid",
+      "HIPAA", "interoperability", "EHR", "FQHC", "340B", "No Surprises Act"
     ],
     "exclude": [
-      "obituary",
-      "sports",
-      "entertainment"
+      "obituary", "sports", "horoscope", "recipe", "celebrity", "gossip",
+      "crossword", "weather forecast"
     ]
   },
   "deep_analysis": {
-    "instruction": "Produce a concise but substantive briefing for a healthcare compliance, clinical, and reimbursement audience. Stay grounded in the item; flag uncertainty rather than speculating.",
+    "instruction": "Produce a concise but substantive briefing for a healthcare regulatory, policy, and consulting audience. Stay grounded in the item; flag uncertainty rather than speculating.",
     "sections": [
       {
         "id": "background",
         "label": "Background",
         "kind": "text",
-        "instruction": "Two to three sentences situating this development: the rule, program, or enforcement thread it belongs to and what preceded it."
+        "instruction": "Two to three sentences situating this development: the rule, program, enforcement thread, or market trend it belongs to and what preceded it."
       },
       {
         "id": "key_stakeholders",
@@ -186,16 +352,17 @@
         "id": "recommended_actions",
         "label": "Recommended actions",
         "kind": "list",
-        "instruction": "Concrete next steps a compliance, clinical-operations, or market-access team should consider this week."
+        "instruction": "Concrete next steps a compliance, policy, or consulting team should consider this week."
       }
-    ]
+    ],
+    "deep_batch_size": 3
   },
   "cadence": {
     "cron": "0 7 * * 1",
     "timezone": "America/New_York"
   },
   "cost_caps": {
-    "max_items_per_run": 60,
-    "max_output_tokens_per_run": 40000
+    "max_items_per_run": 300,
+    "max_output_tokens_per_run": 9000000
   }
 }

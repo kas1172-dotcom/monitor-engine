@@ -1,12 +1,20 @@
 from __future__ import annotations
 
 import os
+import string
 from datetime import datetime, timedelta, timezone
 from typing import Any
+from urllib.parse import urljoin
 
 from dateutil import parser as dateutil_parser
 
-from monitor_engine.collectors.base import CollectResult, SourceHandler, stable_id, _DEFAULT_TIMEOUT
+from monitor_engine.collectors.base import (
+    CollectResult,
+    SourceHandler,
+    per_source_headers,
+    stable_id,
+    _DEFAULT_TIMEOUT,
+)
 from monitor_engine.models import JsonApiSource, RawItem
 
 # Fast-path formats tried before handing off to dateutil
@@ -35,6 +43,35 @@ def _resolve_path(data: Any, path: str) -> Any:
         else:
             raise KeyError(f"Cannot traverse {type(data).__name__} with key {key!r}")
     return data
+
+
+def _build_item_url(raw: dict, source: JsonApiSource) -> str:
+    """
+    Determine the item URL, in priority order:
+      1. url_template — substitute record fields (skip item if any are missing/empty)
+      2. mapped url field — resolved against base_url if it's a relative path
+    Returns "" when no usable URL can be built (caller skips the item).
+    """
+    if source.url_template:
+        fields = [name for _, name, _, _ in string.Formatter().parse(source.url_template) if name]
+        values: dict[str, Any] = {}
+        for f in fields:
+            v = raw.get(f)
+            # Optional per-field value translation (e.g. bill type "HR" → "house-bill").
+            if source.url_template_map and f in source.url_template_map:
+                v = source.url_template_map[f].get(str(v)) if v is not None else None
+            if v in (None, ""):
+                return ""   # missing/untranslatable field → can't build a valid URL
+            values[f] = v
+        try:
+            return source.url_template.format(**values)
+        except (KeyError, IndexError):
+            return ""
+
+    raw_url = raw.get(source.field_map.get("url", "url"), "") or ""
+    if raw_url and source.base_url and raw_url.startswith("/"):
+        return urljoin(source.base_url, raw_url)
+    return raw_url
 
 
 def _parse_date(value: str | None) -> tuple[datetime | None, bool]:
@@ -76,7 +113,7 @@ class JsonApiHandler(SourceHandler):
         effective_days_back = source.days_back if source.days_back is not None else days_back
         effective_timeout = source.timeout if source.timeout is not None else _DEFAULT_TIMEOUT
 
-        headers: dict[str, str] = {}
+        headers: dict[str, str] = dict(per_source_headers(source))
         if source.auth_env_var and source.auth_header:
             headers[source.auth_header] = os.environ[source.auth_env_var]
 
@@ -100,7 +137,7 @@ class JsonApiHandler(SourceHandler):
             if len(items) >= max_items:
                 break
 
-            url: str = raw.get(fm.get("url", "url"), "") or ""
+            url: str = _build_item_url(raw, source)
             if not url:
                 continue
 

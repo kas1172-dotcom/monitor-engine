@@ -14,7 +14,9 @@ const APP_JS = join(ROOT, 'monitor_engine', 'site', '_assets', 'app.js');
 const TEMPLATE = join(ROOT, 'monitor_engine', 'site', '_template', 'index.html');
 
 // Render `data` (a parsed run_output.json object) and return bucket counts.
-export function renderData(data) {
+// If `searchQuery` is given, also types it into the search box and records the
+// post-filter item count as `searchAfter`.
+export function renderData(data, searchQuery = null) {
   const templateHtml = readFileSync(TEMPLATE, 'utf8');
   const doc = buildDocumentFromTemplate(templateHtml);
 
@@ -70,25 +72,45 @@ export function renderData(data) {
             sectionCount: p.card ? p.card.countByClass('deep-section') : 0,
           };
         }
-        resolve({
+        const total = () => containers.tier1.children.length
+          + containers.tier2.children.length + containers.tier3.children.length;
+        // Tag name of the first tier-1 card's title node: "A" for a real link,
+        // "SPAN" when the item URL is a bare reference (safeLink fallback).
+        let tier1TitleTag = null;
+        const firstCard = containers.tier1.children[0];
+        if (firstCard) {
+          const wrap = firstCard.findByClass('card-title');
+          const node = wrap && wrap.children[0];
+          tier1TitleTag = node ? node.tagName : null;
+        }
+        const result = {
           tier1: containers.tier1.children.length,
           tier2: containers.tier2.children.length,
           tier3: containers.tier3.children.length,
           tier3Count: doc.getElementById('tier3-count').textContent,
           loadingHidden: doc.getElementById('loading-screen').classList.contains('hidden'),
           title: doc.getElementById('site-title').textContent,
+          tier1TitleTag,
           deep,
-        });
+        };
+        // Search probe: type a query, re-render, record how many items remain.
+        const search = doc.getElementById('search-input');
+        if (search && typeof searchQuery === 'string') {
+          search.value = searchQuery;
+          search.dispatchEvent('input');
+          result.searchAfter = total();
+        }
+        resolve(result);
       }, 0);
     }, 0);
   });
 }
 
-// CLI: `node render.mjs path/to/run_output.json`
+// CLI: `node render.mjs path/to/run_output.json [search-query]`
 // Prints a single compact JSON line so callers (e.g. pytest) can parse it.
 if (process.argv[2]) {
   const data = JSON.parse(readFileSync(process.argv[2], 'utf8'));
-  renderData(data).then(r => {
+  renderData(data, process.argv[3] ?? null).then(r => {
     const out = {
       ...r,
       itemCount: data.items.length,

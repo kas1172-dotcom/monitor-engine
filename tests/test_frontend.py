@@ -34,16 +34,18 @@ pytestmark = pytest.mark.skipif(
 )
 
 
-def _render(json_path: Path) -> dict:
-    """Run app.js against json_path via the Node harness; return bucket counts."""
+def _render(json_path: Path, search_query: str | None = None) -> dict:
+    """Run app.js against json_path via the Node harness; return bucket counts.
+    If search_query is given, the harness also types it into the search box and
+    reports the post-filter item count as 'searchAfter'."""
     assert _NODE is not None, (
         "node is required to run the frontend smoke tests "
         "(CI_REQUIRE_FRONTEND=1 is set) but was not found on PATH"
     )
-    proc = subprocess.run(
-        [_NODE, str(_RENDER_MJS), str(json_path)],
-        capture_output=True, text=True, timeout=60,
-    )
+    cmd = [_NODE, str(_RENDER_MJS), str(json_path)]
+    if search_query is not None:
+        cmd.append(search_query)
+    proc = subprocess.run(cmd, capture_output=True, text=True, timeout=60)
     assert proc.returncode == 0, f"node harness failed:\n{proc.stderr}"
     return json.loads(proc.stdout.strip().splitlines()[-1])
 
@@ -114,3 +116,37 @@ def test_fixture_items_carry_deep_analysis(fixture_data):
     for item in fixture_data["items"]:
         assert item["deep_analysis"] is not None
         assert "sections" in item["deep_analysis"]
+
+
+# ─── Keyword search ────────────────────────────────────────────────────────
+
+def test_search_narrows_to_matching_items():
+    # Fixture titles are "Sample item N (tier T)"; "(tier 1)" matches only the
+    # three tier-1 items. Confirms the search input is wired into filteredItems.
+    rendered = _render(_FIXTURE, search_query="(tier 1)")
+    assert rendered["searchAfter"] == 3
+
+def test_search_no_match_hides_all():
+    rendered = _render(_FIXTURE, search_query="zzzznomatch")
+    assert rendered["searchAfter"] == 0
+
+def test_no_search_shows_all(rendered, fixture_data):
+    # Baseline (no query): every item renders, proving search defaults to inert.
+    assert rendered["tier1"] + rendered["tier2"] + rendered["tier3"] == len(fixture_data["items"])
+
+
+# ─── Broken-link handling ──────────────────────────────────────────────────
+
+def test_http_url_renders_as_anchor(rendered):
+    # Fixture items have https URLs → title is a real <a>.
+    assert rendered["tier1TitleTag"] == "A"
+
+def test_bare_reference_renders_as_span_not_dead_link(fixture_data, tmp_path):
+    # An item whose URL is a bare id (e.g. an openFDA recall number) must render
+    # as a non-clickable <span>, never an <a> with a dead href.
+    data = json.loads(json.dumps(fixture_data))  # deep copy
+    data["items"][0]["url"] = "D-0558-2026"       # bare recall id, not a URL
+    p = tmp_path / "broken.json"
+    p.write_text(json.dumps(data))
+    rendered = _render(p)
+    assert rendered["tier1TitleTag"] == "SPAN"

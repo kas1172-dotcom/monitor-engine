@@ -5,7 +5,13 @@ from datetime import datetime, timedelta, timezone
 
 import feedparser
 
-from monitor_engine.collectors.base import CollectResult, SourceHandler, stable_id, _DEFAULT_TIMEOUT
+from monitor_engine.collectors.base import (
+    CollectResult,
+    SourceHandler,
+    per_source_headers,
+    stable_id,
+    _DEFAULT_TIMEOUT,
+)
 from monitor_engine.models import RawItem, RssSource
 
 _TAG_RE = re.compile(r"<[^>]+>")
@@ -43,7 +49,9 @@ class RssHandler(SourceHandler):
         effective_days_back = source.days_back if source.days_back is not None else days_back
         effective_timeout = source.timeout if source.timeout is not None else _DEFAULT_TIMEOUT
 
-        resp = self.session.get(str(source.url), timeout=effective_timeout)
+        resp = self.session.get(
+            str(source.url), timeout=effective_timeout, headers=per_source_headers(source)
+        )
         resp.raise_for_status()
         feed = feedparser.parse(resp.content)
 

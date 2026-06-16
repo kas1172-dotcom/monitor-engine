@@ -230,6 +230,25 @@ button {
   margin-bottom: 8px !important;
 }
 
+/* Non-clickable reference (item has no resolvable URL) */
+.nonlink { color: var(--text-muted); cursor: default; text-decoration: none; }
+
+/* Search input */
+.search-input {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 7px 10px;
+  font-size: .85rem;
+  color: var(--text);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+}
+.search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
 /* Category pills */
 .category-pills {
   display: flex;

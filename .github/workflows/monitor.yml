@@ -53,6 +53,10 @@ jobs:
     needs: test
     strategy:
       fail-fast: false  # one client's failure does not cancel the others
+      max-parallel: 1   # run clients one at a time: each commits and pushes before
+                        # the next checks out, so the two never race on `git push`
+                        # (a parallel matrix would give the slower job a stale
+                        # checkout and a non-fast-forward rejection).
       matrix:
         client:
           - aerospace
@@ -88,11 +92,10 @@ jobs:
             --archive "clients/${{ matrix.client }}/artifacts/archive.json"
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          # Add client-specific API keys here, matching the auth_env_var
-          # values declared in each source in config.json.
-          # Example:
-          #   SAM_GOV_API_KEY: ${{ secrets.SAM_GOV_API_KEY }}
-          #   FDA_API_KEY: ${{ secrets.FDA_API_KEY }}
+          # Client-specific source keys, matching the auth_env_var values in
+          # each config.json. Unused vars are harmless for clients that don't
+          # declare them (e.g. aerospace ignores CONGRESS_API_KEY).
+          CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
 
       # ── Belt-and-suspenders validation ──────────────────────────────
       # The pipeline already validates its own output, but this step

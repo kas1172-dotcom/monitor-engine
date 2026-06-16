@@ -33,6 +33,12 @@
 
   <div class="layout container" id="main-layout" hidden>
     <aside class="filter-panel" id="filter-panel" aria-label="Filters">
+      <div class="filter-section">
+        <label class="filter-label" for="search-input">Search</label>
+        <input type="search" id="search-input" class="search-input"
+               placeholder="Filter by keyword…" autocomplete="off"
+               aria-label="Filter items by keyword">
+      </div>
       <div class="filter-section" id="category-section">
         <p class="filter-label">Topics</p>
         <div class="category-pills" id="category-pills"></div>

@@ -6,7 +6,13 @@ from urllib.parse import urlparse
 from bs4 import BeautifulSoup
 from dateutil import parser as dateutil_parser
 
-from monitor_engine.collectors.base import CollectResult, SourceHandler, stable_id, _DEFAULT_TIMEOUT
+from monitor_engine.collectors.base import (
+    CollectResult,
+    SourceHandler,
+    per_source_headers,
+    stable_id,
+    _DEFAULT_TIMEOUT,
+)
 from monitor_engine.models import HtmlListSource, RawItem
 
 # Fast-path formats tried before handing off to dateutil
@@ -67,7 +73,9 @@ class HtmlListHandler(SourceHandler):
         effective_timeout = source.timeout if source.timeout is not None else _DEFAULT_TIMEOUT
 
         base_url = str(source.url)
-        resp = self.session.get(base_url, timeout=effective_timeout)
+        resp = self.session.get(
+            base_url, timeout=effective_timeout, headers=per_source_headers(source)
+        )
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "html.parser")
 

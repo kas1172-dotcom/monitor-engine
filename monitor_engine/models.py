@@ -81,6 +81,7 @@ class RssSource(BaseModel):
     url: HttpUrl
     timeout: int | None = None      # per-source HTTP timeout in seconds; falls back to global default
     days_back: int | None = None    # per-source lookback window; falls back to global
+    user_agent: str | None = None   # override the session's default User-Agent for this source
 
 
 class JsonApiSource(BaseModel):
@@ -90,12 +91,22 @@ class JsonApiSource(BaseModel):
     url: HttpUrl
     item_path: str                          # dot-notation path to item array, e.g. "$.opportunitiesData"
     field_map: dict[str, str]               # engine field name → API response field name
+    url_template: str | None = None         # build item URL from record fields, e.g.
+                                            # "https://host/page?ID={k_number}"; takes precedence
+                                            # over field_map["url"]. Items missing a referenced
+                                            # field are skipped.
+    url_template_map: dict[str, dict[str, str]] | None = None
+                                            # per-field value translation for url_template, keyed
+                                            # by field name, e.g. {"type": {"HR": "house-bill"}}.
+                                            # A field value absent from its map skips the item.
+    base_url: str | None = None             # resolve relative item URLs (e.g. "/opinion/1/") against this
     auth_header: str | None = None
     auth_env_var: str | None = None
     method: Literal["GET", "POST"] = "GET"  # only GET is implemented; POST raises NotImplementedError
     request_body: dict | None = None        # reserved for future POST support
     timeout: int | None = None
     days_back: int | None = None
+    user_agent: str | None = None           # override the session's default User-Agent for this source
 
 
 class HtmlListSource(BaseModel):
@@ -109,6 +120,7 @@ class HtmlListSource(BaseModel):
     date_selector: str | None = None
     timeout: int | None = None
     days_back: int | None = None
+    user_agent: str | None = None   # override the session's default User-Agent for this source
 
 
 Source = Annotated[
