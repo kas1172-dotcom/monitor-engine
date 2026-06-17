@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Client Intake",
+  "description": "Structured answers from the intake questionnaire. Maps to the deterministic parts of a ClientConfig via tooling/scaffold.py; `coverage` and `paid_sources` feed the source-discovery agent.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["monitor_name", "audiences", "cadence"],
+  "properties": {
+    "monitor_name": { "type": "string", "minLength": 1 },
+    "accent_color": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" },
+    "audiences": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["label", "role", "matters", "topics"],
+        "properties": {
+          "label": { "type": "string", "minLength": 1 },
+          "role": { "type": "string" },
+          "matters": { "type": "string" },
+          "topics": { "type": "array", "items": { "type": "string" } }
+        }
+      }
+    },
+    "must_not_miss": { "type": "array", "items": { "type": "string" } },
+    "noise_to_exclude": { "type": "array", "items": { "type": "string" } },
+    "named_entities": { "type": "array", "items": { "type": "string" } },
+    "coverage": {
+      "type": "array",
+      "description": "Plain-language source briefs; resolved into sources[] by the discovery agent.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "what", "kind"],
+        "properties": {
+          "name": { "type": "string" },
+          "what": { "type": "string" },
+          "kind": { "type": "string", "enum": ["official", "news", "database", "social", "web"] },
+          "url_hint": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "cadence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frequency", "timezone"],
+      "properties": {
+        "frequency": { "type": "string", "enum": ["weekly", "weekdays", "daily"] },
+        "day": {
+          "type": "string",
+          "enum": ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+        },
+        "hour_local": { "type": "integer", "minimum": 0, "maximum": 23 },
+        "timezone": { "type": "string" }
+      }
+    },
+    "depth_sections": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["background", "key_stakeholders", "scenarios", "recommended_actions"]
+      }
+    },
+    "paid_sources": {
+      "type": "array",
+      "description": "Flags for authenticated sources. The API key is supplied out-of-band and stored as a repo secret — never in this file.",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["name", "env_var"],
+        "properties": {
+          "name": { "type": "string" },
+          "env_var": { "type": "string", "pattern": "^[A-Z][A-Z0-9_]*$" }
+        }
+      }
+    }
+  }
+}
