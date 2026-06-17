@@ -118,6 +118,35 @@ jobs:
               sys.exit(1)
           "
 
+      # ── Dark-source alert ───────────────────────────────────────────
+      # Surface any source that errored or returned nothing into the run's
+      # Step Summary and as ::warning:: annotations, so the operator is
+      # alerted on the run page. Non-failing (one dead source must not block
+      # the brief); the pipeline already tolerates per-source failures.
+      - name: Source health alert – ${{ matrix.client }}
+        if: always()
+        run: |
+          python - "clients/${{ matrix.client }}/artifacts/run_output.json" <<'PY'
+          import json, os, sys
+          from pathlib import Path
+          p = Path(sys.argv[1])
+          if not p.exists():
+              sys.exit(0)
+          health = json.loads(p.read_text()).get("source_health") or {}
+          bad = {k: v for k, v in health.items() if v.get("error") or v.get("zero_results")}
+          summary = os.environ.get("GITHUB_STEP_SUMMARY")
+          lines = [f"### Source health — ${{ matrix.client }}",
+                   f"{len(bad)} of {len(health)} sources need attention." if bad
+                   else f"All {len(health)} sources healthy."]
+          for sid, v in bad.items():
+              reason = v.get("error") or "zero items returned"
+              lines.append(f"- ⚠ **{sid}**: {reason}")
+              print(f"::warning title=Source {sid}::{reason}")
+          if summary:
+              Path(summary).write_text("\n".join(lines) + "\n", encoding="utf-8")
+          print("\n".join(lines))
+          PY
+
       # ── Commit artifacts back to the repo ───────────────────────────
       # The static site (index.html + run_output.json) is the output
       # contract.  archive.json is the rolling history that powers

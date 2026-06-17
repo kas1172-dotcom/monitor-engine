@@ -15,9 +15,11 @@
   --surface-alt: #f9fafb;
   --border: #e5e7eb;
 
-  --t1-accent: var(--accent);
-  --t2-accent: #6366f1;
-  --t3-color: var(--text-sec);
+  /* Urgency tier colors — semantic, intentionally decoupled from the brand
+     accent: Essential = warm, Important = neutral, Also tracked = muted. */
+  --t1-accent: #DD4B39;          /* Essential — warm coral (≠ deadline red) */
+  --t2-accent: #64748B;          /* Important — neutral slate */
+  --t3-color: var(--text-sec);   /* Also tracked — muted */
 
   --sig-new: #059669;
   --sig-deadline: #dc2626;
@@ -744,4 +746,24 @@ button {
 
 @media (min-width: 1120px) {
   .layout { grid-template-columns: 240px 1fr; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Touch devices: 44px minimum tap targets (WCAG 2.5.5 / Apple HIG).
+   Scoped to coarse pointers so desktop (mouse) stays compact.
+   ═══════════════════════════════════════════════════════════════════ */
+@media (pointer: coarse) {
+  .filter-toggle,
+  .edition-btn,
+  .cat-pill,
+  .deep-btn,
+  .cat-tag,
+  .source-link,
+  .tier3-item a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .date-btn { min-height: 44px; display: flex; align-items: center; }
+  .search-input { min-height: 44px; }
 }

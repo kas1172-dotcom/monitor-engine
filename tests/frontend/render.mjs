@@ -76,13 +76,24 @@ export function renderData(data, searchQuery = null) {
           + containers.tier2.children.length + containers.tier3.children.length;
         // Tag name of the first tier-1 card's title node: "A" for a real link,
         // "SPAN" when the item URL is a bare reference (safeLink fallback).
+        const titleNode = card => {
+          const wrap = card && card.findByClass('card-title');
+          return wrap && wrap.children[0];
+        };
         let tier1TitleTag = null;
         const firstCard = containers.tier1.children[0];
         if (firstCard) {
-          const wrap = firstCard.findByClass('card-title');
-          const node = wrap && wrap.children[0];
+          const node = titleNode(firstCard);
           tier1TitleTag = node ? node.tagName : null;
         }
+        // Ordered tier-1 title texts (to verify within-tier sort), first card's
+        // title text (to verify title clamping), and first category tag text
+        // (to verify per-category icons).
+        const tier1Titles = containers.tier1.children
+          .map(c => { const n = titleNode(c); return n ? n.textContent : null; });
+        const firstCatTag = firstCard
+          ? (firstCard.findByClass('cat-tag') || {}).textContent ?? null
+          : null;
         const result = {
           tier1: containers.tier1.children.length,
           tier2: containers.tier2.children.length,
@@ -91,6 +102,8 @@ export function renderData(data, searchQuery = null) {
           loadingHidden: doc.getElementById('loading-screen').classList.contains('hidden'),
           title: doc.getElementById('site-title').textContent,
           tier1TitleTag,
+          tier1Titles,
+          firstCatTag,
           deep,
         };
         // Search probe: type a query, re-render, record how many items remain.

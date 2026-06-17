@@ -113,11 +113,21 @@ def run_pipeline(
     raw_items = collection.items
     logger.info("Collected %d raw items", len(raw_items))
 
-    for sid, h in collection.health.items():
-        if h.error:
-            logger.warning("Source %s: %s", sid, h.error)
-        elif h.zero_results:
-            logger.warning("Source %s: zero items returned", sid)
+    # Dark-source alert: a consolidated, prominent summary of any source that
+    # errored or returned nothing, so the operator is alerted rather than having
+    # to read scattered log lines. (CI surfaces these further; see workflow.)
+    errored = [(sid, h.error) for sid, h in collection.health.items() if h.error]
+    empty = [sid for sid, h in collection.health.items() if not h.error and h.zero_results]
+    if errored or empty:
+        print(
+            f"\n[SOURCE ALERT] {len(errored)} errored, {len(empty)} returned zero "
+            f"of {len(collection.health)} sources:",
+            file=sys.stderr,
+        )
+        for sid, err in errored:
+            print(f"  ✗ {sid}: {err}", file=sys.stderr)
+        for sid in empty:
+            print(f"  ⚠ {sid}: zero items", file=sys.stderr)
 
     # ── Keyword prefilter ────────────────────────────────────────────────
     pf = config.keyword_prefilter

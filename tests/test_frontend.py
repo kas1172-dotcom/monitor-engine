@@ -150,3 +150,46 @@ def test_bare_reference_renders_as_span_not_dead_link(fixture_data, tmp_path):
     p.write_text(json.dumps(data))
     rendered = _render(p)
     assert rendered["tier1TitleTag"] == "SPAN"
+
+
+# ─── Within-tier sort ──────────────────────────────────────────────────────
+
+def test_items_sorted_by_relevance_within_tier(fixture_data, tmp_path):
+    data = json.loads(json.dumps(fixture_data))
+    # tier-1 items are item-01/02/03; give them distinct exec scores
+    scores = {"item-01": 85, "item-02": 95, "item-03": 90}
+    for it in data["items"]:
+        if it["item_id"] in scores:
+            it["per_edition"]["exec"]["relevance_score"] = scores[it["item_id"]]
+    p = tmp_path / "sorted.json"
+    p.write_text(json.dumps(data))
+    rendered = _render(p)
+    # descending by score → 02 (95), 03 (90), 01 (85)
+    assert rendered["tier1Titles"] == [
+        "Sample item 2 (tier 1)", "Sample item 3 (tier 1)", "Sample item 1 (tier 1)",
+    ]
+
+
+# ─── Title hygiene ─────────────────────────────────────────────────────────
+
+def test_long_title_clamped_to_80(fixture_data, tmp_path):
+    data = json.loads(json.dumps(fixture_data))
+    long_title = "Word " * 30  # 150 chars
+    for it in data["items"]:
+        if it["item_id"] == "item-01":
+            it["title"] = long_title
+            it["per_edition"]["exec"]["relevance_score"] = 99  # sort it to the top
+    p = tmp_path / "longtitle.json"
+    p.write_text(json.dumps(data))
+    rendered = _render(p)
+    first = rendered["tier1Titles"][0]
+    assert len(first) <= 81          # 80 + ellipsis
+    assert first.endswith("…")
+
+
+# ─── Per-category icons ────────────────────────────────────────────────────
+
+def test_category_tag_has_icon(rendered):
+    tag = rendered["firstCatTag"]
+    assert tag and "Finance" in tag
+    assert ord(tag[0]) > 127         # leading emoji glyph, not ASCII text

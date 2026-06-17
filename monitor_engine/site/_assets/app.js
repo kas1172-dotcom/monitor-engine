@@ -16,6 +16,11 @@ const state = {
    Boot
    ═══════════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
+  // Offline fallback: register the service worker (best-effort; ignored where
+  // unsupported, e.g. the headless test harness has no navigator).
+  if (typeof navigator !== 'undefined' && navigator.serviceWorker) {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
   const url = window.__DATA_URL || 'run_output.json';
   fetch(url)
     .then(r => {
@@ -235,9 +240,18 @@ function filteredItems() {
    ═══════════════════════════════════════════════════════════════════ */
 function render() {
   const items = filteredItems();
-  const t1 = items.filter(i => i.tier === 1);
-  const t2 = items.filter(i => i.tier === 2);
-  const t3 = items.filter(i => i.tier === 3);
+  // Within each tier, most relevant first (by the active edition's score,
+  // falling back to importance_score), tie-broken by most recent.
+  const score = it => {
+    const ea = it.per_edition && it.per_edition[state.activeEdition];
+    return ea ? ea.relevance_score : (it.importance_score || 0);
+  };
+  const byScore = (a, b) =>
+    score(b) - score(a) ||
+    new Date(b.published_at || b.collected_at) - new Date(a.published_at || a.collected_at);
+  const t1 = items.filter(i => i.tier === 1).sort(byScore);
+  const t2 = items.filter(i => i.tier === 2).sort(byScore);
+  const t3 = items.filter(i => i.tier === 3).sort(byScore);
 
   renderWhatsNew(items);
   renderTier1(t1);
@@ -307,7 +321,9 @@ function fullCard(item) {
 
   // Title
   const titleEl = el('div', 'card-title');
-  titleEl.appendChild(safeLink(item.url, item.title));
+  const titleLink = safeLink(item.url, cleanTitle(item.title));
+  titleLink.title = item.title;            // full title on hover
+  titleEl.appendChild(titleLink);
   div.appendChild(titleEl);
 
   // Meta row
@@ -348,16 +364,8 @@ function fullCard(item) {
   if (chips) div.appendChild(chips);
 
   // Category tags
-  if (ea && ea.categories.length) {
-    const tags = el('div', 'cat-tags');
-    ea.categories.forEach(cat => {
-      const t = el('span', 'cat-tag');
-      t.textContent = cat;
-      t.addEventListener('click', () => { state.activeCategory = cat; syncPillStates(cat); render(); });
-      tags.appendChild(t);
-    });
-    div.appendChild(tags);
-  }
+  const fullTags = categoryTags(ea && ea.categories);
+  if (fullTags) div.appendChild(fullTags);
 
   // Confidence note
   if (item.confidence_note) {
@@ -391,7 +399,8 @@ function compactRow(item) {
   const left = el('div', 'compact-left');
 
   const title = el('div', 'compact-title');
-  title.textContent = item.title;
+  title.textContent = cleanTitle(item.title);
+  title.title = item.title;                 // full title on hover
   left.appendChild(title);
 
   const meta = el('div', 'compact-meta');
@@ -443,16 +452,8 @@ function compactRow(item) {
     const chips = statChips(item);
     if (chips) detail.appendChild(chips);
 
-    if (ea.categories.length) {
-      const tags = el('div', 'cat-tags');
-      ea.categories.forEach(cat => {
-        const t = el('span', 'cat-tag');
-        t.textContent = cat;
-        t.addEventListener('click', () => { state.activeCategory = cat; syncPillStates(cat); render(); });
-        tags.appendChild(t);
-      });
-      detail.appendChild(tags);
-    }
+    const compactTags = categoryTags(ea.categories);
+    if (compactTags) detail.appendChild(compactTags);
 
     if (item.confidence_note) {
       const note = el('div', 'conf-note');
@@ -482,7 +483,7 @@ function renderTier3(items) {
   items.forEach(item => {
     const li = el('li', 'tier3-item');
     const dot = el('span', 'tier3-dot');
-    const a = safeLink(item.url, item.title);
+    const a = safeLink(item.url, cleanTitle(item.title));
     a.title = item.title;
     li.appendChild(dot);
     li.appendChild(a);
@@ -696,6 +697,52 @@ function safeLink(url, text, className) {
     node.rel = 'noopener';
   }
   return node;
+}
+
+// Tidy a source title for display: collapse whitespace and clamp to ~80 chars
+// on a word boundary with an ellipsis. The full title is kept as the element's
+// hover tooltip by callers. Cleaning happens at display only — stored data is
+// untouched.
+function cleanTitle(t) {
+  const s = String(t || '').replace(/\s+/g, ' ').trim();
+  if (s.length <= 80) return s;
+  const clamped = s.slice(0, 80);
+  const sp = clamped.lastIndexOf(' ');
+  return (sp > 40 ? clamped.slice(0, sp) : clamped).replace(/[\s,;:.-]+$/, '') + '…';
+}
+
+// Generic icon for a category, by keyword. Keywords are generic category-type
+// words (not client/industry terms), so this stays config-agnostic.
+function categoryIcon(cat) {
+  const c = String(cat || '').toLowerCase();
+  const map = [
+    [/enforc|litigat|legal|court|settlement/, '⚖️'],
+    [/deadline|comment period/, '⏰'],
+    [/payment|reimburs|pricing|cost|funding|budget|appropriat/, '💵'],
+    [/clearance|approval|device|drug|biologic/, '✅'],
+    [/market|m&a|merger|acquisition|moves/, '📈'],
+    [/legislat|bill|congress|statut/, '🏛️'],
+    [/rule|regulat|guidance|policy/, '📋'],
+    [/coverage/, '🛡️'],
+    [/oversight|report|audit/, '🔍'],
+    [/safety|recall|risk/, '⚠️'],
+  ];
+  for (const [re, icon] of map) if (re.test(c)) return icon;
+  return '🏷️';
+}
+
+// Clickable category tags for an item — shared by the full and compact cards.
+// Returns the tags container, or null when there are no categories.
+function categoryTags(categories) {
+  if (!categories || !categories.length) return null;
+  const tags = el('div', 'cat-tags');
+  categories.forEach(cat => {
+    const t = el('span', 'cat-tag');
+    t.textContent = categoryIcon(cat) + ' ' + cat;
+    t.addEventListener('click', () => { state.activeCategory = cat; syncPillStates(cat); render(); });
+    tags.appendChild(t);
+  });
+  return tags;
 }
 
 // Minimal HTML escaping — use for all untrusted strings inserted as innerHTML

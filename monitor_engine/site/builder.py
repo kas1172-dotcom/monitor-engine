@@ -72,3 +72,9 @@ def build_site(
     )
 
     (output_dir / "index.html").write_text(html, encoding="utf-8")
+
+    # The service worker must be a separate file (it can't be inlined) and is
+    # served alongside index.html for the offline fallback.
+    (output_dir / "sw.js").write_text(
+        (_ASSETS / "sw.js").read_text(encoding="utf-8"), encoding="utf-8"
+    )

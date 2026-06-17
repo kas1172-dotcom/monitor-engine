@@ -123,6 +123,11 @@ class TestBuildSiteOutputFiles:
         build_site(run_output, config, tmp_path)
         assert (tmp_path / "run_output.json").exists()
 
+    def test_creates_service_worker(self, config, run_output, tmp_path):
+        # The offline-fallback worker is copied alongside index.html.
+        build_site(run_output, config, tmp_path)
+        assert (tmp_path / "sw.js").exists()
+
     def test_custom_data_filename(self, config, run_output, tmp_path):
         build_site(run_output, config, tmp_path, data_filename="brief.json")
         assert (tmp_path / "brief.json").exists()
@@ -284,6 +289,10 @@ class TestHtmlStructure:
         html = self._html(config, run_output, tmp_path)
         assert 'id="search-input"' in html
         assert 'type="search"' in html
+
+    def test_html_registers_service_worker(self, config, run_output, tmp_path):
+        html = self._html(config, run_output, tmp_path)
+        assert "serviceWorker" in html and "register('sw.js')" in html
 
     def test_no_hardcoded_brand_name_in_template(self, config, run_output, tmp_path):
         # The template itself must not bake in the client name — it comes from data JS
