@@ -21,6 +21,10 @@ from monitor_engine.analysis.scorer import (
     _RunCost,
     _strict_json_schema,
 )
+from monitor_engine.analysis.prompts import (
+    build_classification_system_prompt,
+    build_editorial_prompt,
+)
 from monitor_engine.analysis.validation import (
     parse_affected_population,
     parse_dollar_amount,
@@ -1094,3 +1098,19 @@ class TestRunCostPhases:
             cost.phase_usd(PHASE_CLASSIFICATION) + cost.phase_usd(PHASE_DEEP_ANALYSIS)
         )
         assert cost.phase_usd(PHASE_EDITORIAL) == 0.0   # never added
+
+
+# ─── Prompt quality (Stage 1: BLUF, specific, calibrated uncertainty) ──────
+
+class TestPromptQuality:
+    def test_classification_prompt_demands_bluf_and_uncertainty(self, config):
+        p = build_classification_system_prompt(config)
+        assert "BLUF" in p
+        assert "specific" in p.lower()
+        assert "calibrated uncertainty" in p.lower()
+        assert "do not invent" in p.lower()
+
+    def test_editorial_prompt_demands_bluf_and_grounding(self, config):
+        p = build_editorial_prompt([], config)
+        assert "bottom line" in p.lower() or "BLUF" in p
+        assert "ground every claim" in p.lower() or "do not invent" in p.lower()
