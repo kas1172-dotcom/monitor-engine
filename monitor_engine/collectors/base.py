@@ -79,6 +79,24 @@ class SourceHandler(ABC):
     ) -> CollectResult: ...
 
 
+def handler_registry(session: requests.Session) -> dict[str, SourceHandler]:
+    """Map each source ``type`` to a handler instance bound to *session*.
+
+    Single source of truth for the type→handler mapping — used by collect_all,
+    the test-mode runner, and the discovery oracle, so a new source type is wired
+    in exactly one place. Imported lazily to avoid a base↔handler import cycle.
+    """
+    from monitor_engine.collectors.html_list import HtmlListHandler
+    from monitor_engine.collectors.json_api import JsonApiHandler
+    from monitor_engine.collectors.rss import RssHandler
+
+    return {
+        "rss": RssHandler(session),
+        "json_api": JsonApiHandler(session),
+        "html_list": HtmlListHandler(session),
+    }
+
+
 def check_env_vars(config: ClientConfig) -> None:
     """Fail fast before any network calls if declared env vars are absent."""
     missing = [v for v in config.required_env_vars() if not os.environ.get(v)]
@@ -101,16 +119,8 @@ def collect_all(
     """
     check_env_vars(config)
 
-    from monitor_engine.collectors.html_list import HtmlListHandler
-    from monitor_engine.collectors.json_api import JsonApiHandler
-    from monitor_engine.collectors.rss import RssHandler
-
     session = make_session()
-    handler_map: dict[str, SourceHandler] = {
-        "rss": RssHandler(session),
-        "json_api": JsonApiHandler(session),
-        "html_list": HtmlListHandler(session),
-    }
+    handler_map = handler_registry(session)
 
     cap = max_items_per_source if max_items_per_source is not None else config.cost_caps.max_items_per_run
 

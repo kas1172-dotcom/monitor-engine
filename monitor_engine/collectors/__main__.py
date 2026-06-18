@@ -13,10 +13,7 @@ import json
 import sys
 from pathlib import Path
 
-from monitor_engine.collectors.base import check_env_vars, make_session
-from monitor_engine.collectors.html_list import HtmlListHandler
-from monitor_engine.collectors.json_api import JsonApiHandler
-from monitor_engine.collectors.rss import RssHandler
+from monitor_engine.collectors.base import check_env_vars, handler_registry, make_session
 from monitor_engine.models import ClientConfig
 
 
@@ -39,11 +36,7 @@ def main() -> None:
         sys.exit(1)
 
     session = make_session()
-    handler_map = {
-        "rss": RssHandler(session),
-        "json_api": JsonApiHandler(session),
-        "html_list": HtmlListHandler(session),
-    }
+    handler_map = handler_registry(session)
 
     zero: list[str] = []
     errors: list[tuple[str, str]] = []
