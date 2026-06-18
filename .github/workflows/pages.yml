@@ -1,0 +1,56 @@
+name: Deploy Pages
+
+# Publishes the committed client dashboards to GitHub Pages. Runs after the
+# pipeline commits fresh artifacts to main, and on demand. The pipeline itself
+# (monitor.yml) still just commits artifacts into the repo — this is the only
+# thing that turns them into a hosted site.
+on:
+  push:
+    branches: [main]
+    paths:
+      - "clients/*/artifacts/**"
+      - "tooling/build_pages.py"
+      - ".github/workflows/pages.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two Pages deploys at once; let an in-flight one finish.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      # Assemble _site/ from each clients/*/artifacts dashboard plus a root
+      # landing page linking to them. stdlib only — no install step needed.
+      - name: Assemble site
+        run: python -m tooling.build_pages --clients-dir clients --out _site
+
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deploy
+        uses: actions/deploy-pages@v4
