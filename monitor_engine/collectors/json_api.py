@@ -104,12 +104,6 @@ class JsonApiHandler(SourceHandler):
         days_back: int,
         max_items: int,
     ) -> CollectResult:
-        if source.method != "GET":
-            raise NotImplementedError(
-                f"source {source.id!r}: method={source.method!r} is not yet implemented; "
-                "only GET is supported"
-            )
-
         effective_days_back = source.days_back if source.days_back is not None else days_back
         effective_timeout = source.timeout if source.timeout is not None else _DEFAULT_TIMEOUT
 
@@ -117,7 +111,18 @@ class JsonApiHandler(SourceHandler):
         if source.auth_env_var and source.auth_header:
             headers[source.auth_header] = os.environ[source.auth_env_var]
 
-        resp = self.session.get(str(source.url), headers=headers, timeout=effective_timeout)
+        # method is constrained to GET|POST by the schema. POST sends request_body
+        # as a JSON payload (the shape most search APIs expect); note make_session
+        # only retries GET, so a POST source is not auto-retried on 5xx/429.
+        if source.method == "POST":
+            resp = self.session.post(
+                str(source.url),
+                headers=headers,
+                json=source.request_body or {},
+                timeout=effective_timeout,
+            )
+        else:
+            resp = self.session.get(str(source.url), headers=headers, timeout=effective_timeout)
         resp.raise_for_status()
         data = resp.json()
 

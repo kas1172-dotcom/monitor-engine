@@ -102,8 +102,15 @@ class JsonApiSource(BaseModel):
     base_url: str | None = None             # resolve relative item URLs (e.g. "/opinion/1/") against this
     auth_header: str | None = None
     auth_env_var: str | None = None
-    method: Literal["GET", "POST"] = "GET"  # only GET is implemented; POST raises NotImplementedError
-    request_body: dict | None = None        # reserved for future POST support
+    method: Literal["GET", "POST"] = Field(
+        default="GET",
+        description="HTTP method. Use POST for search APIs that take a query body; "
+                    "request_body is then sent as JSON.",
+    )
+    request_body: dict | None = Field(
+        default=None,
+        description="JSON payload sent with POST requests (ignored for GET).",
+    )
     timeout: int | None = None
     days_back: int | None = None
     user_agent: str | None = None           # override the session's default User-Agent for this source

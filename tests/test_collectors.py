@@ -59,6 +59,7 @@ def _mock_session(*, text: str = "", content: bytes | None = None) -> MagicMock:
 
     session = MagicMock()
     session.get.return_value = resp
+    session.post.return_value = resp
     return session
 
 
@@ -267,11 +268,30 @@ class TestJsonApiHandler:
         assert len(result.items) == 1
         assert result.items[0].title == "Has URL"
 
-    def test_post_raises_not_implemented_error(self):
-        source = _api_source(method="POST", request_body={"q": "test"})
-        with pytest.raises(NotImplementedError, match="POST"):
-            JsonApiHandler(_mock_session(text="{}"
-            )).collect(source, days_back=7, max_items=10)
+    def test_post_sends_request_body_as_json(self):
+        text = (FIXTURES / "sample_api.json").read_text()
+        session = _mock_session(text=text)
+        source = _api_source(method="POST", request_body={"q": "defense", "limit": 50})
+        result = JsonApiHandler(session).collect(source, days_back=36500, max_items=10)
+        # POST path taken, not GET.
+        assert session.post.called
+        assert not session.get.called
+        assert session.post.call_args.kwargs["json"] == {"q": "defense", "limit": 50}
+        # And it still parses items exactly like the GET path.
+        assert len(result.items) == 3
+
+    def test_post_with_no_body_sends_empty_object(self):
+        session = _mock_session(text='{"opportunitiesData": []}')
+        source = _api_source(method="POST")  # request_body defaults to None
+        JsonApiHandler(session).collect(source, days_back=7, max_items=10)
+        assert session.post.call_args.kwargs["json"] == {}
+
+    def test_get_remains_default(self):
+        text = (FIXTURES / "sample_api.json").read_text()
+        session = _mock_session(text=text)
+        JsonApiHandler(session).collect(_api_source(), days_back=36500, max_items=10)
+        assert session.get.called
+        assert not session.post.called
 
     def test_unparseable_date_counts_as_failure(self):
         payload = json.dumps({"opportunitiesData": [
