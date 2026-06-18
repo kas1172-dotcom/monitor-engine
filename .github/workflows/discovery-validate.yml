@@ -1,0 +1,42 @@
+name: Discovery Validation
+
+# Live run of the source-discovery agent against real briefs. Makes real network
+# + Anthropic API calls (costs spend), so it is manual-only — never on push/PR.
+# Trigger from the Actions tab; pick a client whose intake.json exists.
+on:
+  workflow_dispatch:
+    inputs:
+      client:
+        description: "Client directory under clients/ to validate"
+        required: true
+        default: "healthcare-regulatory"
+
+permissions:
+  contents: read        # read-only: this validates, it does not commit anything
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install engine
+        run: pip install -e ".[dev]"
+
+      # Scaffold the client's intake into briefs, run the discovery agent live,
+      # and compare the discovered sources against the hand-built config. The
+      # coverage report is written to the run's Step Summary; the step fails only
+      # if the agent produced zero usable sources (validate_discovery exits 1).
+      - name: Validate discovery – ${{ inputs.client }}
+        run: python -m tooling.validate_discovery "clients/${{ inputs.client }}" > /dev/null
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Source keys some briefs may need to probe authenticated endpoints.
+          CONGRESS_API_KEY: ${{ secrets.CONGRESS_API_KEY }}
