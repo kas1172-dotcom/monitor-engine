@@ -218,6 +218,20 @@ class ClientConfig(BaseModel):
         ]
 
 
+class Feedback(BaseModel):
+    """Client feedback that deterministically adjusts the next run.
+
+    A committed file (``clients/<name>/feedback.json``) — NOT a database and NOT
+    a learning loop. Each field is applied as a plain, reproducible rule, so the
+    effect is auditable in git. An absent file (or empty lists) means no change.
+    """
+    mute_terms: list[str] = []      # title/summary matches dropped before analysis ("less of this")
+    boost_terms: list[str] = []     # matches force-kept: prefilter include + never_discard ("more of this")
+    mute_sources: list[str] = []    # source names (as shown on cards) whose items are dropped
+    suppress_urls: list[str] = []   # specific item URLs to drop from the brief ("never show this")
+    pin_urls: list[str] = []        # specific item URLs to force to tier 1 ("always surface this")
+
+
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 # OUTPUT / ARTIFACT
 # ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

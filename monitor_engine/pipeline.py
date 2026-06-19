@@ -22,6 +22,12 @@ from monitor_engine.archive import (
     update_archive,
 )
 from monitor_engine.collectors.base import collect_all
+from monitor_engine.feedback import (
+    apply_to_analyzed,
+    apply_to_config,
+    filter_muted_sources,
+    load_feedback,
+)
 from monitor_engine.models import (
     ArchivedRun,
     ClientConfig,
@@ -91,6 +97,12 @@ def run_pipeline(
     output_dir.mkdir(parents=True, exist_ok=True)
     arch_path = archive_path or output_dir / "archive.json"
 
+    # ── Client feedback ──────────────────────────────────────────────────
+    # Optional clients/<name>/feedback.json deterministically adjusts this run
+    # (boost/mute terms, muted sources, suppressed/pinned items). Absent = no-op.
+    feedback = load_feedback(config_path.parent / "feedback.json")
+    config = apply_to_config(config, feedback)   # merge boost/mute into prefilter + never_discard
+
     # ── Guard: Anthropic key needed for analysis ─────────────────────────
     if not skip_analysis and not os.environ.get("ANTHROPIC_API_KEY"):
         print(
@@ -112,6 +124,13 @@ def run_pipeline(
 
     raw_items = collection.items
     logger.info("Collected %d raw items", len(raw_items))
+
+    # Drop items from any source the client muted via feedback.
+    if feedback.mute_sources:
+        before = len(raw_items)
+        raw_items = filter_muted_sources(raw_items, feedback)
+        logger.info("Feedback muted %d source(s): %d → %d items",
+                    len(feedback.mute_sources), before, len(raw_items))
 
     # Dark-source alert: a consolidated, prominent summary of any source that
     # errored or returned nothing, so the operator is alerted rather than having
@@ -176,6 +195,13 @@ def run_pipeline(
         analyzed = group_related_items(analyzed)
         if len(analyzed) != before:
             logger.info("Grouping: %d → %d items (collapsed duplicates)", before, len(analyzed))
+
+    # Apply item-level feedback: drop suppressed items, force pinned items to tier 1.
+    if analyzed and (feedback.suppress_urls or feedback.pin_urls):
+        before = len(analyzed)
+        analyzed = apply_to_analyzed(analyzed, feedback)
+        logger.info("Feedback: suppressed %d, pinned %d item(s)",
+                    before - len(analyzed), len(feedback.pin_urls))
 
     # ── Archive ──────────────────────────────────────────────────────────
     archive = load_archive(arch_path)

@@ -1,0 +1,8 @@
+{
+  "_comment": "Copy this to feedback.json (same directory) to have the next run honor it. All fields optional. mute_sources matches the source name shown on cards. URLs are matched leniently (trailing-slash/query differences are ignored). This is deterministic config, not a learning loop.",
+  "mute_terms": ["air show"],
+  "boost_terms": ["build-to-print", "precision machining"],
+  "mute_sources": ["Example Trade Blog"],
+  "suppress_urls": ["https://example.com/a-specific-item-to-hide"],
+  "pin_urls": ["https://example.com/an-item-to-always-feature"]
+}
