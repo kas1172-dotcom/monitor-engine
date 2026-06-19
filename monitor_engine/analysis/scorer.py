@@ -31,6 +31,7 @@ from monitor_engine.analysis.prompts import (
     build_editorial_prompt,
 )
 from monitor_engine.analysis.validation import (
+    normalize_title,
     parse_affected_population,
     parse_dollar_amount,
     validate_factual_claims,
@@ -381,9 +382,11 @@ class Scorer:
             except ValueError:
                 logger.debug("Could not parse deadline %r for item %r", llm.action_deadline, raw.id)
 
+        clean_title = normalize_title(raw.title)
         item = AnalyzedItem(
             item_id=raw.id,
-            title=raw.title,
+            title=clean_title,
+            raw_title=raw.title if clean_title != raw.title else None,
             url=raw.url,
             source_id=raw.source_name,
             published_at=raw.published_date,

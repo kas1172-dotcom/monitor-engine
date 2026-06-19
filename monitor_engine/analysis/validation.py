@@ -1,8 +1,58 @@
 from __future__ import annotations
 
+import html
 import re
 
 from monitor_engine.models import AnalyzedItem, RawItem
+
+# ─── Title normalization ────────────────────────────────────────────────────
+# Some sources (esp. FDA recall feeds) dump a full product/packaging string as
+# the "title": comma-separated descriptors, distributor boilerplate, NDC/lot
+# codes, SCREAMING CAPS. normalize_title turns those into a readable headline
+# while leaving already-clean headlines essentially untouched (just length-capped).
+
+_TITLE_MAX_LEN = 80
+
+# Tail boilerplate to cut: everything from a distributor/packaging/regulatory
+# marker onward is packaging metadata, not headline content.
+_BOILERPLATE_TAIL_RE = re.compile(
+    r"\s*[,;:]?\s*\b(?:distributed by|manufactured by|manufactured for|packaged by|"
+    r"marketed by|made in|product of|rx only|ndc\b|udi\b|lot (?:number|#|no))\b.*$",
+    re.IGNORECASE,
+)
+# Trailing source attribution like " | FDA" or " - Federal Register". Requires
+# whitespace around the separator so hyphenated words ("Build-to-Print") are safe.
+_SOURCE_SUFFIX_RE = re.compile(r"\s+[|–—]\s+[^|–—]{1,40}$|\s+-\s+[^|–—\-]{1,40}$")
+_WS_RE = re.compile(r"\s+")
+# A word is "screaming" if its letters are all uppercase and longer than a
+# typical acronym — so FDA/CMS/USP/HCl survive but CARBONATE/TABLETS get fixed.
+_ACRONYM_MAX_LEN = 4
+
+
+def _descream_word(word: str) -> str:
+    core = re.sub(r"[^A-Za-z]", "", word)
+    if len(core) > _ACRONYM_MAX_LEN and core.isupper():
+        return word.capitalize()   # ULTRA→Ultra, keeps trailing punctuation
+    return word
+
+
+def normalize_title(raw_title: str) -> str:
+    """Produce a clean, human-readable headline from a possibly-clunky source title.
+
+    Deterministic and conservative: decodes entities, collapses whitespace, cuts
+    distributor/packaging boilerplate tails, de-SCREAMs long all-caps words (short
+    acronyms preserved), and caps length at a word boundary. Never returns empty —
+    falls back to the trimmed original if normalization would erase everything.
+    """
+    if not raw_title:
+        return raw_title
+    text = _WS_RE.sub(" ", html.unescape(raw_title)).strip()
+    text = _BOILERPLATE_TAIL_RE.sub("", text).rstrip(" ,;:-")
+    text = _SOURCE_SUFFIX_RE.sub("", text).rstrip(" ,;:-") or text
+    text = " ".join(_descream_word(w) for w in text.split(" "))
+    if len(text) > _TITLE_MAX_LEN:
+        text = text[:_TITLE_MAX_LEN].rsplit(" ", 1)[0].rstrip(" ,;:-") + "…"
+    return text.strip() or raw_title.strip()
 
 # ─── Shared multiplier table ───────────────────────────────────────────────
 

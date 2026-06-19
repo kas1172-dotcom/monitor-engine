@@ -464,6 +464,16 @@ button {
 .so-what, .now-what { margin-bottom: 10px; }
 .now-what { margin-bottom: 0; }
 
+/* "Also covered by" — secondary sources collapsed under a grouping primary */
+.also-covered {
+  margin-top: 10px;
+  font-size: .8rem;
+  color: var(--text-sec);
+}
+.also-covered .also-link { color: var(--text-sec); text-decoration: underline; }
+.also-covered .also-link:hover { color: var(--text); }
+.also-covered .nonlink { color: var(--text-sec); }
+
 /* Stat chips strip */
 .stat-chips {
   display: flex;
