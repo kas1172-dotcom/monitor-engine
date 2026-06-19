@@ -172,6 +172,32 @@ class DeepAnalysisConfig(BaseModel):
                                                # big batches truncate at the token ceiling
 
 
+class NamedEntities(BaseModel):
+    """Names that matter to this client, grouped by relationship. Consumed by the
+    analysis prompt so 'why it matters' can reference real customers, rivals,
+    agencies, and programs by name. All optional; empty groups are simply omitted."""
+    customers: list[str] = []
+    competitors: list[str] = []
+    agencies: list[str] = []
+    programs: list[str] = []
+
+
+class ClientProfile(BaseModel):
+    """Structured description of the client the monitor serves. This is config
+    CONTENT consumed by the analysis prompt — not a database — so each item's
+    so-what/now-what speaks to the client's actual capabilities and goals rather
+    than generically. Every field is optional; the prompt only emits the parts
+    that are present. Do not infer facts beyond what is stated here."""
+    capabilities: list[str] = []          # what the client does / makes / offers
+    certifications: list[str] = []        # e.g. AS9100, ITAR, ISO 13485
+    industries_served: list[str] = []
+    customer_types: list[str] = []        # e.g. "defense primes", "Tier 1 suppliers"
+    geographic_focus: list[str] = []
+    strategic_goals: list[str] = []       # what the client is trying to achieve
+    risks: list[str] = []                 # what the client is exposed to / worried about
+    named_entities: NamedEntities = Field(default_factory=NamedEntities)
+
+
 class ClientConfig(BaseModel):
     branding: Branding
     editions: list[Edition]
@@ -180,6 +206,7 @@ class ClientConfig(BaseModel):
     keyword_prefilter: KeywordPrefilter
     cadence: Cadence
     cost_caps: CostCaps
+    profile: ClientProfile | None = None              # client-specific context for analysis
     deep_analysis: DeepAnalysisConfig | None = None   # omit to disable in-depth analysis
 
     def required_env_vars(self) -> list[str]:
@@ -224,9 +251,20 @@ class DeepAnalysis(BaseModel):
     sections: dict[str, str | list[str]]
 
 
+class CoverageRef(BaseModel):
+    """A secondary source covering the same underlying event as a primary item.
+    Listed on the primary card as 'also covered by'; the secondary is removed
+    from the top-level item list to collapse duplicates."""
+    item_id: str
+    source_id: str
+    title: str
+    url: str
+
+
 class AnalyzedItem(BaseModel):
     item_id: str                  # stable hash of (source_id + url)
-    title: str
+    title: str                    # cleaned, human-readable headline (see raw_title for original)
+    raw_title: str | None = None  # original source title before normalization; null if unchanged
     url: str
     source_id: str
     published_at: datetime | None
@@ -239,6 +277,7 @@ class AnalyzedItem(BaseModel):
     confidence_note: str | None = None
     unverified_claims: list[str] = []         # factual claims not found in source text
     deep_analysis: DeepAnalysis | None = None # precomputed in-depth analysis; null if not generated
+    also_covered_by: list[CoverageRef] = []   # other sources on the same event (dedup grouping)
 
     @computed_field                # deterministic Python; LLM never assigns this directly
     @property
