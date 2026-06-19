@@ -1,13 +1,14 @@
 name: Monitor Pipeline
 
 on:
-  # Scheduled runs are disabled for now — the pipeline runs only when manually
-  # triggered (workflow_dispatch). Re-enable weekly runs later by uncommenting:
+  # Manual trigger ONLY — nothing runs automatically. The pipeline (collect →
+  # analyse → commit) and its test gate fire solely when dispatched from the
+  # Actions tab. push/pull_request triggers are intentionally omitted so no run
+  # (and no API spend) ever starts on its own. Re-enable weekly runs later by
+  # uncommenting the schedule:
   # schedule:
   #   - cron: "0 7 * * 1"   # Monday 07:00 UTC
   workflow_dispatch:    # manual trigger from the Actions tab ("Run workflow")
-  push:                 # runs the test gate only (the pipeline job is dispatch-gated)
-  pull_request:
 
 permissions:
   contents: write       # required to commit artifacts back to the repo
