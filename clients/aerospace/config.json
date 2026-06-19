@@ -183,5 +183,59 @@
   "cost_caps": {
     "max_items_per_run": 60,
     "max_output_tokens_per_run": 40000
+  },
+  "profile": {
+    "capabilities": [
+      "precision machining",
+      "build-to-print manufacturing",
+      "5-axis CNC machining",
+      "assembly of flight-critical components"
+    ],
+    "certifications": [
+      "AS9100",
+      "ITAR registered",
+      "NADCAP"
+    ],
+    "industries_served": [
+      "defense",
+      "aerospace"
+    ],
+    "customer_types": [
+      "defense primes",
+      "Tier 1 aerospace suppliers"
+    ],
+    "geographic_focus": [
+      "United States"
+    ],
+    "strategic_goals": [
+      "grow defense revenue",
+      "win new build-to-print programs",
+      "deepen prime-contractor relationships"
+    ],
+    "risks": [
+      "supply-chain disruption",
+      "ITAR/export-control compliance",
+      "skilled-labor shortage",
+      "raw-material cost volatility"
+    ],
+    "named_entities": {
+      "customers": [
+        "Lockheed Martin",
+        "RTX",
+        "Northrop Grumman",
+        "Boeing Defense"
+      ],
+      "competitors": [],
+      "agencies": [
+        "Department of Defense",
+        "DCMA",
+        "State Department DDTC"
+      ],
+      "programs": [
+        "F-35",
+        "B-21",
+        "hypersonics"
+      ]
+    }
   }
 }

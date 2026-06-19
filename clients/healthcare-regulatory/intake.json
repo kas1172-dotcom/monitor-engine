@@ -6,38 +6,122 @@
       "label": "Policy",
       "role": "Government-affairs, regulatory, and health-policy professionals tracking legislation, rulemaking, enforcement, coverage and payment policy, litigation, and oversight.",
       "matters": "Prioritise federal legislation and its movement, proposed and final rules, regulatory enforcement actions, coverage and payment policy (Medicare/Medicaid/ACA), litigation that sets precedent, and oversight reports (GAO/CBO/OIG/MedPAC). Flag effective dates, comment deadlines, and statutory triggers. Score pure market/M&A items and routine device-clearance business intelligence low unless they carry a clear policy or regulatory implication.",
-      "topics": ["Legislation", "Rulemaking", "Enforcement", "Coverage & Payment", "Litigation", "Oversight & Reports"]
+      "topics": [
+        "Legislation",
+        "Rulemaking",
+        "Enforcement",
+        "Coverage & Payment",
+        "Litigation",
+        "Oversight & Reports"
+      ]
     },
     {
       "label": "Consulting",
       "role": "Healthcare consultants and corporate strategy/compliance teams tracking enforcement risk to clients, market moves, device and drug clearances, deadlines, and reimbursement impact.",
       "matters": "Prioritise developments with direct business implications: enforcement risk to providers/manufacturers/payers, market moves (M&A, partnerships, market entry/exit), device and drug clearances and approvals, compliance and filing deadlines, and changes that shift reimbursement. Quantify dollar and population impact where the source provides it. Score abstract policy commentary lower unless it has concrete operational or commercial consequence.",
-      "topics": ["Enforcement Risk", "Market Moves", "Device & Drug Clearances", "Deadlines", "Reimbursement Impact"]
+      "topics": [
+        "Enforcement Risk",
+        "Market Moves",
+        "Device & Drug Clearances",
+        "Deadlines",
+        "Reimbursement Impact"
+      ]
     }
   ],
   "must_not_miss": [
-    "warning letter", "consent decree", "corporate integrity agreement", "import alert",
-    "mandatory recall", "Class I recall", "fraud alert", "False Claims Act", "qui tam",
-    "whistleblower", "civil investigative demand", "debarment", "exclusion",
-    "emergency use authorization", "public health emergency", "immediate jeopardy",
-    "civil monetary penalty", "DOJ settlement"
+    "warning letter",
+    "consent decree",
+    "corporate integrity agreement",
+    "import alert",
+    "mandatory recall",
+    "Class I recall",
+    "fraud alert",
+    "False Claims Act",
+    "qui tam",
+    "whistleblower",
+    "civil investigative demand",
+    "debarment",
+    "exclusion",
+    "emergency use authorization",
+    "public health emergency",
+    "immediate jeopardy",
+    "civil monetary penalty",
+    "DOJ settlement"
   ],
   "noise_to_exclude": [
-    "obituary", "sports", "horoscope", "recipe", "celebrity", "gossip", "crossword", "weather forecast"
+    "obituary",
+    "sports",
+    "horoscope",
+    "recipe",
+    "celebrity",
+    "gossip",
+    "crossword",
+    "weather forecast"
   ],
   "named_entities": [
-    "FDA", "CMS", "HHS", "OIG", "GAO", "CBO", "MedPAC", "Medicare", "Medicaid", "ACA",
-    "DOJ", "FTC", "NIH"
+    "FDA",
+    "CMS",
+    "HHS",
+    "OIG",
+    "GAO",
+    "CBO",
+    "MedPAC",
+    "Medicare",
+    "Medicaid",
+    "ACA",
+    "DOJ",
+    "FTC",
+    "NIH"
   ],
   "coverage": [
-    {"name": "Federal Register (FDA, CMS, HHS)", "what": "Proposed and final rules, notices", "kind": "official", "url_hint": "federalregister.gov API"},
-    {"name": "Congress.gov bills", "what": "Federal legislation movement, current Congress", "kind": "official", "url_hint": "api.congress.gov"},
-    {"name": "openFDA 510(k) + drug enforcement", "what": "Device clearances and drug recalls", "kind": "database", "url_hint": "api.fda.gov"},
-    {"name": "CourtListener", "what": "Health-related court opinions", "kind": "database", "url_hint": "courtlistener.com API"},
-    {"name": "HHS OIG (enforcement + what's new)", "what": "Enforcement actions and new reports", "kind": "official", "url_hint": "oig.hhs.gov"},
-    {"name": "CMS Newsroom", "what": "CMS press releases", "kind": "official", "url_hint": "cms.gov/newsroom"},
-    {"name": "Trade press (STAT, Fierce, Healthcare Dive, MedCity, KFF)", "what": "Industry and policy news", "kind": "news", "url_hint": null},
-    {"name": "Policy shops (CBO, GAO, MedPAC, NASHP, POLITICO Pulse)", "what": "Reports and policy reporting", "kind": "news", "url_hint": null}
+    {
+      "name": "Federal Register (FDA, CMS, HHS)",
+      "what": "Proposed and final rules, notices",
+      "kind": "official",
+      "url_hint": "federalregister.gov API"
+    },
+    {
+      "name": "Congress.gov bills",
+      "what": "Federal legislation movement, current Congress",
+      "kind": "official",
+      "url_hint": "api.congress.gov"
+    },
+    {
+      "name": "openFDA 510(k) + drug enforcement",
+      "what": "Device clearances and drug recalls",
+      "kind": "database",
+      "url_hint": "api.fda.gov"
+    },
+    {
+      "name": "CourtListener",
+      "what": "Health-related court opinions",
+      "kind": "database",
+      "url_hint": "courtlistener.com API"
+    },
+    {
+      "name": "HHS OIG (enforcement + what's new)",
+      "what": "Enforcement actions and new reports",
+      "kind": "official",
+      "url_hint": "oig.hhs.gov"
+    },
+    {
+      "name": "CMS Newsroom",
+      "what": "CMS press releases",
+      "kind": "official",
+      "url_hint": "cms.gov/newsroom"
+    },
+    {
+      "name": "Trade press (STAT, Fierce, Healthcare Dive, MedCity, KFF)",
+      "what": "Industry and policy news",
+      "kind": "news",
+      "url_hint": null
+    },
+    {
+      "name": "Policy shops (CBO, GAO, MedPAC, NASHP, POLITICO Pulse)",
+      "what": "Reports and policy reporting",
+      "kind": "news",
+      "url_hint": null
+    }
   ],
   "cadence": {
     "frequency": "weekly",
@@ -45,8 +129,60 @@
     "hour_local": 7,
     "timezone": "America/New_York"
   },
-  "depth_sections": ["background", "key_stakeholders", "scenarios", "recommended_actions"],
+  "depth_sections": [
+    "background",
+    "key_stakeholders",
+    "scenarios",
+    "recommended_actions"
+  ],
   "paid_sources": [
-    {"name": "Congress.gov API", "env_var": "CONGRESS_API_KEY"}
-  ]
+    {
+      "name": "Congress.gov API",
+      "env_var": "CONGRESS_API_KEY"
+    }
+  ],
+  "profile": {
+    "capabilities": [
+      "regulatory strategy consulting",
+      "market-access advisory",
+      "reimbursement analysis"
+    ],
+    "certifications": [],
+    "industries_served": [
+      "medical devices",
+      "pharmaceuticals",
+      "health systems"
+    ],
+    "customer_types": [
+      "medical device manufacturers",
+      "health systems",
+      "payers"
+    ],
+    "geographic_focus": [
+      "United States"
+    ],
+    "strategic_goals": [
+      "advise clients on regulatory change",
+      "flag reimbursement risks and opportunities early"
+    ],
+    "risks": [
+      "regulatory uncertainty",
+      "reimbursement cuts",
+      "enforcement actions"
+    ],
+    "named_entities": {
+      "customers": [],
+      "competitors": [],
+      "agencies": [
+        "FDA",
+        "CMS",
+        "HHS",
+        "DOJ"
+      ],
+      "programs": [
+        "Medicare",
+        "Medicaid"
+      ]
+    }
+  }
 }
