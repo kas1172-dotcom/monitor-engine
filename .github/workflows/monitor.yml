@@ -9,11 +9,39 @@ on:
   # schedule:
   #   - cron: "0 7 * * 1"   # Monday 07:00 UTC
   workflow_dispatch:    # manual trigger from the Actions tab ("Run workflow")
+    inputs:
+      client:
+        description: "Which client(s) to run the full pipeline for"
+        type: choice
+        default: all
+        options:
+          - all
+          - aerospace
+          - healthcare-regulatory
 
 permissions:
   contents: write       # required to commit artifacts back to the repo
+  pages: write          # deploy job publishes the dashboards to Pages
+  id-token: write
 
 jobs:
+  # ── Select client(s) ───────────────────────────────────────────────────
+  # Turn the `client` dispatch input into the run matrix: "all" runs both test
+  # industries, otherwise just the one chosen. One dispatch = the full pipeline
+  # for the selected client(s), then a single Pages publish.
+  setup:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.pick.outputs.matrix }}
+    steps:
+      - id: pick
+        run: |
+          if [ "${{ inputs.client }}" = "all" ]; then
+            echo 'matrix={"client":["aerospace","healthcare-regulatory"]}' >> "$GITHUB_OUTPUT"
+          else
+            echo 'matrix={"client":["${{ inputs.client }}"]}' >> "$GITHUB_OUTPUT"
+          fi
+
   # ── Test gate ──────────────────────────────────────────────────────────
   # Runs on every event. The pipeline job depends on this, so a broken
   # frontend (e.g. items silently dropping out of tier buckets) blocks the
@@ -47,20 +75,12 @@ jobs:
           CI_REQUIRE_FRONTEND: "1"
 
   run:
-    # Only scrape and commit on the schedule or a manual dispatch — never on
-    # ordinary push/PR events, which exist here to exercise the test gate.
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    needs: test
+    needs: [setup, test]   # test gate must pass before any scrape/spend
     strategy:
       fail-fast: false  # one client's failure does not cancel the others
       max-parallel: 1   # run clients one at a time: each commits and pushes before
-                        # the next checks out, so the two never race on `git push`
-                        # (a parallel matrix would give the slower job a stale
-                        # checkout and a non-fast-forward rejection).
-      matrix:
-        client:
-          - aerospace
-          - healthcare-regulatory
+                        # the next checks out, so the two never race on `git push`.
+      matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
 
     runs-on: ubuntu-latest
 
@@ -171,3 +191,15 @@ jobs:
             echo "push rejected (attempt $attempt) — rebasing on origin/$BRANCH"
             git pull --rebase origin "$BRANCH"
           done
+
+  # ── Publish ─────────────────────────────────────────────────────────────
+  # Final step of the one-button pipeline: once the run job has committed fresh
+  # artifacts, publish all dashboards to Pages. Reuses the Deploy Pages workflow
+  # so the deploy logic lives in exactly one place.
+  deploy:
+    needs: run
+    # Publish whenever the pipeline actually ran — even if one client failed, the
+    # others' fresh artifacts (and every client's last-good) should still go live.
+    # Skipped only if the test gate blocked the run, or the run was cancelled.
+    if: ${{ !cancelled() && (needs.run.result == 'success' || needs.run.result == 'failure') }}
+    uses: ./.github/workflows/pages.yml
