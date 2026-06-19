@@ -1,16 +1,11 @@
 name: Deploy Pages
 
-# Publishes the committed client dashboards to GitHub Pages. Runs after the
-# pipeline commits fresh artifacts to main, and on demand. The pipeline itself
-# (monitor.yml) still just commits artifacts into the repo — this is the only
-# thing that turns them into a hosted site.
+# Publishes the committed client dashboards to GitHub Pages. Not auto-triggered:
+# it runs either as the final step of the Monitor Pipeline (called via
+# workflow_call after a run commits fresh artifacts) or on its own when manually
+# dispatched to republish without re-running the pipeline.
 on:
-  push:
-    branches: [main]
-    paths:
-      - "clients/*/artifacts/**"
-      - "tooling/build_pages.py"
-      - ".github/workflows/pages.yml"
+  workflow_call:
   workflow_dispatch:
 
 permissions:
@@ -32,6 +27,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Latest tip of the ref so we publish the artifacts the pipeline just
+          # committed, not the (older) dispatch SHA.
+          ref: ${{ github.ref_name }}
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
