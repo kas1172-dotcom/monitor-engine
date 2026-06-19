@@ -174,7 +174,8 @@
         "kind": "list",
         "instruction": "Concrete next steps a BD, capture, or policy team should consider this week."
       }
-    ]
+    ],
+    "deep_batch_size": 6
   },
   "cadence": {
     "cron": "0 7 * * 1",

@@ -417,7 +417,7 @@
         "instruction": "Concrete next steps a compliance, policy, or consulting team should consider this week."
       }
     ],
-    "deep_batch_size": 3
+    "deep_batch_size": 6
   },
   "cadence": {
     "cron": "0 7 * * 1",
