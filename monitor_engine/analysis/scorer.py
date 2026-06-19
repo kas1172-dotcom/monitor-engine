@@ -62,10 +62,13 @@ EDITORIAL_MAX_TOKENS = 1024
 # Deep-analysis per-call max_tokens is sized with headroom relative to the
 # expected output of the batch (estimate-per-item × items × headroom), rather
 # than a fixed ceiling, so a normal batch sits well under the limit and cannot
-# be cut mid-JSON. The estimate is deliberately generous; measure actual
-# out-tokens/item on a real run (printed in the cost summary) and tune.
-DEEP_TOKENS_PER_ITEM_ESTIMATE = 700   # rough expected deep output per item
-DEEP_TOKENS_HEADROOM = 2.0            # multiple of expected output to allow
+# be cut mid-JSON. Tuned against a real healthcare run that measured ~1135
+# out-tokens/item and truncated some batches at the old 700×2.0 sizing
+# ("Unterminated string" parse failures that wasted a full retry each). The
+# estimate now sits above observed output with generous headroom; max_tokens is
+# only a ceiling — you pay for tokens actually generated — so over-sizing is cheap.
+DEEP_TOKENS_PER_ITEM_ESTIMATE = 1400  # expected deep output per item (obs. ~1135)
+DEEP_TOKENS_HEADROOM = 2.5            # multiple of expected output to allow
 DEEP_MAX_TOKENS_FLOOR = 2048          # never below this, even for a 1-item batch
 
 _T = TypeVar("_T")
