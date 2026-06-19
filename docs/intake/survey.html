@@ -1,0 +1,191 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monitor Intake Survey</title>
+  <style>
+    :root { color-scheme: light dark; --accent: #0F766E; }
+    body { font: 15px/1.55 system-ui, sans-serif; margin: 0; padding: 2rem 1.25rem 5rem;
+           max-width: 820px; margin-inline: auto; }
+    h1 { font-size: 1.5rem; }
+    h2 { font-size: 1.05rem; margin: 2rem 0 .25rem; border-bottom: 2px solid var(--accent);
+         padding-bottom: .3rem; }
+    p.hint { color: #8a8a8a; margin: .15rem 0 .9rem; font-size: .85rem; }
+    label { display: block; font-weight: 600; margin: .8rem 0 .25rem; font-size: .9rem; }
+    input[type=text], input[type=number], textarea, select {
+      width: 100%; box-sizing: border-box; padding: .5rem .6rem; border: 1px solid #8886;
+      border-radius: 7px; font: inherit; background: transparent; color: inherit; }
+    textarea { min-height: 3rem; resize: vertical; }
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: .75rem; }
+    .edition { border: 1px solid #8884; border-radius: 10px; padding: .75rem 1rem; margin: .6rem 0; }
+    .sources { display: grid; grid-template-columns: 1fr 1fr; gap: .35rem .9rem; margin: .4rem 0; }
+    .sources label { font-weight: 400; display: flex; gap: .45rem; align-items: baseline; margin: .2rem 0; }
+    .req::after { content: " *"; color: #d33; }
+    button { font: inherit; font-weight: 700; padding: .65rem 1.4rem; border: 0; border-radius: 8px;
+             background: var(--accent); color: #fff; cursor: pointer; margin-top: 1.5rem; }
+    button.secondary { background: #6b7280; }
+    #errors { color: #d33; margin: 1rem 0; white-space: pre-line; font-weight: 600; }
+    #output { margin-top: 1.5rem; }
+    pre { background: #8881; padding: 1rem; border-radius: 8px; overflow: auto; max-height: 480px; font-size: .8rem; }
+    .small { font-size: .82rem; color: #8a8a8a; }
+  </style>
+</head>
+<body>
+  <h1>Monitor Intake Survey</h1>
+  <p class="hint">Answers generate an <code>intake.json</code>. Run it through
+    <code>python -m tooling.scaffold intake.json</code> to produce the client config;
+    the source-discovery agent then fills in real sources. Required fields are marked <span class="req"></span>.</p>
+
+  <form id="survey">
+    <h2>About the monitor</h2>
+    <label class="req">Monitor name</label>
+    <input type="text" name="monitor_name" placeholder="e.g. Aerospace & Defense Monitor">
+    <div class="row">
+      <div><label>Industry</label><input type="text" name="industry" placeholder="e.g. defense manufacturing"></div>
+      <div><label>Accent color</label><input type="text" name="accent_color" placeholder="#0F766E"></div>
+    </div>
+
+    <h2>Editions / lenses</h2>
+    <p class="hint">Up to two audiences this monitor serves. Topics: one per line.</p>
+    <div id="editions"></div>
+
+    <h2>Sources</h2>
+    <p class="hint">Pick what this monitor should watch (multi-select), or request another.</p>
+    <div class="sources" id="sources"></div>
+    <label>Request another source</label>
+    <input type="text" name="source_other" placeholder="e.g. a specific agency feed or trade publication">
+
+    <h2>Profile</h2>
+    <p class="hint">Describes the client so analysis speaks to their goals and capabilities.
+      Each box: one item per line.</p>
+    <div class="row">
+      <div><label>Capabilities</label><textarea name="capabilities" placeholder="precision machining&#10;build-to-print"></textarea></div>
+      <div><label>Certifications</label><textarea name="certifications" placeholder="AS9100&#10;ITAR"></textarea></div>
+    </div>
+    <div class="row">
+      <div><label>Customer types</label><textarea name="customer_types" placeholder="defense primes&#10;Tier 1 suppliers"></textarea></div>
+      <div><label>Geographic focus</label><textarea name="geographic_focus" placeholder="United States"></textarea></div>
+    </div>
+    <div class="row">
+      <div><label>Strategic goals</label><textarea name="strategic_goals" placeholder="grow defense revenue"></textarea></div>
+      <div><label>Risks / exposure</label><textarea name="risks" placeholder="supply-chain disruption"></textarea></div>
+    </div>
+    <p class="small">Named entities (one per line):</p>
+    <div class="row">
+      <div><label>Customers</label><textarea name="ne_customers" placeholder="Lockheed Martin"></textarea></div>
+      <div><label>Competitors</label><textarea name="ne_competitors"></textarea></div>
+    </div>
+    <div class="row">
+      <div><label>Agencies / regulators</label><textarea name="ne_agencies" placeholder="Department of Defense"></textarea></div>
+      <div><label>Programs</label><textarea name="ne_programs" placeholder="F-35"></textarea></div>
+    </div>
+
+    <h2>Triggers & noise</h2>
+    <div class="row">
+      <div><label>Never-miss keywords</label><textarea name="must_not_miss" placeholder="recall&#10;award"></textarea></div>
+      <div><label>Noise to exclude</label><textarea name="noise_to_exclude" placeholder="obituary"></textarea></div>
+    </div>
+
+    <h2>Cadence</h2>
+    <div class="row">
+      <div><label class="req">Frequency</label>
+        <select name="frequency"><option value="weekly">Weekly</option><option value="weekdays">Weekdays</option><option value="daily">Daily</option></select></div>
+      <div><label>Day (weekly)</label>
+        <select name="day"><option>monday</option><option>tuesday</option><option>wednesday</option><option>thursday</option><option>friday</option></select></div>
+    </div>
+    <div class="row">
+      <div><label>Hour (local, 0–23)</label><input type="number" name="hour_local" min="0" max="23" value="7"></div>
+      <div><label>Timezone</label><input type="text" name="timezone" value="UTC"></div>
+    </div>
+
+    <div id="errors"></div>
+    <button type="submit">Generate intake.json</button>
+  </form>
+
+  <div id="output" hidden>
+    <h2>Generated intake.json</h2>
+    <button class="secondary" id="download" type="button">Download intake.json</button>
+    <pre id="preview"></pre>
+  </div>
+
+  <script src="survey.js"></script>
+  <script>
+    // ── Build the dynamic bits (editions, source checkboxes) ──
+    const editionsEl = document.getElementById('editions');
+    [1, 2].forEach((n) => {
+      const d = document.createElement('div');
+      d.className = 'edition';
+      d.innerHTML =
+        '<label' + (n === 1 ? ' class="req"' : '') + '>Edition ' + n + ' label</label>' +
+        '<input type="text" data-ed="' + n + '" data-f="label" placeholder="e.g. Business Development">' +
+        '<div class="row"><div><label' + (n === 1 ? ' class="req"' : '') + '>Role / audience</label>' +
+        '<input type="text" data-ed="' + n + '" data-f="role" placeholder="e.g. BD team"></div>' +
+        '<div><label>What matters to them</label>' +
+        '<input type="text" data-ed="' + n + '" data-f="matters" placeholder="e.g. new programs to bid"></div></div>' +
+        '<label>Topics (one per line)</label><textarea data-ed="' + n + '" data-f="topics"></textarea>';
+      editionsEl.appendChild(d);
+    });
+
+    const sourcesEl = document.getElementById('sources');
+    SurveyIntake.SOURCE_LIBRARY.forEach((s) => {
+      const lab = document.createElement('label');
+      lab.innerHTML = '<input type="checkbox" value="' + s.name + '"> <span>' + s.name +
+        ' <span class="small">— ' + s.what + '</span></span>';
+      sourcesEl.appendChild(lab);
+    });
+
+    function collectAnswers() {
+      const f = document.getElementById('survey');
+      const val = (name) => (f.querySelector('[name="' + name + '"]') || {}).value || '';
+      const ed = (n, field) => (f.querySelector('[data-ed="' + n + '"][data-f="' + field + '"]') || {}).value || '';
+      const editions = [1, 2].map((n) => ({
+        label: ed(n, 'label'), role: ed(n, 'role'), matters: ed(n, 'matters'), topics: ed(n, 'topics'),
+      })).filter((e) => e.label.trim());
+      const sources = Array.from(sourcesEl.querySelectorAll('input:checked')).map((c) => c.value);
+      return {
+        monitor_name: val('monitor_name'), accent_color: val('accent_color'), industry: val('industry'),
+        editions, sources, source_other: val('source_other'),
+        profile: {
+          capabilities: val('capabilities'), certifications: val('certifications'),
+          customer_types: val('customer_types'), geographic_focus: val('geographic_focus'),
+          strategic_goals: val('strategic_goals'), risks: val('risks'),
+          named_entities: {
+            customers: val('ne_customers'), competitors: val('ne_competitors'),
+            agencies: val('ne_agencies'), programs: val('ne_programs'),
+          },
+        },
+        must_not_miss: val('must_not_miss'), noise_to_exclude: val('noise_to_exclude'),
+        cadence: { frequency: val('frequency'), day: val('day'), hour_local: val('hour_local'), timezone: val('timezone') },
+      };
+    }
+
+    let lastJson = '';
+    document.getElementById('survey').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const answers = collectAnswers();
+      const errors = SurveyIntake.validateAnswers(answers);
+      const errEl = document.getElementById('errors');
+      const out = document.getElementById('output');
+      if (errors.length) {
+        errEl.textContent = errors.join('\n');
+        out.hidden = true;
+        return;
+      }
+      errEl.textContent = '';
+      lastJson = JSON.stringify(SurveyIntake.surveyToIntake(answers), null, 2);
+      document.getElementById('preview').textContent = lastJson;
+      out.hidden = false;
+      out.scrollIntoView({ behavior: 'smooth' });
+    });
+
+    document.getElementById('download').addEventListener('click', () => {
+      const blob = new Blob([lastJson], { type: 'application/json' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url; a.download = 'intake.json'; a.click();
+      URL.revokeObjectURL(url);
+    });
+  </script>
+</body>
+</html>
