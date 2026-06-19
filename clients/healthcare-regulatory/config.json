@@ -310,21 +310,83 @@
   ],
   "keyword_prefilter": {
     "include": [
-      "health", "healthcare", "hospital", "physician", "clinic", "patient", "medical",
-      "medicare", "medicaid", "CMS", "FDA", "HHS", "CDC", "NIH", "drug", "biologic",
-      "device", "clinical", "pharmaceutical", "pharma", "insurer", "payer", "provider",
-      "reimbursement", "coverage", "Medicare Advantage", "Part D", "telehealth",
-      "nursing", "long-term care", "behavioral health", "mental health", "public health",
-      "prescription", "formulary", "prior authorization", "value-based", "ACO",
-      "compliance", "fraud", "abuse", "recall", "clearance", "510(k)", "approval",
-      "enforcement", "settlement", "rulemaking", "regulation", "legislation",
-      "appropriations", "oversight", "litigation", "ACA", "Affordable Care Act",
-      "price transparency", "drug pricing", "PBM", "biosimilar", "vaccine", "opioid",
-      "HIPAA", "interoperability", "EHR", "FQHC", "340B", "No Surprises Act"
+      "health",
+      "healthcare",
+      "hospital",
+      "physician",
+      "clinic",
+      "patient",
+      "medical",
+      "medicare",
+      "medicaid",
+      "CMS",
+      "FDA",
+      "HHS",
+      "CDC",
+      "NIH",
+      "drug",
+      "biologic",
+      "device",
+      "clinical",
+      "pharmaceutical",
+      "pharma",
+      "insurer",
+      "payer",
+      "provider",
+      "reimbursement",
+      "coverage",
+      "Medicare Advantage",
+      "Part D",
+      "telehealth",
+      "nursing",
+      "long-term care",
+      "behavioral health",
+      "mental health",
+      "public health",
+      "prescription",
+      "formulary",
+      "prior authorization",
+      "value-based",
+      "ACO",
+      "compliance",
+      "fraud",
+      "abuse",
+      "recall",
+      "clearance",
+      "510(k)",
+      "approval",
+      "enforcement",
+      "settlement",
+      "rulemaking",
+      "regulation",
+      "legislation",
+      "appropriations",
+      "oversight",
+      "litigation",
+      "ACA",
+      "Affordable Care Act",
+      "price transparency",
+      "drug pricing",
+      "PBM",
+      "biosimilar",
+      "vaccine",
+      "opioid",
+      "HIPAA",
+      "interoperability",
+      "EHR",
+      "FQHC",
+      "340B",
+      "No Surprises Act"
     ],
     "exclude": [
-      "obituary", "sports", "horoscope", "recipe", "celebrity", "gossip",
-      "crossword", "weather forecast"
+      "obituary",
+      "sports",
+      "horoscope",
+      "recipe",
+      "celebrity",
+      "gossip",
+      "crossword",
+      "weather forecast"
     ]
   },
   "deep_analysis": {
@@ -364,5 +426,49 @@
   "cost_caps": {
     "max_items_per_run": 300,
     "max_output_tokens_per_run": 9000000
+  },
+  "profile": {
+    "capabilities": [
+      "regulatory strategy consulting",
+      "market-access advisory",
+      "reimbursement analysis"
+    ],
+    "certifications": [],
+    "industries_served": [
+      "medical devices",
+      "pharmaceuticals",
+      "health systems"
+    ],
+    "customer_types": [
+      "medical device manufacturers",
+      "health systems",
+      "payers"
+    ],
+    "geographic_focus": [
+      "United States"
+    ],
+    "strategic_goals": [
+      "advise clients on regulatory change",
+      "flag reimbursement risks and opportunities early"
+    ],
+    "risks": [
+      "regulatory uncertainty",
+      "reimbursement cuts",
+      "enforcement actions"
+    ],
+    "named_entities": {
+      "customers": [],
+      "competitors": [],
+      "agencies": [
+        "FDA",
+        "CMS",
+        "HHS",
+        "DOJ"
+      ],
+      "programs": [
+        "Medicare",
+        "Medicaid"
+      ]
+    }
   }
 }

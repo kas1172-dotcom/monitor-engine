@@ -111,15 +111,20 @@ def _editions(intake: dict[str, Any]) -> list[dict[str, Any]]:
 
 
 def _prefilter_include(intake: dict[str, Any]) -> list[str]:
-    """Derive prefilter include terms from each audience's topics plus the named
-    entities the client said matter. De-duplicated, order-preserving. The agent
-    refines this; this is a sensible draft, not the final curated list."""
+    """Derive prefilter include terms from each audience's topics, the named
+    entities the client said matter, and any structured profile entities (so the
+    profile a client fills out also widens what gets collected). De-duplicated,
+    order-preserving. The agent refines this; this is a sensible draft."""
     seen: dict[str, None] = {}
     for aud in intake.get("audiences", []):
         for t in aud.get("topics", []):
             seen.setdefault(t, None)
     for ent in intake.get("named_entities", []):
         seen.setdefault(ent, None)
+    ne = (intake.get("profile") or {}).get("named_entities") or {}
+    for group in ("customers", "competitors", "agencies", "programs"):
+        for ent in ne.get(group, []):
+            seen.setdefault(ent, None)
     return list(seen)
 
 
@@ -165,6 +170,11 @@ def scaffold(intake: dict[str, Any]) -> dict[str, Any]:
         },
         "cost_caps": dict(DEFAULT_COST_CAPS),
     }
+
+    # Profile is consumed by the analysis prompt to make each item client-specific.
+    # Pass it through when the intake carries one; ClientConfig validates the shape.
+    if intake.get("profile"):
+        config["profile"] = intake["profile"]
 
     # Validate the deterministic draft against the single source of truth.
     ClientConfig.model_validate(config)

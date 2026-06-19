@@ -3,6 +3,43 @@ from __future__ import annotations
 from monitor_engine.models import AnalyzedItem, ClientConfig, RawItem
 
 
+def _format_profile_block(config: ClientConfig) -> str:
+    """Render ClientConfig.profile as analysis context, or '' when no profile is
+    set. Only non-empty fields are emitted so the prompt never carries blank
+    labels, and the analyst is told not to infer beyond what's stated."""
+    p = config.profile
+    if p is None:
+        return ""
+
+    lines: list[str] = []
+
+    def add(label: str, values: list[str]) -> None:
+        if values:
+            lines.append(f"- {label}: {', '.join(values)}")
+
+    add("Capabilities", p.capabilities)
+    add("Certifications", p.certifications)
+    add("Industries served", p.industries_served)
+    add("Customer types", p.customer_types)
+    add("Geographic focus", p.geographic_focus)
+    add("Strategic goals", p.strategic_goals)
+    add("Risks / exposure", p.risks)
+    add("Key customers", p.named_entities.customers)
+    add("Competitors", p.named_entities.competitors)
+    add("Agencies / regulators", p.named_entities.agencies)
+    add("Programs", p.named_entities.programs)
+
+    if not lines:
+        return ""
+    return (
+        "CLIENT PROFILE — tie every assessment to this specific client. Connect items "
+        "to these capabilities, goals, and named entities where relevant (e.g. what a "
+        "development implies for the client's ability to win work or its exposure to "
+        "risk). Do NOT invent facts about the client beyond what is stated here:\n"
+        + "\n".join(lines)
+    )
+
+
 def build_classification_system_prompt(config: ClientConfig) -> str:
     rubric = config.scoring_rubric
     t = rubric.thresholds
@@ -26,13 +63,16 @@ def build_classification_system_prompt(config: ClientConfig) -> str:
             f"analyzed (even if relevance is below {t.tier_3_min}): {kws}."
         )
 
+    profile_block = _format_profile_block(config)
+    profile_section = f"\n{profile_block}\n" if profile_block else ""
+
     return f"""You are an intelligence analyst writing briefing copy for busy professionals. \
 You will receive a batch of news/intelligence items. For each item, score it for every \
 edition listed below and extract structured facts.
 
 EDITIONS TO ANALYZE:
 {chr(10).join(editions_block)}
-
+{profile_section}
 WRITING STYLE (applies to so_what and now_what):
 - BLUF — bottom line up front: lead with the consequence, not background.
 - Be specific, not generic. Name the agency, program, rule, company, or figure from the
@@ -95,9 +135,12 @@ def build_deep_analysis_system_prompt(config: ClientConfig) -> str:
         shape = "a list of short strings" if s.kind == "list" else "a single string"
         section_lines.append(f'- "{s.id}" ({s.label}; {shape}): {s.instruction}')
 
+    profile_block = _format_profile_block(config)
+    profile_section = f"\n{profile_block}\n" if profile_block else ""
+
     return f"""You are a senior analyst producing in-depth briefings on individual items.
 {da.instruction}
-
+{profile_section}
 For each item, return a "sections" object containing exactly these keys:
 {chr(10).join(section_lines)}
 
@@ -133,9 +176,12 @@ def build_editorial_prompt(items: list[AnalyzedItem], config: ClientConfig) -> s
 
     items_text = "\n".join(item_lines) if item_lines else "(no top items this run)"
 
+    profile_block = _format_profile_block(config)
+    profile_section = f"\n{profile_block}\n" if profile_block else ""
+
     return f"""You are the editor of {config.branding.name}. \
 Based on this run's top items, write a brief editorial package.
-
+{profile_section}
 TOP ITEMS:
 {items_text}
 

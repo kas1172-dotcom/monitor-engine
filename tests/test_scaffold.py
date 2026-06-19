@@ -57,6 +57,28 @@ class TestScaffoldOutput:
         assert len(briefs) == len(intake["coverage"]) + len(intake["paid_sources"])
         assert any(b.get("auth_env_var") == "CONGRESS_API_KEY" for b in briefs)
 
+    def test_profile_passed_through(self, result, intake):
+        # The intake's profile flows into config.profile for the analysis prompt.
+        assert result["config"].get("profile") == intake["profile"]
+
+    def test_profile_entities_widen_prefilter(self):
+        intake = {
+            "monitor_name": "M",
+            "audiences": [{"label": "Exec", "role": "x", "matters": "y", "topics": ["News"]}],
+            "cadence": {"frequency": "weekly", "day": "monday", "hour_local": 7},
+            "profile": {"named_entities": {"agencies": ["FDA"], "programs": ["Medicare"]}},
+        }
+        include = scaffold(intake)["config"]["keyword_prefilter"]["include"]
+        assert "FDA" in include and "Medicare" in include
+
+    def test_no_profile_is_omitted(self):
+        intake = {
+            "monitor_name": "M",
+            "audiences": [{"label": "Exec", "role": "x", "matters": "y", "topics": ["News"]}],
+            "cadence": {"frequency": "weekly", "day": "monday", "hour_local": 7},
+        }
+        assert "profile" not in scaffold(intake)["config"]
+
 
 # ─── Deterministic round-trip vs. the hand-built healthcare config ──────────
 
