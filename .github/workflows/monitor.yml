@@ -78,8 +78,10 @@ jobs:
     needs: [setup, test]   # test gate must pass before any scrape/spend
     strategy:
       fail-fast: false  # one client's failure does not cancel the others
-      max-parallel: 1   # run clients one at a time: each commits and pushes before
-                        # the next checks out, so the two never race on `git push`.
+      max-parallel: 2   # clients run concurrently to cut wall time. Safe because
+                        # each writes its own clients/<name>/artifacts/ dir (no file
+                        # conflict) and the commit step rebase-retries the push, so
+                        # concurrent pushes to the branch resolve cleanly.
       matrix: ${{ fromJSON(needs.setup.outputs.matrix) }}
 
     runs-on: ubuntu-latest
