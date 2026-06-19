@@ -160,4 +160,13 @@ jobs:
           git diff --staged --quiet \
             && echo "No changes to commit for ${{ matrix.client }}" \
             || git commit -m "chore: ${{ matrix.client }} artifacts $(date -u +%Y-%m-%dT%H:%M:%SZ) [skip ci]"
-          git push
+          # Both matrix clients check out the same dispatch SHA, so the second to
+          # finish pushes onto a branch the first already advanced. Rebase our
+          # single artifact commit onto the latest remote tip and retry, so the
+          # jobs never race on a non-fast-forward rejection.
+          BRANCH="${{ github.ref_name }}"
+          for attempt in 1 2 3; do
+            git push origin "HEAD:$BRANCH" && break
+            echo "push rejected (attempt $attempt) — rebasing on origin/$BRANCH"
+            git pull --rebase origin "$BRANCH"
+          done
