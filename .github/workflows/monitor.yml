@@ -202,6 +202,8 @@ jobs:
     needs: run
     # Publish whenever the pipeline actually ran — even if one client failed, the
     # others' fresh artifacts (and every client's last-good) should still go live.
-    # Skipped only if the test gate blocked the run, or the run was cancelled.
-    if: ${{ !cancelled() && (needs.run.result == 'success' || needs.run.result == 'failure') }}
+    # Only from the default branch: the github-pages environment restricts
+    # deployments to main, so attempting it from a feature branch just fails the
+    # run. Skipped if the test gate blocked the run or the run was cancelled.
+    if: ${{ !cancelled() && github.ref_name == 'main' && (needs.run.result == 'success' || needs.run.result == 'failure') }}
     uses: ./.github/workflows/pages.yml
