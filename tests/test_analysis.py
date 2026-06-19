@@ -26,6 +26,7 @@ from monitor_engine.analysis.prompts import (
     build_editorial_prompt,
 )
 from monitor_engine.analysis.validation import (
+    normalize_title,
     parse_affected_population,
     parse_dollar_amount,
     validate_factual_claims,
@@ -152,6 +153,49 @@ def _editorial_payload() -> dict:
         "editors_note": "Three major programs saw funding shifts this week.",
         "whats_new_digest": "New allocations signal a pivot toward modernization.",
     }
+
+
+# ─── Title normalization ──────────────────────────────────────────────────
+
+class TestNormalizeTitle:
+    def test_recall_product_dump_is_cut_and_descreamed(self):
+        # Real FDA recall feed title.
+        raw = ("TopCare health, ULTRA STRENGTH, Antacid Tablets, CALCIUM CARBONATE "
+               "1000mg, 72 CHEWABLE TABLETS, DISTRIBUTED BY TOPCO ASSOCIATES LLC.,ELK GROVE")
+        out = normalize_title(raw)
+        assert "DISTRIBUTED BY" not in out          # boilerplate tail cut
+        assert "Calcium Carbonate" in out           # de-SCREAMed
+        assert "CARBONATE" not in out
+        assert len(out) <= 81                        # capped (+1 for the ellipsis char)
+
+    def test_lidocaine_cut_at_rx_only(self):
+        raw = ("Lidocaine HCl Injection USP, 25x5 mL, Single-Dose Ampules, Rx Only, "
+               "Distributed by: Spectra Medical Devices, LLC, Wilmington, Made in S. Korea")
+        out = normalize_title(raw)
+        assert out == "Lidocaine HCl Injection USP, 25x5 mL, Single-Dose Ampules"
+        assert "HCl" in out and "USP" in out         # real acronyms preserved
+
+    def test_long_clean_headline_only_capped(self):
+        raw = ("Federal Medicaid Spending Through State Directed Payments Nears $100 "
+               "Billion Annually Across 41 States, With New Limits Set to Reduce Funding")
+        out = normalize_title(raw)
+        assert out.startswith("Federal Medicaid Spending")
+        assert out.endswith("…")
+        assert "$100 Billion" in out                 # dollar figure kept, not mangled
+
+    def test_short_clean_title_unchanged(self):
+        assert normalize_title("FDA approves new infusion device") == "FDA approves new infusion device"
+
+    def test_hyphenated_words_preserved(self):
+        raw = "Build-to-Print Manufacturing Expands at AS9100 Facility"
+        assert normalize_title(raw) == raw           # no clipping of Build-to-Print, AS9100 kept
+
+    def test_money_suffix_not_descreamed(self):
+        assert "$40M" in normalize_title("Ahold Delhaize USA Inc. to Pay $40M for Inflated Drug Prices")
+
+    def test_empty_and_whitespace(self):
+        assert normalize_title("") == ""
+        assert normalize_title("   Spaced   out    title  ") == "Spaced out title"
 
 
 # ─── Parser tests ─────────────────────────────────────────────────────────

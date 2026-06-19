@@ -167,6 +167,16 @@ def run_pipeline(
         )
         sys.exit(1)
 
+    # ── Group same-event items ───────────────────────────────────────────
+    # Collapse items covering the same underlying story into one primary card
+    # (others cited as "also covered by"). Conservative — see analysis.grouping.
+    if analyzed:
+        from monitor_engine.analysis.grouping import group_related_items
+        before = len(analyzed)
+        analyzed = group_related_items(analyzed)
+        if len(analyzed) != before:
+            logger.info("Grouping: %d → %d items (collapsed duplicates)", before, len(analyzed))
+
     # ── Archive ──────────────────────────────────────────────────────────
     archive = load_archive(arch_path)
     previous_items = archive.runs[-1].items if archive.runs else []

@@ -374,6 +374,9 @@ function fullCard(item) {
     div.appendChild(note);
   }
 
+  const also = alsoCoveredBy(item);
+  if (also) div.appendChild(also);
+
   div.appendChild(deepAnalysisBlock(item));
   return div;
 }
@@ -460,6 +463,9 @@ function compactRow(item) {
       note.textContent = '⚠ ' + item.confidence_note;
       detail.appendChild(note);
     }
+
+    const also = alsoCoveredBy(item);
+    if (also) detail.appendChild(also);
 
     detail.appendChild(safeLink(item.url, 'Read source ↗', 'source-link'));
 
@@ -697,6 +703,25 @@ function safeLink(url, text, className) {
     node.rel = 'noopener';
   }
   return node;
+}
+
+// "Also covered by: src, src" — the secondary sources collapsed under this
+// primary item by same-event grouping. Each is a safeLink (full headline on
+// hover). Returns null when the item is not a grouping primary.
+function alsoCoveredBy(item) {
+  const refs = (item && item.also_covered_by) || [];
+  if (!refs.length) return null;
+  const wrap = el('div', 'also-covered');
+  const label = el('span', 'analysis-label');
+  label.textContent = 'Also covered by';
+  wrap.appendChild(label);
+  refs.forEach((r, i) => {
+    if (i) wrap.appendChild(document.createTextNode(', '));
+    const link = safeLink(r.url, r.source_id, 'also-link');
+    link.title = r.title;
+    wrap.appendChild(link);
+  });
+  return wrap;
 }
 
 // Tidy a source title for display: collapse whitespace and clamp to ~80 chars
