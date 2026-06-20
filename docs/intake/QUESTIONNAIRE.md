@@ -41,7 +41,20 @@ The specific organizations, agencies, programs, competitors, or people you care
 about. These sharpen relevance and help the agent find the right sources.
 *(→ `keyword_prefilter.include` + source discovery)*
 
-## 6. Coverage — what should it watch?
+## 6. Your profile — who are you?
+So the analysis speaks to *your* goals, not generic takes, tell us about your
+organization. All optional, but the more you give, the sharper the "why it matters
+/ what to do" gets. *(→ `profile`)*
+- **Capabilities** — what you do, make, or offer. *(→ `profile.capabilities`)*
+- **Certifications / qualifications** — e.g. AS9100, ITAR, ISO 13485. *(→ `profile.certifications`)*
+- **Industries & customer types you serve** — e.g. "defense primes", "health systems". *(→ `profile.industries_served`, `profile.customer_types`)*
+- **Geographic focus** — where you operate or sell. *(→ `profile.geographic_focus`)*
+- **Strategic goals** — what you're trying to achieve. *(→ `profile.strategic_goals`)*
+- **Risks / exposure** — what you're worried about. *(→ `profile.risks`)*
+- **Named entities** — your customers, competitors, agencies/regulators, and
+  programs that matter, grouped. *(→ `profile.named_entities`)*
+
+## 7. Coverage — what should it watch?
 List what you read today or wish you could keep up with: agencies, regulators,
 publications, databases, competitor newsrooms. **You don't need URLs** — names and
 a one-line "what" are enough; the agent finds and verifies the live feeds.
@@ -49,16 +62,16 @@ a one-line "what" are enough; the agent finds and verifies the live feeds.
 For each: **name**, **what it covers**, **kind** (official / news / database /
 social / web), and a **URL hint** if you happen to know one.
 
-## 7. Cadence & delivery
+## 8. Cadence & delivery
 - **How often?** Weekly / weekdays / daily. *(→ `cadence.frequency`)*
 - **What day & hour** should it be ready, in **what time zone**? *(→ `cadence`)*
 
-## 8. Depth on click
+## 9. Depth on click
 When you expand an item, what do you want to see? Pick any:
 background · key stakeholders · scenarios to watch · recommended actions.
 *(→ `deep_analysis.sections`)*
 
-## 9. Access & security
+## 10. Access & security
 - **Any paid or login-only sources** you want included? Name them; we'll request
   the API key separately and store it as a secret — **never paste keys here.**
   *(→ `sources[].auth_env_var` + repo secret)*
