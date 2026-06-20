@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import re
 from datetime import datetime, timezone
 from unittest.mock import MagicMock, patch
 
@@ -1123,6 +1124,77 @@ class TestDeepAnalysis:
         assert analyzed[0].deep_analysis is None       # quarantined depth, item survives
         assert client.messages.stream.call_count == 2  # retried once
         assert editorial is not None
+
+
+def _ids_in(kwargs) -> list[str]:
+    """Item ids referenced in a request's user prompt (empty for editorial)."""
+    return re.findall(r"ITEM_ID: (\S+)", kwargs["messages"][0]["content"])
+
+
+class TestConcurrency:
+    """max_concurrency > 1 must stay correct: same results, thread-safe cost,
+    cap honored per wave. Responses are keyed off the request (not an ordered
+    side_effect list) so concurrent consumption can't make these flaky."""
+
+    def _classify_client(self, out_tokens: int = 50) -> MagicMock:
+        client = MagicMock()
+        def create_se(*a, **k):
+            ids = _ids_in(k)
+            if ids:
+                return _mock_response(_multi_classify(*[(i, 85) for i in ids]), output_tokens=out_tokens)
+            return _mock_response(_editorial_payload(), output_tokens=5)
+        client.messages.create.side_effect = create_se
+        return client
+
+    def test_concurrent_classification_covers_all_items(self, config):
+        items = [_raw(f"item-{i:03d}") for i in range(12)]
+        scorer = Scorer(config, client=self._classify_client(),
+                        batch_size=1, min_call_interval=0, max_concurrency=4)
+        analyzed, _, _ = scorer.analyze(items)
+        assert {a.item_id for a in analyzed} == {f"item-{i:03d}" for i in range(12)}
+
+    def test_concurrent_matches_serial_result(self, config):
+        items = [_raw(f"item-{i:03d}") for i in range(7)]
+        serial = Scorer(config, client=self._classify_client(), batch_size=2, min_call_interval=0)
+        par = Scorer(config, client=self._classify_client(), batch_size=2,
+                     min_call_interval=0, max_concurrency=4)
+        s_ids = {a.item_id for a in serial.analyze(items)[0]}
+        p_ids = {a.item_id for a in par.analyze(items)[0]}
+        assert s_ids == p_ids
+
+    def test_concurrent_cap_stops_within_one_wave(self, config):
+        config.cost_caps.max_output_tokens_per_run = 50
+        items = [_raw(f"item-{i:03d}") for i in range(20)]
+        scorer = Scorer(config, client=self._classify_client(out_tokens=100),
+                        batch_size=1, min_call_interval=0, max_concurrency=4)
+        analyzed, _, _ = scorer.analyze(items)
+        # Each 1-item batch outputs 100 (> 50 cap); the first wave of 4 all run,
+        # then the cap halts further waves. So at most one wave's worth survives.
+        assert 0 < len(analyzed) <= 4
+
+    def test_deep_batches_do_not_overlap(self, config):
+        # Serial (deterministic): each item must appear in exactly one deep batch.
+        # Guards the slicing fix (was sliced by classification batch size, causing
+        # overlapping deep batches that re-processed items).
+        cfg = _deep_config(config)
+        cfg.deep_analysis.deep_batch_size = 3
+        cfg.scoring_rubric.never_discard = []
+        items = [_raw(f"item-{i:03d}") for i in range(10)]
+        client = self._classify_client()
+        seen: list[list[str]] = []
+        def stream_se(*a, **k):
+            ids = _ids_in(k)
+            seen.append(ids)
+            return _mock_stream(_deep_payload(*ids))
+        client.messages.stream.side_effect = stream_se
+        scorer = Scorer(cfg, client=client, min_call_interval=0)   # serial
+        analyzed, _, _ = scorer.analyze(items)
+
+        flat = [i for batch in seen for i in batch]
+        assert len(flat) == len(set(flat))                       # no item in two batches
+        assert set(flat) == {f"item-{i:03d}" for i in range(10)}  # every item covered once
+        assert len(seen) == 4                                     # ceil(10/3) non-overlapping batches
+        assert all(a.deep_analysis is not None for a in analyzed)
 
 
 class TestRunCostPhases:

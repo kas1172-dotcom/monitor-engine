@@ -159,8 +159,10 @@ def run_pipeline(
     cost_usd = 0.0
 
     if not skip_analysis and filtered:
-        from monitor_engine.analysis.scorer import Scorer
-        scorer = Scorer(config)
+        from monitor_engine.analysis.scorer import PIPELINE_MAX_CONCURRENCY, Scorer
+        # Issue LLM batches concurrently — the only thing that meaningfully cuts
+        # wall time on large runs (cost is unchanged: same tokens).
+        scorer = Scorer(config, max_concurrency=PIPELINE_MAX_CONCURRENCY)
         analyzed, editorial, cost_usd = scorer.analyze(filtered)
         logger.info("Analysis done: %d items, $%.4f", len(analyzed), cost_usd)
     elif skip_analysis:
