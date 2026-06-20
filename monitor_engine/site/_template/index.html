@@ -47,6 +47,20 @@
         <p class="filter-label">Date</p>
         <div class="date-filters" id="date-filters"></div>
       </div>
+      <div class="filter-section feedback-section" id="feedback-section">
+        <p class="filter-label">Feedback for next run</p>
+        <p class="fb-help">Use 📌 / 🚫 / 🔇 on items to pin, hide, or mute a source.
+          Add terms below, then download <code>feedback.json</code> and commit it.</p>
+        <label class="fb-sublabel" for="fb-boost">Boost terms (more of these)</label>
+        <textarea id="fb-boost" class="fb-textarea" rows="2" placeholder="one per line"></textarea>
+        <label class="fb-sublabel" for="fb-mute">Mute terms (less of these)</label>
+        <textarea id="fb-mute" class="fb-textarea" rows="2" placeholder="one per line"></textarea>
+        <div class="fb-summary" id="fb-summary"></div>
+        <div class="fb-actions">
+          <button type="button" id="fb-download" class="fb-action">Download feedback.json</button>
+          <button type="button" id="fb-clear" class="fb-action fb-action-secondary">Clear</button>
+        </div>
+      </div>
       <div class="run-meta" id="run-meta"></div>
     </aside>
 

@@ -106,6 +106,18 @@ export function renderData(data, searchQuery = null) {
           firstCatTag,
           deep,
         };
+        // Feedback probe: count per-item controls and verify the first card's
+        // first feedback button toggles active on click (capture wiring works).
+        const fbControls = containers.tier1.countByClass('fb-controls')
+          + containers.tier2.countByClass('fb-controls')
+          + containers.tier3.countByClass('fb-controls');
+        const firstFbBtn = containers.tier1.findByClass('fb-btn');
+        let fbToggled = false;
+        if (firstFbBtn) {
+          firstFbBtn.dispatchEvent('click');
+          fbToggled = firstFbBtn.classList.contains('fb-active');
+        }
+        result.feedback = { controls: fbControls, toggledActive: fbToggled };
         // Search probe: type a query, re-render, record how many items remain.
         const search = doc.getElementById('search-input');
         if (search && typeof searchQuery === 'string') {
