@@ -4,8 +4,10 @@ import copy
 import json
 import logging
 import math
+import threading
 import time
 from collections.abc import Callable
+from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
 from datetime import date
 from typing import Any, TypeVar
@@ -55,7 +57,13 @@ PHASE_DEEP_ANALYSIS = "deep_analysis"
 PHASE_EDITORIAL = "editorial"
 
 DEFAULT_BATCH_SIZE = 8
-DEFAULT_MIN_INTERVAL = 1.0   # seconds between consecutive LLM calls
+DEFAULT_MIN_INTERVAL = 1.0   # seconds between consecutive LLM calls (serial mode only)
+# Concurrent in-flight LLM requests. The dominant cost of a run is total tokens
+# generated serially; issuing batches concurrently is the only thing that cuts
+# wall time. The Scorer defaults to 1 (sequential, deterministic) so library
+# callers and tests are unaffected; the pipeline opts into real concurrency.
+DEFAULT_MAX_CONCURRENCY = 1
+PIPELINE_MAX_CONCURRENCY = 4
 CLASSIFY_MAX_TOKENS = 4096
 EDITORIAL_MAX_TOKENS = 1024
 
@@ -147,15 +155,19 @@ def _strict_json_schema(schema: dict) -> dict:
 class _RunCost:
     # phase label -> {"model": str, "input": int, "output": int}
     _phases: dict[str, dict[str, Any]] = field(default_factory=dict)
+    # Guards _phases so cost can be tallied from concurrent worker threads.
+    _lock: threading.Lock = field(default_factory=threading.Lock)
 
     def add(self, phase: str, model: str, usage: Any) -> None:
-        entry = self._phases.setdefault(phase, {"model": model, "input": 0, "output": 0})
-        entry["model"] = model
-        entry["input"] += getattr(usage, "input_tokens", 0)
-        entry["output"] += getattr(usage, "output_tokens", 0)
+        with self._lock:
+            entry = self._phases.setdefault(phase, {"model": model, "input": 0, "output": 0})
+            entry["model"] = model
+            entry["input"] += getattr(usage, "input_tokens", 0)
+            entry["output"] += getattr(usage, "output_tokens", 0)
 
     def total_output_tokens(self) -> int:
-        return sum(e["output"] for e in self._phases.values())
+        with self._lock:
+            return sum(e["output"] for e in self._phases.values())
 
     def _phase_usd(self, entry: dict[str, Any]) -> float:
         inp_rate, out_rate = _PRICE.get(entry["model"], (0.0, 0.0))
@@ -207,19 +219,59 @@ class Scorer:
         client: anthropic.Anthropic | None = None,
         batch_size: int = DEFAULT_BATCH_SIZE,
         min_call_interval: float = DEFAULT_MIN_INTERVAL,
+        max_concurrency: int = DEFAULT_MAX_CONCURRENCY,
     ) -> None:
         self._config = config
         self._client = client or anthropic.Anthropic(api_key=api_key)
         self._batch_size = batch_size
         self._min_interval = min_call_interval
+        self._max_concurrency = max(1, max_concurrency)
         self._last_call: float = 0.0
 
     # ── internal helpers ───────────────────────────────────────────────────
 
     def _wait(self) -> None:
+        # The min-interval pace only applies in serial mode; under concurrency the
+        # worker-pool size is the rate limiter (and a shared _last_call would just
+        # re-serialize the calls).
+        if self._max_concurrency > 1:
+            return
         elapsed = time.monotonic() - self._last_call
         if elapsed < self._min_interval:
             time.sleep(self._min_interval - elapsed)
+
+    def _run_capped(
+        self,
+        batches: list,
+        fn: Callable[[Any], _T],
+        cost: _RunCost,
+        caps: Any,
+    ) -> list[_T]:
+        """Run ``fn`` over ``batches``, honoring the per-run output-token cap.
+
+        Serial when max_concurrency == 1 (cap checked before every batch). When
+        concurrent, batches run in waves of max_concurrency with the cap checked
+        between waves — so a run may overshoot by at most one wave, which is fine
+        for a safety ceiling. Results are returned in submission order either way.
+        """
+        def _capped() -> bool:
+            return cost.total_output_tokens() >= caps.max_output_tokens_per_run
+
+        results: list[_T] = []
+        if self._max_concurrency <= 1:
+            for batch in batches:
+                if _capped():
+                    break
+                results.append(fn(batch))
+            return results
+
+        with ThreadPoolExecutor(max_workers=self._max_concurrency) as pool:
+            for start in range(0, len(batches), self._max_concurrency):
+                if _capped():
+                    break
+                wave = batches[start : start + self._max_concurrency]
+                results.extend(pool.map(fn, wave))
+        return results
 
     def _make_api_call(
         self,
@@ -512,16 +564,20 @@ class Scorer:
         # output is much larger, so big batches risk truncation at the ceiling.
         deep_batch_size = self._config.deep_analysis.deep_batch_size
 
+        batches = [targets[i : i + deep_batch_size] for i in range(0, len(targets), deep_batch_size)]
+        batch_results = self._run_capped(
+            batches,
+            lambda b: self._deep_analysis_batch(b, system_prompt, schema, cost),
+            cost, caps,
+        )
         deep_by_id: dict[str, DeepAnalysis] = {}
-        for start in range(0, len(targets), deep_batch_size):
-            if cost.total_output_tokens() >= caps.max_output_tokens_per_run:
-                logger.warning(
-                    "Output token cap reached — stopping deep analysis early (%d of %d done)",
-                    len(deep_by_id), len(targets),
-                )
-                break
-            batch = targets[start : start + self._batch_size]
-            deep_by_id.update(self._deep_analysis_batch(batch, system_prompt, schema, cost))
+        for r in batch_results:
+            deep_by_id.update(r)
+        if len(batch_results) < len(batches):
+            logger.warning(
+                "Output token cap reached — stopped after %d of %d deep-analysis batches",
+                len(batch_results), len(batches),
+            )
 
         if not deep_by_id:
             return analyzed, 0
@@ -556,17 +612,19 @@ class Scorer:
 
         classify_schema = _strict_json_schema(_BatchResult.model_json_schema())
         system_prompt = build_classification_system_prompt(self._config)
-        analyzed: list[AnalyzedItem] = []
 
-        for batch_start in range(0, len(items), self._batch_size):
-            if cost.total_output_tokens() >= caps.max_output_tokens_per_run:
-                logger.warning(
-                    "Output token cap reached (%d tokens) after %d items — stopping early",
-                    cost.total_output_tokens(), len(analyzed),
-                )
-                break
-            batch = items[batch_start : batch_start + self._batch_size]
-            analyzed.extend(self._classify_batch(batch, system_prompt, classify_schema, cost))
+        batches = [items[i : i + self._batch_size] for i in range(0, len(items), self._batch_size)]
+        batch_results = self._run_capped(
+            batches,
+            lambda b: self._classify_batch(b, system_prompt, classify_schema, cost),
+            cost, caps,
+        )
+        analyzed: list[AnalyzedItem] = [item for br in batch_results for item in br]
+        if len(batch_results) < len(batches):
+            logger.warning(
+                "Output token cap reached — stopped after %d of %d classification batches",
+                len(batch_results), len(batches),
+            )
 
         deep_count = 0
         if self._config.deep_analysis is not None and analyzed:
