@@ -63,6 +63,30 @@
         "enum": ["background", "key_stakeholders", "scenarios", "recommended_actions"]
       }
     },
+    "profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Client profile consumed by the analysis prompt (maps to ClientConfig.profile) so each item's why-it-matters/what-to-do is specific to this client. All fields optional.",
+      "properties": {
+        "capabilities": { "type": "array", "items": { "type": "string" } },
+        "certifications": { "type": "array", "items": { "type": "string" } },
+        "industries_served": { "type": "array", "items": { "type": "string" } },
+        "customer_types": { "type": "array", "items": { "type": "string" } },
+        "geographic_focus": { "type": "array", "items": { "type": "string" } },
+        "strategic_goals": { "type": "array", "items": { "type": "string" } },
+        "risks": { "type": "array", "items": { "type": "string" } },
+        "named_entities": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "customers": { "type": "array", "items": { "type": "string" } },
+            "competitors": { "type": "array", "items": { "type": "string" } },
+            "agencies": { "type": "array", "items": { "type": "string" } },
+            "programs": { "type": "array", "items": { "type": "string" } }
+          }
+        }
+      }
+    },
     "paid_sources": {
       "type": "array",
       "description": "Flags for authenticated sources. The API key is supplied out-of-band and stored as a repo secret — never in this file.",

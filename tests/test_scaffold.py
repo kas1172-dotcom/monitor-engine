@@ -6,12 +6,34 @@ from pathlib import Path
 
 import pytest
 
-from monitor_engine.models import ClientConfig
+from monitor_engine.models import ClientConfig, ClientProfile, NamedEntities
 from tooling.scaffold import cadence_to_cron, scaffold, slugify
 
 _HEALTHCARE_INTAKE = (
     Path(__file__).parent.parent / "clients" / "healthcare-regulatory" / "intake.json"
 )
+_INTAKE_SCHEMA = Path(__file__).parent.parent / "docs" / "intake" / "intake.schema.json"
+
+
+class TestIntakeSchemaConsistency:
+    """The intake schema's `profile` block must stay in lockstep with the
+    ClientProfile model (the single source of truth) so the questionnaire,
+    survey, and scaffold can't drift apart."""
+
+    def test_schema_profile_matches_client_profile_model(self):
+        schema = json.loads(_INTAKE_SCHEMA.read_text())
+        profile = schema["properties"]["profile"]["properties"]
+        assert set(profile) == set(ClientProfile.model_fields)
+
+    def test_schema_named_entities_match_model(self):
+        schema = json.loads(_INTAKE_SCHEMA.read_text())
+        ne = schema["properties"]["profile"]["properties"]["named_entities"]["properties"]
+        assert set(ne) == set(NamedEntities.model_fields)
+
+    def test_healthcare_intake_profile_round_trips(self):
+        intake = json.loads(_HEALTHCARE_INTAKE.read_text())
+        # The profile the survey/intake carries must build a valid ClientProfile.
+        ClientProfile.model_validate(intake["profile"])
 
 
 @pytest.fixture(scope="module")
