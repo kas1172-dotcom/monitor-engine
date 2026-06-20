@@ -136,7 +136,8 @@
         "title": "device_name",
         "published_at": "decision_date",
         "summary": "statement_or_summary"
-      }
+      },
+      "days_back": 30
     },
     {
       "type": "json_api",
@@ -149,7 +150,8 @@
         "url": "recall_number",
         "published_at": "report_date",
         "summary": "reason_for_recall"
-      }
+      },
+      "days_back": 30
     },
     {
       "type": "json_api",
@@ -191,7 +193,8 @@
       "item_selector": "div.views-row",
       "title_selector": "h3",
       "link_selector": "a.newsroom-main-view-link",
-      "date_selector": "time"
+      "date_selector": "time",
+      "days_back": 21
     },
     {
       "type": "rss",
@@ -215,7 +218,8 @@
       "type": "rss",
       "id": "gao-health",
       "name": "GAO Health Reports",
-      "url": "https://www.gao.gov/rss/topic/health-care"
+      "url": "https://www.gao.gov/rss/topic/health-care",
+      "days_back": 21
     },
     {
       "type": "rss",
@@ -233,13 +237,15 @@
       "type": "rss",
       "id": "medpac",
       "name": "MedPAC",
-      "url": "https://www.medpac.gov/feed/"
+      "url": "https://www.medpac.gov/feed/",
+      "days_back": 365
     },
     {
       "type": "rss",
       "id": "nashp",
       "name": "NASHP",
-      "url": "https://nashp.org/feed/"
+      "url": "https://nashp.org/feed/",
+      "days_back": 21
     },
     {
       "type": "rss",
@@ -300,12 +306,6 @@
       "id": "fierce-biotech",
       "name": "Fierce Biotech",
       "url": "https://www.fiercebiotech.com/rss/xml"
-    },
-    {
-      "type": "rss",
-      "id": "medcity-news",
-      "name": "MedCity News",
-      "url": "https://medcitynews.com/feed/"
     }
   ],
   "keyword_prefilter": {

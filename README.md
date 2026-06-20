@@ -14,12 +14,16 @@ No server, no database, no always-on infrastructure.
 ## How it works
 
 ```
+load_feedback()       optional clients/<name>/feedback.json → mute/boost/pin rules
+       ↓
 collect_all()         pull from all sources in parallel
        ↓
 keyword_prefilter     cheap OR/AND text filter; drops obvious noise
        ↓
-Scorer.analyze()      LLM batch-classifies each item per edition;
-                      computes tier (1 Essential / 2 Important / 3 Tracked)
+Scorer.analyze()      LLM batch-classifies each item per edition (concurrently);
+                      cleans titles; computes tier (1 Essential / 2 / 3 Tracked)
+       ↓
+group_related_items() collapses same-event duplicates into one "also covered by" card
        ↓
 compute_diff()        what's new vs. the previous run
        ↓
@@ -63,29 +67,43 @@ Copy `clients/aerospace/config.json` as a starting template.
 | `keyword_prefilter.exclude` | Items matching any of these are dropped before analysis |
 | `scoring_rubric.thresholds` | Default `tier_1_min: 80`, `tier_2_min: 50`, `tier_3_min: 20`; tune per client |
 | `scoring_rubric.never_discard` | Keywords that force an item to at least Tier 3, regardless of score |
-| `cadence.cron` | Informational — also paste this into the workflow's `schedule.cron` |
+| `profile` | Optional client profile (capabilities, certifications, goals, risks, named entities) — consumed by the analysis prompt so each item's "why it matters / what to do" is specific to this client |
+| `cadence.cron` | Informational cadence (the pipeline is manual-dispatch only by default) |
 | `cost_caps.max_items_per_run` | Hard limit on items sent to the LLM per run (default 50) |
+
+Sources can also take a per-source `days_back` to widen the lookback for
+low-frequency feeds (e.g. a quarterly report) that the global window would miss.
 
 **Never put secrets in config.json.** For authenticated sources, set
 `auth_env_var: "MY_API_KEY"` and declare that secret in GitHub repo settings
 (Settings → Secrets and variables → Actions).
 
-### 4 — Add your client to the workflow matrix
+**Two optional sibling files** in `clients/<name>/`:
+- `intake.json` — questionnaire answers; run `python -m tooling.scaffold intake.json`
+  to (re)generate a draft `config.json`. The single-page `docs/intake/survey.html`
+  produces this file from a form (no hand-editing).
+- `feedback.json` — client feedback the next run honors deterministically
+  (`mute_terms`, `boost_terms`, `mute_sources`, `suppress_urls`, `pin_urls`).
+  Generate it from the dashboard's per-item 📌/🚫/🔇 controls + "Download
+  feedback.json", or hand-edit (see `clients/aerospace/feedback.example.json`).
 
-Open `.github/workflows/monitor.yml` and add your client to the matrix:
+### 4 — Add your client to the dispatch options
+
+Open `.github/workflows/monitor.yml` and add your client to the `client` input
+options (the run matrix is built from this choice — `all` runs every client):
 
 ```yaml
-matrix:
+inputs:
   client:
-    - my-client
+    options:
+      - all
+      - my-client
 ```
 
-If you only have one client, remove the matrix entirely and hard-code
-`--config clients/my-client/config.json` in the run step.
+### 5 — (Optional) enable a schedule
 
-### 5 — Set the schedule
-
-Change the `cron:` line in the workflow to match your `cadence.cron`.
+The pipeline is **manual-dispatch only** by default — nothing runs on its own.
+To add weekly runs later, uncomment the `schedule:` block in the workflow.
 
 ### 6 — Set the `ANTHROPIC_API_KEY` secret
 
@@ -101,15 +119,18 @@ env:
   MY_API_KEY: ${{ secrets.MY_API_KEY }}
 ```
 
-### 7 — Run manually to verify
+### 7 — Run it (one button)
 
-Go to Actions → Monitor Pipeline → Run workflow.  After it completes, check
-that `clients/my-client/artifacts/index.html` was committed to the repo.
+Actions → **Monitor Pipeline** → Run workflow → pick a client (or `all`). One
+dispatch runs the whole flow end to end: **test gate → collect → analyse →
+commit artifacts → publish to Pages**. To re-publish without re-running the
+pipeline, dispatch **Deploy Pages**.
 
-### 8 — Publish via GitHub Pages (optional)
+### 8 — Publish via GitHub Pages
 
-Repo → Settings → Pages → Branch: `main`, folder: `/clients/my-client/artifacts`.
-GitHub will serve `index.html` publicly.
+Repo → Settings → Pages → Source: **GitHub Actions**. The pipeline's deploy step
+(and the standalone Deploy Pages workflow) publishes a landing page linking every
+client dashboard. Deploys run only from the default branch.
 
 ---
 
@@ -219,8 +240,10 @@ Open `/tmp/ae-full/index.html` in a browser.
 
 | Directory / file | Who edits it |
 |---|---|
-| `clients/<name>/config.json` | **You** — this is the only file a deployer writes |
-| `.github/workflows/monitor.yml` | **You** — add your client to the matrix; set cron |
+| `clients/<name>/config.json` | **You** — the main deployer file (sources, editions, profile, thresholds) |
+| `clients/<name>/feedback.json` | **You / client** — optional; from the dashboard's Download button or by hand |
+| `clients/<name>/intake.json` | **You** — optional; generated by `docs/intake/survey.html`, feeds `tooling.scaffold` |
+| `.github/workflows/monitor.yml` | **You** — add your client to the dispatch `client` options |
 | `clients/<name>/artifacts/` | **CI** — do not edit by hand |
 | `monitor_engine/` | **Never** — engine internals; update via `pip install` upgrades |
 | `pyproject.toml` | Engine maintainer only |
