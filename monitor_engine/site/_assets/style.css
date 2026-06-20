@@ -474,6 +474,32 @@ button {
 .also-covered .also-link:hover { color: var(--text); }
 .also-covered .nonlink { color: var(--text-sec); }
 
+/* Per-item feedback controls (pin / hide / mute source) */
+.fb-controls { display: flex; gap: 6px; margin-top: 10px; }
+.fb-btn {
+  font-size: .9rem; line-height: 1; padding: 4px 7px; border: 1px solid #8884;
+  border-radius: 6px; background: transparent; cursor: pointer; opacity: .55;
+  filter: grayscale(1);
+}
+.fb-btn:hover { opacity: .9; filter: none; }
+.fb-btn.fb-active { opacity: 1; filter: none; border-color: var(--accent); background: var(--accent-bg); }
+
+/* Feedback panel (in the filter sidebar) */
+.feedback-section .fb-help { font-size: .75rem; color: var(--text-sec); margin: 2px 0 8px; }
+.fb-sublabel { display: block; font-size: .72rem; color: var(--text-sec); margin: 6px 0 2px; }
+.fb-textarea {
+  width: 100%; box-sizing: border-box; font: inherit; font-size: .8rem;
+  padding: 5px 7px; border: 1px solid #8884; border-radius: 6px;
+  background: transparent; color: inherit; resize: vertical;
+}
+.fb-summary { font-size: .72rem; color: var(--text-sec); margin: 8px 0; }
+.fb-actions { display: flex; gap: 6px; flex-wrap: wrap; }
+.fb-action {
+  font: inherit; font-size: .78rem; font-weight: 600; padding: 6px 10px; border: 0;
+  border-radius: 6px; background: var(--accent); color: #fff; cursor: pointer;
+}
+.fb-action-secondary { background: #6b7280; }
+
 /* Stat chips strip */
 .stat-chips {
   display: flex;

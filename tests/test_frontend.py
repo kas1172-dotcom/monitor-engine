@@ -72,6 +72,16 @@ def test_every_item_renders_in_some_bucket(rendered, fixture_data):
     assert rendered["totalRendered"] == 12
 
 
+def test_feedback_controls_render_on_every_item(rendered):
+    # Each rendered item carries a feedback control set (pin / hide / mute).
+    assert rendered["feedback"]["controls"] == rendered["totalRendered"]
+
+
+def test_feedback_button_toggles_active(rendered):
+    # Clicking a per-item feedback button records it (active state applied).
+    assert rendered["feedback"]["toggledActive"] is True
+
+
 def test_items_land_in_correct_tier_buckets(rendered, fixture_data):
     expected = {1: 0, 2: 0, 3: 0}
     for item in fixture_data["items"]:

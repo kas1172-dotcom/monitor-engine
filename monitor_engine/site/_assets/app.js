@@ -10,7 +10,12 @@ const state = {
   dateFilter: 'all',     // 'all' | 'week' | 'month'
   searchQuery: '',       // lowercased keyword filter, '' = no filter
   newIds: new Set(),     // item_ids that are new this run
+  feedback: emptyFeedback(),  // client feedback captured this session (→ feedback.json)
 };
+
+function emptyFeedback() {
+  return { pin_urls: [], suppress_urls: [], mute_sources: [], boost_terms: [], mute_terms: [] };
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    Boot
@@ -51,10 +56,13 @@ function boot() {
     state.activeEdition = cfg.editions[0].id;
   }
 
+  state.feedback = loadFeedback(cfg);
+
   applyBranding(cfg);
   buildEditionNav(cfg);
   buildFilterPanel(cfg);
   wireFilterToggle();
+  setupFeedbackPanel();
   renderRunMeta();
   render();
 
@@ -93,6 +101,124 @@ function hexAlpha(hex, a) {
   return 'rgba(' + r + ',' + g + ',' + b + ',' + a + ')';
 }
 function clamp(v) { return Math.max(0, Math.min(255, v)); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   Feedback capture — per-item controls + downloadable feedback.json
+   ───────────────────────────────────────────────────────────────────
+   Client-side only: choices persist in localStorage and export to a
+   feedback.json matching the engine's Feedback schema. The operator commits
+   that file and the next run honors it. No backend; localStorage/Blob are
+   guarded so the headless test harness (no storage, no Blob) still renders.
+   ═══════════════════════════════════════════════════════════════════ */
+function feedbackStorageKey(cfg) {
+  return 'monitor_feedback:' + ((cfg && cfg.name) || 'default');
+}
+
+function loadFeedback(cfg) {
+  const fb = emptyFeedback();
+  if (typeof localStorage === 'undefined') return fb;
+  try {
+    const raw = localStorage.getItem(feedbackStorageKey(cfg));
+    if (raw) Object.assign(fb, JSON.parse(raw));
+  } catch (e) { /* ignore corrupt storage */ }
+  for (const k of Object.keys(fb)) if (!Array.isArray(fb[k])) fb[k] = [];
+  return fb;
+}
+
+function saveFeedback() {
+  if (typeof localStorage !== 'undefined') {
+    try {
+      const cfg = state.data && state.data.site_config;
+      localStorage.setItem(feedbackStorageKey(cfg), JSON.stringify(state.feedback));
+    } catch (e) { /* storage full / unavailable — non-fatal */ }
+  }
+  updateFeedbackSummary();
+}
+
+function toggleInList(list, value) {
+  const i = list.indexOf(value);
+  if (i === -1) list.push(value); else list.splice(i, 1);
+  return i === -1;   // true = now present
+}
+
+function splitTerms(v) {
+  return String(v || '').split(/[\n,]/).map(s => s.trim()).filter(Boolean);
+}
+
+// Per-item pin / hide / mute-source toggles. Records into state.feedback; does
+// not alter the current view (suppression/pinning take effect on the next run).
+function feedbackControls(item) {
+  const wrap = el('div', 'fb-controls');
+  const fb = state.feedback;
+  const mk = (label, title, isActive, onToggle) => {
+    const b = el('button', 'fb-btn' + (isActive() ? ' fb-active' : ''));
+    b.type = 'button';
+    b.textContent = label;
+    b.title = title;
+    b.addEventListener('click', (e) => {
+      if (e && e.preventDefault) { e.preventDefault(); e.stopPropagation(); }
+      const now = onToggle();
+      b.classList.toggle('fb-active', now);
+      saveFeedback();
+    });
+    return b;
+  };
+  wrap.appendChild(mk('📌', 'Pin — always surface this item',
+    () => fb.pin_urls.includes(item.url), () => toggleInList(fb.pin_urls, item.url)));
+  wrap.appendChild(mk('🚫', 'Hide — drop this item from the next brief',
+    () => fb.suppress_urls.includes(item.url), () => toggleInList(fb.suppress_urls, item.url)));
+  wrap.appendChild(mk('🔇', 'Mute source — ' + item.source_id,
+    () => fb.mute_sources.includes(item.source_id), () => toggleInList(fb.mute_sources, item.source_id)));
+  return wrap;
+}
+
+function setupFeedbackPanel() {
+  const boost = document.getElementById('fb-boost');
+  const mute = document.getElementById('fb-mute');
+  if (boost) {
+    boost.value = state.feedback.boost_terms.join('\n');
+    boost.addEventListener('input', () => { state.feedback.boost_terms = splitTerms(boost.value); saveFeedback(); });
+  }
+  if (mute) {
+    mute.value = state.feedback.mute_terms.join('\n');
+    mute.addEventListener('input', () => { state.feedback.mute_terms = splitTerms(mute.value); saveFeedback(); });
+  }
+  const dl = document.getElementById('fb-download');
+  if (dl) dl.addEventListener('click', downloadFeedback);
+  const clear = document.getElementById('fb-clear');
+  if (clear) clear.addEventListener('click', () => {
+    state.feedback = emptyFeedback();
+    if (boost) boost.value = '';
+    if (mute) mute.value = '';
+    saveFeedback();
+    render();   // refresh card button states
+  });
+  updateFeedbackSummary();
+}
+
+function updateFeedbackSummary() {
+  const sum = document.getElementById('fb-summary');
+  if (!sum) return;
+  const fb = state.feedback;
+  sum.textContent =
+    fb.pin_urls.length + ' pinned · ' + fb.suppress_urls.length + ' hidden · ' +
+    fb.mute_sources.length + ' muted · ' +
+    (fb.boost_terms.length + fb.mute_terms.length) + ' term(s)';
+}
+
+function downloadFeedback() {
+  const fb = state.feedback;
+  const out = {};
+  ['mute_terms', 'boost_terms', 'mute_sources', 'suppress_urls', 'pin_urls'].forEach(k => {
+    if (fb[k] && fb[k].length) out[k] = fb[k];
+  });
+  const json = JSON.stringify(out, null, 2);
+  if (typeof Blob === 'undefined' || typeof URL === 'undefined' || !URL.createObjectURL) return;
+  const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
+  const a = document.createElement('a');
+  a.href = url; a.download = 'feedback.json'; a.click();
+  URL.revokeObjectURL(url);
+}
 
 /* ═══════════════════════════════════════════════════════════════════
    Edition nav
@@ -378,6 +504,7 @@ function fullCard(item) {
   if (also) div.appendChild(also);
 
   div.appendChild(deepAnalysisBlock(item));
+  div.appendChild(feedbackControls(item));
   return div;
 }
 
@@ -468,6 +595,7 @@ function compactRow(item) {
     if (also) detail.appendChild(also);
 
     detail.appendChild(safeLink(item.url, 'Read source ↗', 'source-link'));
+    detail.appendChild(feedbackControls(item));
 
     details.appendChild(detail);
   }
@@ -494,6 +622,7 @@ function renderTier3(items) {
     li.appendChild(dot);
     li.appendChild(a);
     li.appendChild(deepAnalysisBlock(item));
+    li.appendChild(feedbackControls(item));
     list.appendChild(li);
   });
 }
